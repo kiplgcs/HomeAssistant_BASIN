@@ -3,91 +3,247 @@ views:
     path: anenji
     icon: mdi:solar-power-variant
     type: sections
-    max_columns: 2
+    max_columns: 3
     sections:
       - type: grid
         cards:
           - type: heading
-            heading: Солнечный инвертор ANENJI 6200W (Victron-style)
-          - type: grid
-            columns: 2
-            square: false
-            cards:
-              - type: energy-distribution
-                title: Энергия — распределение
-              - type: energy-usage-graph
-                title: Энергия — график
-          - type: entities
-            title: Потоки энергии
-            show_header_toggle: false
-            entities:
-              - entity: sensor.moshchnost_pv_pv_power
-                name: PV всего (PV Power)
-              - entity: sensor.anenji_flow_pv_to_load
-                name: PV → Нагрузка
-              - entity: sensor.anenji_flow_pv_to_battery
-                name: PV → АКБ
-              - type: section
-              - entity: sensor.moshchnost_seti_grid_power
-                name: Сеть всего (Grid Power)
-              - entity: sensor.anenji_flow_grid_to_load
-                name: Сеть → Нагрузка
-              - entity: sensor.anenji_flow_grid_to_battery
-                name: Сеть → АКБ
-              - type: section
-              - entity: sensor.anenji_flow_battery_power_signed
-                name: АКБ знаковая мощность (Battery Signed Power)
-              - entity: sensor.anenji_flow_battery_to_load
-                name: АКБ → Нагрузка
-              - entity: sensor.zariad_akb_battery_soc
-                name: Заряд АКБ % (Battery SOC)
-              - type: section
-              - entity: sensor.rezhim_raboty_working_mode
-                name: Режим (Working Mode)
-              - entity: sensor.anenji_working_mode_text
-                name: Режим (текст)
-              - entity: sensor.potoki_energii_power_flow_status
-                name: Код потоков (Power Flow Status)
+            heading: Солнечная электростанция ANENJI 6200 Вт
+            heading_style: title
+            icon: mdi:solar-power-variant
+          - type: markdown
+            content: |
+              **Сводка состояния**
+              - Все подписи выполнены на русском языке без сокращений.
+              - В левой колонке — основные показатели и динамика.
+              - В правой колонке — подробная телеметрия и параметры.
+              - Ниже добавлен блок управления (выберите ваши `select.*`, `number.*`, `switch.*`).
           - type: grid
             columns: 4
             square: false
             cards:
+              - type: tile
+                entity: sensor.moshchnost_pv_pv_power
+                name: Мощность солнечных панелей
+                icon: mdi:solar-power
+                color: amber
+              - type: tile
+                entity: sensor.moshchnost_nagruzki_load_power
+                name: Мощность нагрузки
+                icon: mdi:home-lightning-bolt
+                color: blue
+              - type: tile
+                entity: sensor.moshchnost_seti_grid_power
+                name: Мощность сети
+                icon: mdi:transmission-tower
+                color: cyan
+              - type: tile
+                entity: sensor.zariad_akb_battery_soc
+                name: Степень заряда аккумулятора
+                icon: mdi:battery-high
+                color: green
+
+          - type: energy-distribution
+            title: Распределение энергии
+
+          - type: entities
+            title: Потоки энергии и режим работы
+            show_header_toggle: false
+            entities:
+              - entity: sensor.moshchnost_pv_pv_power
+                name: Солнечные панели — суммарная мощность
+              - entity: sensor.anenji_flow_pv_to_load
+                name: Поток от солнечных панелей к нагрузке
+              - entity: sensor.anenji_flow_pv_to_battery
+                name: Поток от солнечных панелей к аккумулятору
+              - type: section
+                label: Взаимодействие с сетью
+              - entity: sensor.moshchnost_seti_grid_power
+                name: Сеть — суммарная мощность
+              - entity: sensor.anenji_flow_grid_to_load
+                name: Поток от сети к нагрузке
+              - entity: sensor.anenji_flow_grid_to_battery
+                name: Поток от сети к аккумулятору
+              - type: section
+                label: Аккумулятор
+              - entity: sensor.anenji_flow_battery_power_signed
+                name: Аккумулятор — знаковая мощность
+              - entity: sensor.anenji_flow_battery_to_load
+                name: Поток от аккумулятора к нагрузке
+              - entity: sensor.zariad_akb_battery_soc
+                name: Степень заряда аккумулятора
+              - type: section
+                label: Состояние инвертора
+              - entity: sensor.rezhim_raboty_working_mode
+                name: Режим работы (код)
+              - entity: sensor.anenji_working_mode_text
+                name: Режим работы (текстовое описание)
+              - entity: sensor.potoki_energii_power_flow_status
+                name: Состояние потоков энергии (код)
+
+          - type: grid
+            columns: 2
+            square: false
+            cards:
               - type: gauge
-                name: PV (PV Power)
+                name: Мощность солнечных панелей
                 entity: sensor.moshchnost_pv_pv_power
                 min: 0
                 max: 6200
-                unit: W
+                unit: Вт
+                severity:
+                  green: 1
+                  yellow: 2500
+                  red: 5000
               - type: gauge
-                name: Нагрузка (Load Power)
+                name: Мощность нагрузки
                 entity: sensor.moshchnost_nagruzki_load_power
                 min: 0
                 max: 6200
-                unit: W
+                unit: Вт
+                severity:
+                  green: 1
+                  yellow: 2500
+                  red: 5000
               - type: gauge
-                name: Сеть (Grid Power)
+                name: Мощность сети
                 entity: sensor.moshchnost_seti_grid_power
-                min: 0
+                min: -6200
                 max: 6200
-                unit: W
+                unit: Вт
               - type: gauge
-                name: АКБ (Battery Power Signed)
+                name: Мощность аккумулятора
                 entity: sensor.anenji_flow_battery_power_signed
                 min: -6200
                 max: 6200
-                unit: W
+                unit: Вт
+
           - type: history-graph
-            title: Мощности (24 часа)
+            title: История мощностей за 24 часа
             hours_to_show: 24
             refresh_interval: 30
             entities:
               - entity: sensor.moshchnost_pv_pv_power
-                name: PV
+                name: Солнечные панели
               - entity: sensor.moshchnost_nagruzki_load_power
                 name: Нагрузка
               - entity: sensor.moshchnost_seti_grid_power
                 name: Сеть
               - entity: sensor.anenji_flow_battery_power_signed
-                name: АКБ
+                name: Аккумулятор
+
+          - type: statistics-graph
+            title: Статистика мощности нагрузки (24 часа)
+            chart_type: line
+            days_to_show: 1
+            stat_types:
+              - mean
+              - max
+            entities:
+              - sensor.moshchnost_nagruzki_load_power
+
       - type: grid
         cards:
+          - type: heading
+            heading: Подробная телеметрия
+            icon: mdi:chart-line
+
+          - type: entities
+            title: Солнечные панели
+            show_header_toggle: false
+            entities:
+              - entity: sensor.napriazhenie_pv_pv_voltage
+                name: Напряжение солнечных панелей
+              - entity: sensor.tok_pv_pv_current
+                name: Ток солнечных панелей
+              - entity: sensor.moshchnost_pv_pv_power
+                name: Мощность солнечных панелей
+              - entity: sensor.tok_zariadki_ot_pv_pv_charging_current
+                name: Ток зарядки от солнечных панелей
+              - entity: sensor.moshchnost_zariadki_ot_pv_pv_charging_power
+                name: Мощность зарядки от солнечных панелей
+
+          - type: entities
+            title: Аккумулятор
+            show_header_toggle: false
+            entities:
+              - entity: sensor.napriazhenie_akb_battery_voltage
+                name: Напряжение аккумулятора
+              - entity: sensor.tok_akb_battery_current
+                name: Ток аккумулятора
+              - entity: sensor.tok_akb_znak_battery_current_signed_filtered
+                name: Ток аккумулятора (со знаком)
+              - entity: sensor.moshchnost_akb_battery_power
+                name: Мощность аккумулятора
+              - entity: sensor.zariad_akb_battery_soc
+                name: Степень заряда аккумулятора
+
+          - type: entities
+            title: Сеть и выход
+            show_header_toggle: false
+            entities:
+              - entity: sensor.napriazhenie_seti_grid_voltage
+                name: Напряжение сети
+              - entity: sensor.chastota_seti_grid_frequency
+                name: Частота сети
+              - entity: sensor.napriazhenie_vykhoda_output_voltage
+                name: Выходное напряжение
+              - entity: sensor.vykhodnoi_tok_output_current
+                name: Выходной ток
+              - entity: sensor.vykhodnaia_chastota_output_frequency
+                name: Выходная частота
+              - entity: sensor.polnaia_moshchnost_nagruzki_load_apparent_power
+                name: Полная мощность нагрузки
+
+          - type: entities
+            title: Инвертор и температура
+            show_header_toggle: false
+            entities:
+              - entity: sensor.napriazhenie_invertora_inverter_voltage
+                name: Напряжение инвертора
+              - entity: sensor.tok_invertora_inverter_current
+                name: Ток инвертора
+              - entity: sensor.moshchnost_invertora_inverter_power
+                name: Мощность инвертора
+              - entity: sensor.moshchnost_zariadki_ot_invertora_inverter_charging_power
+                name: Мощность зарядки от инвертора
+              - entity: sensor.tok_zariadki_ot_invertora_inverter_charging_current
+                name: Ток зарядки от инвертора
+              - entity: sensor.temperatura_dc_dc_dcdc_temperature
+                name: Температура преобразователя постоянного тока
+              - entity: sensor.temperatura_invertora_inverter_temperature
+                name: Температура инвертора
+
+          - type: entities
+            title: Ошибки и предупреждения
+            show_header_toggle: false
+            entities:
+              - entity: sensor.kod_avarii_bitami_fault_bitmask
+                name: Код аварий (битовая маска)
+              - entity: sensor.kod_preduprezhdenii_bitami_warning_bitmask_masked
+                name: Код предупреждений (битовая маска)
+              - entity: sensor.maska_preduprezhdenii_warning_mask_i
+                name: Маска предупреждений
+
+          - type: entities
+            title: Управление параметрами инвертора
+            show_header_toggle: false
+            entities:
+              # Замените сущности ниже на реально доступные у вас select/number/switch.
+              # Блок предназначен для оперативного управления настройками без перехода в Developer Tools.
+              - entity: select.rezhim_vykhoda_output_mode
+                name: Режим выхода
+              - entity: select.prioritet_vykhoda_output_priority
+                name: Приоритет источника питания на выходе
+              - entity: select.diapazon_vkhodnogo_napriazheniia_input_voltage_range
+                name: Диапазон входного напряжения
+              - entity: number.ustanovka_vykhodnogo_napriazheniia_output_voltage_set
+                name: Установка выходного напряжения
+              - entity: number.ustanovka_vykhodnoi_chastoty_output_frequency_set
+                name: Установка выходной частоты
+              - entity: number.maksimalnyi_tok_zariadki_maximum_charge_current_c
+                name: Максимальный ток зарядки
+              - entity: number.maksimalnyi_tok_zariadki_ot_seti_maximum_mains_charge_current
+                name: Максимальный ток зарядки от сети
+              - entity: switch.udalennyi_vykliuchatel_remote_switch
+                name: Удалённый выключатель

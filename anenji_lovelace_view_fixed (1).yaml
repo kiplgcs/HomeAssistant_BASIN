@@ -1,0 +1,241 @@
+# =========================
+# Lovelace view (views.yaml или ручной режим Lovelace)
+# =========================
+# Добавлено:
+# - energy-distribution карточка (работает после настройки Settings -> Dashboards -> Energy)
+# - energy-usage-graph карточка (также берет данные из Energy Dashboard)
+#
+# ВАЖНО:
+# Эти карточки НЕ заработают, пока вы не укажете источники в Energy Dashboard:
+# Settings -> Dashboards -> Energy
+#  - Grid consumption: sensor.anenji_grid_import_energy_total
+#  - Grid return:      sensor.anenji_grid_export_energy_total (если есть экспорт)
+#  - Solar production: sensor.anenji_pv_energy_total
+#  - Battery in/out:   sensor.anenji_battery_charge_energy_total / sensor.anenji_battery_discharge_energy_total
+
+views:
+  - title: Инвертор ANENJI
+    path: anenji
+    icon: mdi:solar-power-variant
+    type: sections
+    max_columns: 2
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Солнечный инвертор ANENJI 6200W (Victron-style)
+
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: energy-distribution
+                title: Энергия — распределение
+              - type: energy-usage-graph
+                title: Энергия — график
+
+          - type: entities
+            title: Потоки энергии
+            show_header_toggle: false
+            entities:
+              - entity: sensor.moshchnost_pv_pv_power
+                name: PV всего (PV Power)
+              - entity: sensor.anenji_flow_pv_to_load
+                name: PV → Нагрузка
+              - entity: sensor.anenji_flow_pv_to_batt
+                name: PV → АКБ
+              - type: section
+              - entity: sensor.moshchnost_seti_grid_power
+                name: Сеть всего (Grid Power)
+              - entity: sensor.anenji_flow_grid_to_load
+                name: Сеть → Нагрузка
+              - entity: sensor.anenji_flow_grid_to_batt
+                name: Сеть → АКБ
+              - type: section
+              - entity: sensor.anenji_flow_battery_power_signed
+                name: АКБ знаковая мощность (Battery Signed Power)
+              - entity: sensor.anenji_flow_battery_to_load
+                name: АКБ → Нагрузка
+              - entity: sensor.zariad_akb_battery_soc
+                name: Заряд АКБ % (Battery SOC)
+              - type: section
+              - entity: sensor.rezhim_raboty_working_mode
+                name: Режим (Working Mode)
+              - entity: sensor.anenji_working_mode_text
+                name: Режим (текст)
+              - entity: sensor.potoki_energii_power_flow_status
+                name: Код потоков (Power Flow Status)
+
+          - type: grid
+            columns: 4
+            square: false
+            cards:
+              - type: gauge
+                name: PV (PV Power)
+                entity: sensor.moshchnost_pv_pv_power
+                min: 0
+                max: 6200
+                unit: W
+              - type: gauge
+                name: Нагрузка (Load Power)
+                entity: sensor.moshchnost_nagruzki_load_power
+                min: 0
+                max: 6200
+                unit: W
+              - type: gauge
+                name: Сеть (Grid Power)
+                entity: sensor.moshchnost_seti_grid_power
+                min: 0
+                max: 6200
+                unit: W
+              - type: gauge
+                name: АКБ (Battery Power Signed)
+                entity: sensor.anenji_flow_battery_power_signed
+                min: -6200
+                max: 6200
+                unit: W
+
+          - type: history-graph
+            title: Мощности (24 часа)
+            hours_to_show: 24
+            refresh_interval: 30
+            entities:
+              - entity: sensor.moshchnost_pv_pv_power
+                name: PV
+              - entity: sensor.moshchnost_nagruzki_load_power
+                name: Нагрузка
+              - entity: sensor.moshchnost_seti_grid_power
+                name: Сеть
+              - entity: sensor.anenji_flow_battery_power_signed
+                name: АКБ
+
+      - type: grid
+        cards:
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: entities
+                title: PV (Солнечные панели)
+                show_header_toggle: false
+                entities:
+                  - entity: sensor.napriazhenie_pv_pv_voltage
+                    name: Напряжение PV (PV Voltage)
+                  - entity: sensor.tok_pv_pv_current
+                    name: Ток PV (PV Current)
+                  - entity: sensor.moshchnost_pv_pv_power
+                    name: Мощность PV (PV Power)
+                  - entity: sensor.tok_zariadki_ot_pv_pv_charging_current
+                    name: Ток зарядки от PV (PV Charging Current)
+                  - entity: sensor.moshchnost_zariadki_ot_pv_pv_charging_power
+                    name: Мощность зарядки от PV (PV Charging Power)
+
+              - type: entities
+                title: АКБ (Battery)
+                show_header_toggle: false
+                entities:
+                  - entity: sensor.napriazhenie_akb_battery_voltage
+                    name: Напряжение АКБ (Battery Voltage)
+                  - entity: sensor.tok_akb_battery_current
+                    name: Ток АКБ (Battery Current)
+                  - entity: sensor.tok_akb_znak_battery_current_signed_filtered
+                    name: Ток АКБ знак ± (Battery Current Signed, filtered)
+                  - entity: sensor.moshchnost_akb_battery_power
+                    name: Мощность АКБ (Battery Power)
+                  - entity: sensor.zariad_akb_battery_soc
+                    name: SOC (Battery SOC)
+
+              - type: entities
+                title: Сеть (Grid)
+                show_header_toggle: false
+                entities:
+                  - entity: sensor.napriazhenie_seti_grid_voltage
+                    name: Напряжение сети (Grid Voltage)
+                  - entity: sensor.chastota_seti_grid_frequency
+                    name: Частота сети (Grid Frequency)
+                  - entity: sensor.moshchnost_seti_grid_power
+                    name: Мощность сети (Grid Power)
+
+              - type: entities
+                title: Выход (Output)
+                show_header_toggle: false
+                entities:
+                  - entity: sensor.vykhodnoe_napriazhenie_output_voltage
+                    name: Выходное напряжение (Output Voltage)
+                  - entity: sensor.vykhodnaia_chastota_output_frequency
+                    name: Выходная частота (Output Frequency)
+                  - entity: sensor.vykhodnoi_tok_output_current
+                    name: Выходной ток (Output Current)
+                  - entity: sensor.moshchnost_nagruzki_load_power
+                    name: Мощность нагрузки (Load Power)
+                  - entity: sensor.polnaia_moshchnost_nagruzki_load_apparent_power
+                    name: Полная мощность (Load Apparent Power)
+                  - entity: sensor.nagruzka_load_percentage
+                    name: Нагрузка % (Load Percentage)
+
+          - type: entities
+            title: Инвертор / Зарядка / Температуры
+            show_header_toggle: false
+            entities:
+              - entity: sensor.napriazhenie_invertora_inverter_voltage
+                name: Напряжение инвертора (Inverter Voltage)
+              - entity: sensor.tok_invertora_inverter_current
+                name: Ток инвертора (Inverter Current)
+              - entity: sensor.moshchnost_invertora_inverter_power
+                name: Мощность инвертора (Inverter Power)
+              - entity: sensor.moshchnost_zariadki_ot_invertora_inverter_charging_power
+                name: Мощность зарядки от инвертора (Inverter Charging Power)
+              - entity: sensor.tok_zariadki_ot_invertora_inverter_charging_current
+                name: Ток зарядки от инвертора (Inverter Charging Current)
+              - entity: sensor.temperatura_dc_dc_dcdc_temperature
+                name: Температура DC-DC (DCDC Temperature)
+              - entity: sensor.temperatura_invertora_inverter_temperature
+                name: Температура инвертора (Inverter Temperature)
+
+          - type: entities
+            title: Ошибки / Предупреждения
+            show_header_toggle: false
+            entities:
+              - entity: sensor.kod_avarii_bitami_fault_bitmask
+                name: Код аварий (Fault Bitmask)
+              - entity: sensor.kod_preduprezhdenii_bitami_warning_bitmask_masked
+                name: Код предупреждений (Warning Bitmask, masked)
+              - entity: sensor.maska_preduprezhdenii_warning_mask_i
+                name: Маска предупреждений (Warning Mask [I])
+
+          - type: entities
+            title: Настройки (чтение Modbus)
+            show_header_toggle: false
+            entities:
+              - entity: sensor.rezhim_vykhoda_output_mode
+                name: Режим выхода (Output Mode)
+              - entity: sensor.prioritet_vykhoda_output_priority
+                name: Приоритет выхода (Output Priority)
+              - entity: sensor.diapazon_vkhodnogo_napriazheniia_input_voltage_range
+                name: Диапазон входного напряжения (Input Voltage Range)
+              - entity: sensor.zummer_buzzer_mode
+                name: Зуммер (Buzzer Mode)
+              - entity: sensor.podsvetka_lcd_lcd_backlight
+                name: Подсветка LCD (LCD Backlight)
+              - entity: sensor.avtovozvrat_lcd_na_glavnuiu_lcd_auto_home
+                name: Автовозврат LCD (LCD Auto Home)
+              - entity: sensor.energosberezhenie_energy_saving
+                name: Энергосбережение (Energy Saving)
+              - entity: sensor.ustavka_vykhodnogo_napriazheniia_output_voltage_set
+                name: Уставка выходного напряжения (Output Voltage Set)
+              - entity: sensor.ustavka_vykhodnoi_chastoty_output_frequency_set
+                name: Уставка выходной частоты (Output Frequency Set)
+              - entity: sensor.tip_akb_battery_type
+                name: Тип АКБ (Battery Type)
+              - entity: sensor.maks_napriazhenie_zariadki_maximum_charge_voltage_b
+                name: Макс. напряжение зарядки (Maximum Charge Voltage [B])
+              - entity: sensor.napriazhenie_float_floating_charge_voltage_c
+                name: Напряжение float (Floating Charge Voltage [C])
+              - entity: sensor.maks_tok_zariadki_maximum_charge_current_g
+                name: Макс. ток зарядки (Maximum Charge Current [G])
+              - entity: sensor.maks_tok_zariadki_ot_seti_maximum_mains_charge_current_h
+                name: Макс. ток зарядки от сети (Maximum Mains Charge Current [H])
+              - entity: sensor.rezhim_zapuska_boot_mode
+                name: Режим запуска (Boot Mode)
+              - entity: sensor.udalennyi_vykliuchatel_remote_switch
+                name: Удаленный выключатель (Remote Switch)

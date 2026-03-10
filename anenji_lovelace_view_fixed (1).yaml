@@ -17,7 +17,7 @@ views:
               - Все подписи выполнены на русском языке без сокращений.
               - В левой колонке — основные показатели и динамика.
               - В правой колонке — подробная телеметрия и параметры.
-              - Ниже добавлен блок управления (выберите ваши `select.*`, `number.*`, `switch.*`).
+              - Ниже добавлен блок с ключевыми настройками инвертора.
           - type: grid
             columns: 4
             square: false
@@ -186,7 +186,7 @@ views:
                 name: Напряжение сети
               - entity: sensor.chastota_seti_grid_frequency
                 name: Частота сети
-              - entity: sensor.napriazhenie_vykhoda_output_voltage
+              - entity: sensor.vykhodnoe_napriazhenie_output_voltage
                 name: Выходное напряжение
               - entity: sensor.vykhodnoi_tok_output_current
                 name: Выходной ток
@@ -226,24 +226,22 @@ views:
                 name: Маска предупреждений
 
           - type: entities
-            title: Управление параметрами инвертора
+            title: Параметры инвертора
             show_header_toggle: false
             entities:
-              # Замените сущности ниже на реально доступные у вас select/number/switch.
-              # Блок предназначен для оперативного управления настройками без перехода в Developer Tools.
-              - entity: select.rezhim_vykhoda_output_mode
+              - entity: sensor.rezhim_vykhoda_output_mode
                 name: Режим выхода
-              - entity: select.prioritet_vykhoda_output_priority
+              - entity: sensor.prioritet_vykhoda_output_priority
                 name: Приоритет источника питания на выходе
-              - entity: select.diapazon_vkhodnogo_napriazheniia_input_voltage_range
+              - entity: sensor.diapazon_vkhodnogo_napriazheniia_input_voltage_range
                 name: Диапазон входного напряжения
-              - entity: number.ustanovka_vykhodnogo_napriazheniia_output_voltage_set
+              - entity: sensor.ustavka_vykhodnogo_napriazheniia_output_voltage_set
                 name: Установка выходного напряжения
-              - entity: number.ustanovka_vykhodnoi_chastoty_output_frequency_set
+              - entity: sensor.ustavka_vykhodnoi_chastoty_output_frequency_set
                 name: Установка выходной частоты
-              - entity: number.maksimalnyi_tok_zariadki_maximum_charge_current_c
+              - entity: sensor.maks_tok_zariadki_maximum_charge_current_g
                 name: Максимальный ток зарядки
-              - entity: number.maksimalnyi_tok_zariadki_ot_seti_maximum_mains_charge_current
+              - entity: sensor.maks_tok_zariadki_ot_seti_maximum_mains_charge_current_h
                 name: Максимальный ток зарядки от сети
-              - entity: switch.udalennyi_vykliuchatel_remote_switch
+              - entity: sensor.udalennyi_vykliuchatel_remote_switch
                 name: Удалённый выключатель

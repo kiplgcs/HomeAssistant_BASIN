@@ -1,13 +1,3 @@
-# =========================
-# Home Assistant - исправленные блоки (configuration.yaml snippets)
-# =========================
-# ВАЖНО:
-# 1) Этот файл предназначен для вставки в configuration.yaml (или вынесите в packages).
-# 2) Блок Lovelace view вынесен отдельным файлом (см. anenji_lovelace_view.yaml).
-# 3) После внесения изменений сделайте Restart Home Assistant.
-# 4) Проверьте, что знак Grid Power соответствует вашей системе (+ импорт / - экспорт).
-#    Если у вас наоборот — поменяйте формулы Grid Import/Export местами.
-
 modbus:
   - name: "ANENJI_6200W"
     type: rtuovertcp

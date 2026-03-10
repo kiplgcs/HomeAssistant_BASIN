@@ -14,10 +14,6 @@ views:
           - type: markdown
             content: |
               **Сводка состояния**
-              - Все подписи выполнены на русском языке без сокращений.
-              - В левой колонке — основные показатели и динамика.
-              - В правой колонке — подробная телеметрия и параметры.
-              - Ниже добавлен блок с ключевыми настройками инвертора.
           - type: grid
             columns: 4
             square: false
@@ -42,10 +38,8 @@ views:
                 name: Степень заряда аккумулятора
                 icon: mdi:battery-high
                 color: green
-
           - type: energy-distribution
             title: Распределение энергии
-
           - type: entities
             title: Потоки энергии и режим работы
             show_header_toggle: false
@@ -80,7 +74,6 @@ views:
                 name: Режим работы (текстовое описание)
               - entity: sensor.potoki_energii_power_flow_status
                 name: Состояние потоков энергии (код)
-
           - type: grid
             columns: 2
             square: false
@@ -117,7 +110,6 @@ views:
                 min: -6200
                 max: 6200
                 unit: Вт
-
           - type: history-graph
             title: История мощностей за 24 часа
             hours_to_show: 24
@@ -131,7 +123,6 @@ views:
                 name: Сеть
               - entity: sensor.anenji_flow_battery_power_signed
                 name: Аккумулятор
-
           - type: statistics-graph
             title: Статистика мощности нагрузки (24 часа)
             chart_type: line
@@ -141,13 +132,11 @@ views:
               - max
             entities:
               - sensor.moshchnost_nagruzki_load_power
-
       - type: grid
         cards:
           - type: heading
             heading: Подробная телеметрия
             icon: mdi:chart-line
-
           - type: entities
             title: Солнечные панели
             show_header_toggle: false
@@ -162,7 +151,6 @@ views:
                 name: Ток зарядки от солнечных панелей
               - entity: sensor.moshchnost_zariadki_ot_pv_pv_charging_power
                 name: Мощность зарядки от солнечных панелей
-
           - type: entities
             title: Аккумулятор
             show_header_toggle: false
@@ -177,7 +165,6 @@ views:
                 name: Мощность аккумулятора
               - entity: sensor.zariad_akb_battery_soc
                 name: Степень заряда аккумулятора
-
           - type: entities
             title: Сеть и выход
             show_header_toggle: false
@@ -194,7 +181,6 @@ views:
                 name: Выходная частота
               - entity: sensor.polnaia_moshchnost_nagruzki_load_apparent_power
                 name: Полная мощность нагрузки
-
           - type: entities
             title: Инвертор и температура
             show_header_toggle: false
@@ -205,7 +191,8 @@ views:
                 name: Ток инвертора
               - entity: sensor.moshchnost_invertora_inverter_power
                 name: Мощность инвертора
-              - entity: sensor.moshchnost_zariadki_ot_invertora_inverter_charging_power
+              - entity: >-
+                  sensor.moshchnost_zariadki_ot_invertora_inverter_charging_power
                 name: Мощность зарядки от инвертора
               - entity: sensor.tok_zariadki_ot_invertora_inverter_charging_current
                 name: Ток зарядки от инвертора
@@ -213,7 +200,6 @@ views:
                 name: Температура преобразователя постоянного тока
               - entity: sensor.temperatura_invertora_inverter_temperature
                 name: Температура инвертора
-
           - type: entities
             title: Ошибки и предупреждения
             show_header_toggle: false
@@ -224,7 +210,6 @@ views:
                 name: Код предупреждений (битовая маска)
               - entity: sensor.maska_preduprezhdenii_warning_mask_i
                 name: Маска предупреждений
-
           - type: entities
             title: Параметры инвертора
             show_header_toggle: false
@@ -241,7 +226,8 @@ views:
                 name: Установка выходной частоты
               - entity: sensor.maks_tok_zariadki_maximum_charge_current_g
                 name: Максимальный ток зарядки
-              - entity: sensor.maks_tok_zariadki_ot_seti_maximum_mains_charge_current_h
+              - entity: >-
+                  sensor.maks_tok_zariadki_ot_seti_maximum_mains_charge_current_h
                 name: Максимальный ток зарядки от сети
               - entity: sensor.udalennyi_vykliuchatel_remote_switch
                 name: Удалённый выключатель

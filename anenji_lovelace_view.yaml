@@ -234,25 +234,153 @@ views:
       - type: grid
         cards:
           - type: heading
-            heading: Ручная MQTT-настройка инвертора
-            icon: mdi:tune-variant
+            heading: Конфигурация инвертора (Program 01–45)
+            icon: mdi:cog-outline
           - type: markdown
             content: >
-              Укажите код параметра и значение, затем запустите отправку.
+              Ниже — форма параметров меню инвертора и справочная таблица.
 
-              Публикация идёт в MQTT-топик `anenji/inverter/set/manual` в
-              JSON-формате.
+              Типы полей:
+
+              - **select** — выбор из фиксированного списка
+
+              - **number** — числовое значение
+
+              - **switch** — Enable / Disable
+
+
+              | Program | Параметр | Тип | Доступные значения | Описание |
+
+              |---|---|---|---|---|
+
+              | 01 | Приоритет источника питания | select | UTI / SOL / SBU |
+              Очерёдность питания нагрузки |
+
+              | 02 | Максимальный ток зарядки | number | 0–140 A | Суммарный ток
+              PV+AC |
+
+              | 03 | Диапазон входного напряжения | select | APL / UPS |
+              Широкий/узкий диапазон |
+
+              | 04 | Энергосбережение | switch | Enable/Disable | Режим ECO |
+
+              | 05 | Тип батареи | select | AGM/Flooded/User/Lithium | Тип АКБ |
+
+              | 06 | Приоритет зарядки | select | Solar first / Solar+Utility /
+              Solar only | Логика зарядки |
+
+              | 07 | Перезапуск после перегрузки | switch | Enable/Disable |
+              Автовосстановление |
+
+              | 08 | Перезапуск после перегрева | switch | Enable/Disable |
+              Автовосстановление |
+
+              | 09 | Звуковой сигнал | switch | Enable/Disable | Бипер инвертора
+              |
+
+              | 10 | Автовозврат к сети | switch | Enable/Disable | Переключение
+              на сеть |
+
+              | 11 | Ток зарядки от сети | number | 0–140 A | AC-зарядка |
+
+              | 12 | Back to Utility | number | 44–57.2 V | Порог перехода на
+              сеть |
+
+              | 13 | Back to Battery | number | ~44–60 V | Порог возврата на АКБ
+              |
+
+              | 16 | Тип выходной частоты | select | 50/60 Hz | Частота
+              AC-выхода |
+
+              | 17 | Приоритет источника зарядки | select | Solar first /
+              Solar+Utility / Utility first / Solar only | Источник зарядки |
+
+              | 26 | Bulk/Absorption | number | 48–62 V | Напряжение зарядки |
+
+              | 27 | Float | number | 48–58 V | Поддерживающее напряжение |
+
+              | 29 | Low DC cut-off | number | 40–54 V | Отключение по низкому
+              АКБ |
+
+              | 33 | Equalization enable | switch | Enable/Disable |
+              Выравнивание АКБ |
+
+              | 34 | Equalization voltage | number | 48–64 V | Напряжение
+              выравнивания |
+
+              | 35 | Equalization time | number | 0–900 min | Время выравнивания
+              |
+
+              | 36 | Equalization timeout | number | 0–900 min | Таймер/лимит |
+
+              | 37 | Equalization interval | number | 1–90 days | Интервал
+              процедур |
+
+              | 39 | Force equalization | switch | Enable/Disable |
+              Принудительный старт |
+
+              | 41 | BMS charge voltage | number | 40–64 V | При активной BMS |
+
+              | 42 | BMS cut-off voltage | number | 40–64 V | При активной BMS |
+
+              | 43 | BMS charge current | number | 0–140 A | При активной BMS |
+
+              | 44 | BMS control | switch | Enable/Disable | Управление от BMS |
+
+              | 45 | BMS mode | select | Auto / BMS managed / Manual override |
+              Режим BMS |
           - type: entities
-            title: Ручная передача параметров в инвертор
+            title: Ключевые параметры (Program 01, 02, 05, 11, 12, 13, 26, 27, 29)
             show_header_toggle: false
             entities:
-              - entity: input_number.anenji_mqtt_manual_parameter_id
-                name: Код параметра
-              - entity: input_number.anenji_mqtt_manual_parameter_value
-                name: Значение параметра
-              - entity: input_select.anenji_mqtt_manual_value_type
-                name: Тип значения
-              - entity: input_text.anenji_mqtt_manual_comment
-                name: Комментарий (опционально)
-              - entity: script.anenji_send_manual_parameter_to_mqtt
-                name: Отправить параметр в MQTT
+              - entity: input_select.anenji_cfg_program_01_output_source_priority
+              - entity: input_number.anenji_cfg_program_02_max_charge_current
+              - entity: input_select.anenji_cfg_program_05_battery_type
+              - entity: input_number.anenji_cfg_program_11_max_ac_charge_current
+              - entity: input_number.anenji_cfg_program_12_back_to_utility_voltage
+              - entity: input_number.anenji_cfg_program_13_back_to_battery_voltage
+              - entity: input_number.anenji_cfg_program_26_bulk_absorption_voltage
+              - entity: input_number.anenji_cfg_program_27_float_voltage
+              - entity: input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
+          - type: entities
+            title: >-
+              Сеть / режимы / автоповедение (Program 03, 04, 06, 07, 08, 09, 10,
+              16, 17)
+            show_header_toggle: false
+            entities:
+              - entity: input_select.anenji_cfg_program_03_input_voltage_range
+              - entity: input_boolean.anenji_cfg_program_04_power_saving
+              - entity: input_select.anenji_cfg_program_06_charging_priority
+              - entity: input_boolean.anenji_cfg_program_07_overload_restart
+              - entity: input_boolean.anenji_cfg_program_08_overtemp_restart
+              - entity: input_boolean.anenji_cfg_program_09_buzzer
+              - entity: input_boolean.anenji_cfg_program_10_back_to_grid_auto
+              - entity: input_select.anenji_cfg_program_16_output_frequency_type
+              - entity: input_select.anenji_cfg_program_17_charge_source_priority
+          - type: entities
+            title: Выравнивание и BMS (Program 33, 34, 35, 36, 37, 39, 41–45)
+            show_header_toggle: false
+            entities:
+              - entity: input_boolean.anenji_cfg_program_33_equalization_enable
+              - entity: input_number.anenji_cfg_program_34_equalization_voltage
+              - entity: input_number.anenji_cfg_program_35_equalization_time
+              - entity: input_number.anenji_cfg_program_36_equalization_timeout
+              - entity: input_number.anenji_cfg_program_37_equalization_interval_days
+              - entity: input_boolean.anenji_cfg_program_39_force_equalization
+              - entity: input_number.anenji_cfg_program_41_bms_charge_voltage
+              - entity: input_number.anenji_cfg_program_42_bms_cutoff_voltage
+              - entity: input_number.anenji_cfg_program_43_bms_charge_current
+              - entity: input_boolean.anenji_cfg_program_44_bms_control_enable
+              - entity: input_select.anenji_cfg_program_45_bms_mode
+          - type: entities
+            title: Профиль и сохранение конфигурации
+            show_header_toggle: false
+            entities:
+              - entity: input_text.anenji_cfg_profile_name
+                name: Имя профиля
+              - entity: script.anenji_inverter_save_config_snapshot
+                name: Сохранить форму в JSON
+              - entity: input_text.anenji_cfg_snapshot_json
+                name: JSON-снимок (для экспорта/автоматизаций)
+              - entity: script.anenji_inverter_publish_config
+                name: Отправить конфигурацию в MQTT

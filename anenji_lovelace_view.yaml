@@ -231,3 +231,28 @@ views:
                 name: Максимальный ток зарядки от сети
               - entity: sensor.udalennyi_vykliuchatel_remote_switch
                 name: Удалённый выключатель
+      - type: grid
+        cards:
+          - type: heading
+            heading: Ручная MQTT-настройка инвертора
+            icon: mdi:tune-variant
+          - type: markdown
+            content: >
+              Укажите код параметра и значение, затем запустите отправку.
+
+              Публикация идёт в MQTT-топик `anenji/inverter/set/manual` в
+              JSON-формате.
+          - type: entities
+            title: Ручная передача параметров в инвертор
+            show_header_toggle: false
+            entities:
+              - entity: input_number.anenji_mqtt_manual_parameter_id
+                name: Код параметра
+              - entity: input_number.anenji_mqtt_manual_parameter_value
+                name: Значение параметра
+              - entity: input_select.anenji_mqtt_manual_value_type
+                name: Тип значения
+              - entity: input_text.anenji_mqtt_manual_comment
+                name: Комментарий (опционально)
+              - entity: script.anenji_send_manual_parameter_to_mqtt
+                name: Отправить параметр в MQTT

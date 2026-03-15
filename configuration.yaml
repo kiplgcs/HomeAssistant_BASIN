@@ -1,3 +1,178 @@
+# https://www.home-assistant.io/integrations/http/
+# Загружает стандартные интеграции
+default_config:
+
+# Загрузка пользовательских тем интерфейса из папки themes
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Включение отдельных файлов конфигурации для автоматизаций, скриптов и сценариев
+automation: !include automations.yaml  # Автоматизации
+script: !include scripts.yaml          # Скрипты
+scene: !include scenes.yaml            # Сценарии
+
+# Кастомная панель в боковом меню
+panel_custom:
+  - name: server_state
+    sidebar_title: "Система"
+    sidebar_icon: mdi:server
+    js_url: "/api/hassio/app/entrypoint.js"
+    url_path: "hassio/system"
+    embed_iframe: true
+    require_admin: true
+    config:
+      mode: yaml  # Минимальный рабочий параметр (можно заменить)
+
+# Основные настройки Home Assistant
+homeassistant:
+  external_url: "https://raspberry.kiplgcs.keenetic.pro"
+  internal_url: "https://192.168.0.100:8123"
+  packages: !include_dir_named packages
+  
+# Настройки HTTP и SSL
+http:
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+
+  cors_allowed_origins:  # Разрешённые источники CORS (убраны дубликаты)
+    - https://google.com
+    - https://www.home-assistant.io
+    - https://dialogs.yandex.ru/
+    - https://yandex.ru
+    #- https://alexstar.ru/
+    
+  use_x_forwarded_for: true
+
+  trusted_proxies:  # IP-адреса доверенных прокси-серверов
+    - 127.0.0.1       # Локальный хост
+    - 192.168.0.1     # Локальный шлюз (роутер)
+    - 192.168.1.1   # Можно добавить другие, если нужно
+
+  ip_ban_enabled: true          # Блокировка IP при многократном вводе неверного пароля
+  login_attempts_threshold: 50  # Максимальное количество попыток входа
+
+# Автоматическое обновление SSL-сертификатов через Let's Encrypt
+shell_command:
+  letsencrypt_restart: 'curl -X POST -sSL -H "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/addons/core_letsencrypt/start'
+    
+  #Строка перезагрузки ESP32 -перезагрузка полива   
+  poliv_restart: 'curl http://192.168.0.70/restart'
+#   poliv_restart: 'mosquitto_pub -h localhost -t "jee/set/RestartESP32" -m "true"'
+
+mqtt: !include mqtt_irrigation.yaml
+
+# rest_command:
+#   poliv_restart:
+#     url: "http://poliv/restart"
+#     method: GET
+
+    
+# binary_sensor:
+#   - platform: ping
+#     host: 192.168.0.75  # IP-адрес телефона
+#     name: phone_online
+#     count: 2             # сколько пакетов отправить
+#     scan_interval: 15    # как часто проверять (в секундах)
+
+input_datetime:
+  poliv_1_vremia_nachala_taimera_1:
+    name: "Полив 1 - Время начала Таймера 1"
+    has_time: true
+    has_date: false
+
+  poliv_1_vremia_nachala_taimera_2:
+    name: "Полив 1 - Время начала Таймера 2"
+    has_time: true
+    has_date: false
+
+  poliv_2_vremia_nachala_taimera_1:
+    name: "Полив 2 - Время начала Таймера 1"
+    has_time: true
+    has_date: false
+
+  poliv_2_vremia_nachala_taimera_2:
+    name: "Полив 2 - Время начала Таймера 2"
+    has_time: true
+    has_date: false
+
+  poliv_3_vremia_nachala_taimera_1:
+    name: "Полив 3 - Время начала Таймера 1"
+    has_time: true
+    has_date: false
+
+  poliv_3_vremia_nachala_taimera_2:
+    name: "Полив 3 - Время начала Таймера 2"
+    has_time: true
+    has_date: false
+
+  poliv_4_vremia_nachala_taimera_1:
+    name: "Полив 4 - Время начала Таймера 1"
+    has_time: true
+    has_date: false
+
+  poliv_4_vremia_nachala_taimera_2:
+    name: "Полив 4 - Время начала Таймера 2"
+    has_time: true
+    has_date: false
+
+input_number:
+  poliv_1_dlitelnost_taimera_1:
+    name: "Полив 1 - Длительность Таймера 1"
+    min: 1
+    max: 30
+    step: 1
+    unit_of_measurement: "мин"
+
+  poliv_1_dlitelnost_taimera_2:
+    name: "Полив 1 - Длительность Таймера 2"
+    min: 1
+    max: 30
+    step: 1
+    unit_of_measurement: "мин"
+
+  poliv_2_dlitelnost_taimera_1:
+    name: "Полив 2 - Длительность Таймера 1"
+    min: 1
+    max: 30
+    step: 1
+    unit_of_measurement: "мин"
+
+  poliv_2_dlitelnost_taimera_2:
+    name: "Полив 2 - Длительность Таймера 2"
+    min: 1
+    max: 30
+    step: 1
+    unit_of_measurement: "мин"
+
+  poliv_3_dlitelnost_taimera_1:
+    name: "Полив 3 - Длительность Таймера 1"
+    min: 1
+    max: 30
+    step: 1
+    unit_of_measurement: "мин"
+
+  poliv_3_dlitelnost_taimera_2:
+    name: "Полив 3 - Длительность Таймера 2"
+    min: 1
+    max: 30
+    step: 1
+    unit_of_measurement: "мин"
+
+  poliv_4_dlitelnost_taimera_1:
+    name: "Полив 4 - Длительность Таймера 1"
+    min: 1
+    max: 30
+    step: 1
+    unit_of_measurement: "мин"
+
+  poliv_4_dlitelnost_taimera_2:
+    name: "Полив 4 - Длительность Таймера 2"
+    min: 1
+    max: 30
+    step: 1
+    unit_of_measurement: "мин"
+ 
+
 modbus:
   - name: "ANENJI_6200W"
     type: rtuovertcp

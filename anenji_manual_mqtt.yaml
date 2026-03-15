@@ -157,7 +157,7 @@ input_text:
   anenji_cfg_snapshot_json:
     name: "Снимок конфигурации (JSON)"
     initial: "{}"
-    max: 1024
+    max: 255
 
 script:
   anenji_inverter_publish_config:

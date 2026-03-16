@@ -232,162 +232,98 @@ views:
           - type: heading
             heading: Ручная настройка Program-параметров
             icon: mdi:tune-variant
-          - type: markdown
-            title: Пояснения · Ключевые параметры
-            content: >
-              **Program 01 · Приоритет источника питания**
-
-              - **UTI** — сеть в приоритете; PV/АКБ подключаются при отсутствии
-              сети.
-
-              - **SOL** — сначала солнечная энергия; сеть подключается при
-              нехватке PV.
-
-              - **SBU** — сначала солнечная энергия и АКБ; сеть только при
-              разряде АКБ до порога Program 12.
-
-              - **SUF** — сначала PV, затем сеть; при нехватке мощности PV и
-              сеть могут питать нагрузку одновременно.
-
-
-              **Остальные параметры блока:**
-
-              - **Program 02** — ограничение максимального суммарного тока
-              зарядки (PV+AC).
-
-              - **Program 05** — тип АКБ (влияет на алгоритм зарядки и доступные
-              уставки).
-
-              - **Program 11** — ограничение максимального тока зарядки от сети.
-
-              - **Program 12** — напряжение АКБ для перехода на сеть.
-
-              - **Program 13** — напряжение АКБ для возврата с сети на батарею.
-
-              - **Program 26** — напряжение Bulk/Absorption (основной заряд).
-
-              - **Program 27** — напряжение Float (поддерживающий заряд).
-
-              - **Program 29** — порог низкого напряжения АКБ (отсечка по DC).
           - type: entities
-            title: Ключевые параметры (Program 01, 02, 05, 11, 12, 13, 26, 27, 29)
+            title: >-
+              Ключевые параметры (UTI=сеть, SOL=солнце, SBU=солнце+АКБ,
+              SUF=солнце→сеть)
             show_header_toggle: false
             entities:
               - entity: input_select.anenji_cfg_program_01_output_source_priority
+                name: Program 01 · Приоритет питания (UTI/SOL/SBU/SUF)
               - entity: input_number.anenji_cfg_program_02_max_charge_current
+                name: Program 02 · Макс. ток зарядки (PV+сеть)
               - entity: input_select.anenji_cfg_program_05_battery_type
+                name: Program 05 · Тип аккумулятора
               - entity: input_number.anenji_cfg_program_11_max_ac_charge_current
+                name: Program 11 · Макс. ток зарядки от сети
               - entity: input_number.anenji_cfg_program_12_back_to_utility_voltage
+                name: Program 12 · Переход на сеть, В
               - entity: input_number.anenji_cfg_program_13_back_to_battery_voltage
+                name: Program 13 · Возврат на батарею, В
               - entity: input_number.anenji_cfg_program_26_bulk_absorption_voltage
+                name: Program 26 · Bulk/Absorption, В
               - entity: input_number.anenji_cfg_program_27_float_voltage
+                name: Program 27 · Float, В
               - entity: input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
-          - type: markdown
-            title: Пояснения · Сеть / режимы / автоповедение
-            content: >
-              - **Program 03 (APL/UPS/GEN)** — диапазон допустимого входного
-              напряжения сети/генератора.
-
-              - **Program 04** — режим энергосбережения (снижение потребления на
-              малой нагрузке).
-
-              - **Program 06** — приоритет источника зарядки батареи.
-
-              - **Program 07** — автоперезапуск после перегрузки.
-
-              - **Program 08** — автоперезапуск после перегрева (firmware A) /
-              выбор выходного напряжения 220/230/240 В (firmware B).
-
-              - **Program 09** — звуковая сигнализация (firmware A) / выбор
-              частоты 50/60 Гц (firmware B).
-
-              - **Program 10** — автоматический возврат к сети (firmware A) /
-              настройка автообхода bypass (firmware B).
-
-              - **Program 16** — выбор выходной частоты (50/60 Гц) либо
-              приоритет источника зарядки (в зависимости от firmware).
-
-              - **Program 17** — логика приоритета источников для зарядки
-              (PV/сеть).
-
-              - **Program 18** — режим зуммера (nd1..nd4).
-
-              - **Program 19** — автовозврат на экран по умолчанию.
-
-              - **Program 20** — режим подсветки LCD.
-
-              - **Program 23** — обход (bypass) при перегрузке.
-
-              - **Program 25** — идентификатор Modbus.
-
-              - **Program 32** — время стадии CV→Float (AUT или 5..900 мин).
+                name: Program 29 · Низкое DC откл., В
           - type: entities
-            title: >-
-              Сеть / режимы / автоповедение (Program 03, 04, 06, 07, 08, 09, 10,
-              16, 17, 18, 19, 20, 23, 25, 32)
+            title: Сеть / режимы / автоповедение
             show_header_toggle: false
             entities:
               - entity: input_select.anenji_cfg_program_03_input_voltage_range
+                name: Program 03 · Диапазон входа AC
               - entity: input_boolean.anenji_cfg_program_04_power_saving
+                name: Program 04 · Энергосбережение
               - entity: input_select.anenji_cfg_program_06_charging_priority
+                name: Program 06 · Приоритет зарядки
               - entity: input_boolean.anenji_cfg_program_07_overload_restart
+                name: Program 07 · Перезапуск после перегрузки
               - entity: input_boolean.anenji_cfg_program_08_overtemp_restart
+                name: Program 08A · Перезапуск после перегрева
               - entity: input_select.anenji_cfg_program_08_output_voltage
+                name: Program 08B · Выход 220/230/240 В
               - entity: input_boolean.anenji_cfg_program_09_buzzer
+                name: Program 09A · Звуковая сигнализация
               - entity: input_select.anenji_cfg_program_09_output_frequency
+                name: Program 09B · Частота 50/60 Гц
               - entity: input_boolean.anenji_cfg_program_10_back_to_grid_auto
+                name: Program 10A · Автовозврат к сети
               - entity: input_select.anenji_cfg_program_10_auto_bypass_mode
+                name: Program 10B · Автообход bypass
               - entity: input_select.anenji_cfg_program_16_output_frequency_type
+                name: Program 16 · Частота/приоритет (по FW)
               - entity: input_select.anenji_cfg_program_17_charge_source_priority
+                name: Program 17 · Логика PV/сеть
               - entity: input_select.anenji_cfg_program_18_buzzer_mode
+                name: Program 18 · Режим зуммера
               - entity: input_select.anenji_cfg_program_19_screen_return_mode
+                name: Program 19 · Возврат на главный экран
               - entity: input_select.anenji_cfg_program_20_backlight_mode
+                name: Program 20 · Подсветка LCD
               - entity: input_select.anenji_cfg_program_23_overload_bypass
+                name: Program 23 · Bypass при перегрузке
               - entity: input_number.anenji_cfg_program_25_modbus_id
+                name: Program 25 · ID Modbus
               - entity: input_select.anenji_cfg_program_32_cv_to_float_time_mode
-          - type: markdown
-            title: Пояснения · Выравнивание и BMS
-            content: >
-              - **Program 33** — включение выравнивающего заряда.
-
-              - **Program 34** — напряжение выравнивания (EQ).
-
-              - **Program 35** — длительность цикла выравнивания.
-
-              - **Program 36** — таймаут выравнивания.
-
-              - **Program 37** — интервал между циклами выравнивания (дни).
-
-              - **Program 39** — принудительный запуск выравнивания.
-
-              - **Program 41** — уставка напряжения зарядки в BMS-режиме.
-
-              - **Program 42** — уставка напряжения отключения в BMS-режиме.
-
-              - **Program 43** — ограничение тока зарядки в BMS-режиме.
-
-              - **Program 44** — включение управления от BMS.
-
-              - **Program 45** — режим BMS (авто/управление BMS/ручной
-              override).
-
-              - **Program 46** — защита от максимального тока разряда (OFF/50A).
+                name: Program 32 · Время CV → Float
           - type: entities
-            title: Выравнивание и BMS (Program 33, 34, 35, 36, 37, 39, 41–46)
+            title: Выравнивание и BMS
             show_header_toggle: false
             entities:
               - entity: input_boolean.anenji_cfg_program_33_equalization_enable
+                name: 'Program 33 · Выравнивание: вкл/выкл'
               - entity: input_number.anenji_cfg_program_34_equalization_voltage
+                name: Program 34 · Напряжение EQ, В
               - entity: input_number.anenji_cfg_program_35_equalization_time
+                name: Program 35 · Длительность EQ
               - entity: input_number.anenji_cfg_program_36_equalization_timeout
+                name: Program 36 · Таймаут EQ
               - entity: input_number.anenji_cfg_program_37_equalization_interval_days
+                name: Program 37 · Интервал EQ, дни
               - entity: input_boolean.anenji_cfg_program_39_force_equalization
+                name: Program 39 · Принудительный старт EQ
               - entity: input_number.anenji_cfg_program_41_bms_charge_voltage
+                name: 'Program 41 · BMS: напряжение заряда'
               - entity: input_number.anenji_cfg_program_42_bms_cutoff_voltage
+                name: 'Program 42 · BMS: напряжение откл.'
               - entity: input_number.anenji_cfg_program_43_bms_charge_current
+                name: 'Program 43 · BMS: лимит тока заряда'
               - entity: input_boolean.anenji_cfg_program_44_bms_control_enable
+                name: Program 44 · Управление от BMS
               - entity: input_select.anenji_cfg_program_45_bms_mode
+                name: Program 45 · Режим BMS
               - entity: input_select.anenji_cfg_program_46_overcharge_protection_mode
+                name: Program 46 · Защита тока разряда
           - type: entities
             title: Профиль и сохранение конфигурации
             show_header_toggle: false

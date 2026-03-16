@@ -172,6 +172,7 @@ input_number:
     step: 1
     unit_of_measurement: "мин"
  
+
 modbus:
   - name: "ANENJI_6200W"
     type: rtuovertcp

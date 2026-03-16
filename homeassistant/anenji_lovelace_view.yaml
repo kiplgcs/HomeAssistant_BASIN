@@ -325,16 +325,8 @@ views:
               - entity: input_select.anenji_cfg_program_46_overcharge_protection_mode
                 name: Program 46 · Защита тока разряда
           - type: entities
-            title: Профиль и сохранение конфигурации
+            title: Отправка конфигурации
             show_header_toggle: false
             entities:
-              - entity: input_text.anenji_cfg_profile_name
-                name: Имя профиля
-              - entity: script.anenji_inverter_save_config_snapshot
-                name: Сохранить форму в JSON
-              - entity: input_text.anenji_cfg_snapshot_json
-                name: JSON-снимок (для экспорта/автоматизаций)
-              - entity: input_text.anenji_cfg_manual_overrides_json
-                name: Ручные override-параметры JSON (любые program_XX)
               - entity: script.anenji_inverter_publish_config
-                name: Отправить конфигурацию в MQTT
+                name: Отправить всё по MQTT

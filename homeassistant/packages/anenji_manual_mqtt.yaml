@@ -338,11 +338,8 @@ script:
             } %}
             {% set overrides_raw = states('input_text.anenji_cfg_manual_overrides_json') %}
             {% set overrides = overrides_raw | from_json if overrides_raw not in ['', 'unknown', 'unavailable'] else {} %}
-            {{ base | combine(overrides, recursive=True) | tojson }}
-
-  anenji_inverter_request_config:
-    alias: "ANENJI: Запросить актуальную конфигурацию из инвертора"
-    sequence:
+            {% set merged = base | combine(overrides, recursive=True) %}
+            {{ ({"profile": states('input_text.anenji_cfg_profile_name'), "config": merged} | combine(merged, recursive=True)) | tojson }}
       - service: mqtt.publish
         data:
           qos: 1
@@ -369,7 +366,8 @@ automation:
       - platform: mqtt
         topic: anenji/inverter/config/actual
     variables:
-      cfg: "{{ trigger.payload_json if trigger.payload_json is mapping else {} }}"
+      payload_obj: "{{ trigger.payload_json if trigger.payload_json is mapping else {} }}"
+      cfg: "{{ payload_obj.config if payload_obj.config is defined and payload_obj.config is mapping else (payload_obj.settings if payload_obj.settings is defined and payload_obj.settings is mapping else (payload_obj.payload if payload_obj.payload is defined and payload_obj.payload is mapping else (payload_obj.data if payload_obj.data is defined and payload_obj.data is mapping else payload_obj))) }}"
     action:
       - service: input_text.set_value
         target:

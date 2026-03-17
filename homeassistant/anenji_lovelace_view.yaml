@@ -330,7 +330,11 @@ views:
             entities:
               - entity: script.anenji_inverter_publish_config
                 name: Отправить всё по MQTT
+              - entity: script.anenji_inverter_request_config
+                name: Запросить актуальные параметры из инвертора
               - entity: input_text.anenji_cfg_last_published_payload
                 name: Последний отправленный payload
+              - entity: input_text.anenji_cfg_last_received_payload
+                name: Последний полученный payload
               - entity: input_text.anenji_cfg_last_received_payload
                 name: Последний полученный payload

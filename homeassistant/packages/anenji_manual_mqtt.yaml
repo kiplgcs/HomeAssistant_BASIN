@@ -1,19 +1,20 @@
 # =========================
-# Конфигурация инвертора ANENJI (Program 01..45)
+# Конфигурация инвертора ANENJI (Program 01..46)
 # =========================
+# Важно: файл должен содержать только валидный YAML.
 input_select:
   anenji_cfg_program_01_output_source_priority:
     name: "Program 01 · Приоритет источника питания"
-    options: ["UTI", "SOL", "SBU"]
+    options: ["UTI", "SOL", "SBU", "SUF"]
     initial: "SBU"
   anenji_cfg_program_03_input_voltage_range:
     name: "Program 03 · Диапазон входного напряжения"
-    options: ["APL", "UPS"]
+    options: ["APL", "UPS", "GEN"]
     initial: "UPS"
   anenji_cfg_program_05_battery_type:
     name: "Program 05 · Тип батареи"
-    options: ["AGM", "Flooded", "User defined", "Lithium"]
-    initial: "Lithium"
+    options: ["AGM", "Flooded", "User defined", "LI2", "LI4", "LIB"]
+    initial: "AGM"
   anenji_cfg_program_06_charging_priority:
     name: "Program 06 · Приоритет зарядки"
     options: ["Solar first", "Solar + Utility", "Solar only"]
@@ -26,6 +27,42 @@ input_select:
     name: "Program 17 · Приоритет источника зарядки"
     options: ["Solar first", "Solar + Utility", "Utility first", "Solar only"]
     initial: "Solar first"
+  anenji_cfg_program_08_output_voltage:
+    name: "Program 08 · Выходное напряжение"
+    options: ["220V", "230V", "240V"]
+    initial: "230V"
+  anenji_cfg_program_09_output_frequency:
+    name: "Program 09 · Выходная частота"
+    options: ["50Hz", "60Hz"]
+    initial: "50Hz"
+  anenji_cfg_program_10_auto_bypass_mode:
+    name: "Program 10 · Автообход (bypass)"
+    options: ["AnL", "AEO"]
+    initial: "AnL"
+  anenji_cfg_program_18_buzzer_mode:
+    name: "Program 18 · Режим зуммера"
+    options: ["nd1", "nd2", "nd3", "nd4"]
+    initial: "nd4"
+  anenji_cfg_program_19_screen_return_mode:
+    name: "Program 19 · Возврат экрана"
+    options: ["CSP", "bEP"]
+    initial: "CSP"
+  anenji_cfg_program_20_backlight_mode:
+    name: "Program 20 · Подсветка"
+    options: ["LON", "LOF"]
+    initial: "LON"
+  anenji_cfg_program_23_overload_bypass:
+    name: "Program 23 · Обход при перегрузке"
+    options: ["bYd", "bYE"]
+    initial: "bYE"
+  anenji_cfg_program_32_cv_to_float_time_mode:
+    name: "Program 32 · Время заряда (CV→Float)"
+    options: ["AUT", "5", "10", "15", "30", "60", "120", "300", "600", "900"]
+    initial: "AUT"
+  anenji_cfg_program_46_overcharge_protection_mode:
+    name: "Program 46 · Защита от макс. тока разряда"
+    options: ["OFF", "50A"]
+    initial: "OFF"
   anenji_cfg_program_45_bms_mode:
     name: "Program 45 · Режим BMS"
     options: ["Auto", "BMS managed", "Manual override"]
@@ -53,14 +90,14 @@ input_number:
   anenji_cfg_program_02_max_charge_current:
     name: "Program 02 · Макс. ток зарядки (PV+AC), A"
     min: 0
-    max: 140
+    max: 90
     step: 1
     mode: box
     initial: 60
   anenji_cfg_program_11_max_ac_charge_current:
     name: "Program 11 · Макс. ток зарядки от сети, A"
     min: 0
-    max: 140
+    max: 90
     step: 1
     mode: box
     initial: 20
@@ -148,6 +185,13 @@ input_number:
     step: 1
     mode: box
     initial: 60
+  anenji_cfg_program_25_modbus_id:
+    name: "Program 25 · Modbus ID"
+    min: 1
+    max: 247
+    step: 1
+    mode: box
+    initial: 1
 
 input_text:
   anenji_cfg_profile_name:
@@ -158,6 +202,10 @@ input_text:
     name: "Снимок конфигурации (JSON)"
     initial: "{}"
     max: 255
+  anenji_cfg_manual_overrides_json:
+    name: "Ручные override-параметры (JSON)"
+    initial: "{}"
+    max: 255
 
 script:
   anenji_inverter_publish_config:
@@ -165,9 +213,10 @@ script:
     sequence:
       - service: mqtt.publish
         data:
+          qos: 1
           topic: anenji/inverter/config/set
           payload: >-
-            {{ {
+            {% set base = {
               "profile": states('input_text.anenji_cfg_profile_name'),
               "program_01": states('input_select.anenji_cfg_program_01_output_source_priority'),
               "program_02": states('input_number.anenji_cfg_program_02_max_charge_current') | float,
@@ -177,16 +226,25 @@ script:
               "program_06": states('input_select.anenji_cfg_program_06_charging_priority'),
               "program_07": is_state('input_boolean.anenji_cfg_program_07_overload_restart','on'),
               "program_08": is_state('input_boolean.anenji_cfg_program_08_overtemp_restart','on'),
+              "program_08_voltage": states('input_select.anenji_cfg_program_08_output_voltage'),
               "program_09": is_state('input_boolean.anenji_cfg_program_09_buzzer','on'),
+              "program_09_frequency": states('input_select.anenji_cfg_program_09_output_frequency'),
               "program_10": is_state('input_boolean.anenji_cfg_program_10_back_to_grid_auto','on'),
+              "program_10_bypass": states('input_select.anenji_cfg_program_10_auto_bypass_mode'),
               "program_11": states('input_number.anenji_cfg_program_11_max_ac_charge_current') | float,
               "program_12": states('input_number.anenji_cfg_program_12_back_to_utility_voltage') | float,
               "program_13": states('input_number.anenji_cfg_program_13_back_to_battery_voltage') | float,
               "program_16": states('input_select.anenji_cfg_program_16_output_frequency_type'),
               "program_17": states('input_select.anenji_cfg_program_17_charge_source_priority'),
+              "program_18": states('input_select.anenji_cfg_program_18_buzzer_mode'),
+              "program_19": states('input_select.anenji_cfg_program_19_screen_return_mode'),
+              "program_20": states('input_select.anenji_cfg_program_20_backlight_mode'),
+              "program_23": states('input_select.anenji_cfg_program_23_overload_bypass'),
+              "program_25": states('input_number.anenji_cfg_program_25_modbus_id') | int,
               "program_26": states('input_number.anenji_cfg_program_26_bulk_absorption_voltage') | float,
               "program_27": states('input_number.anenji_cfg_program_27_float_voltage') | float,
               "program_29": states('input_number.anenji_cfg_program_29_low_dc_cutoff_voltage') | float,
+              "program_32": states('input_select.anenji_cfg_program_32_cv_to_float_time_mode'),
               "program_33": is_state('input_boolean.anenji_cfg_program_33_equalization_enable','on'),
               "program_34": states('input_number.anenji_cfg_program_34_equalization_voltage') | float,
               "program_35": states('input_number.anenji_cfg_program_35_equalization_time') | int,
@@ -197,8 +255,20 @@ script:
               "program_42": states('input_number.anenji_cfg_program_42_bms_cutoff_voltage') | float,
               "program_43": states('input_number.anenji_cfg_program_43_bms_charge_current') | float,
               "program_44": is_state('input_boolean.anenji_cfg_program_44_bms_control_enable','on'),
-              "program_45": states('input_select.anenji_cfg_program_45_bms_mode')
-            } | tojson }}
+              "program_45": states('input_select.anenji_cfg_program_45_bms_mode'),
+              "program_46": states('input_select.anenji_cfg_program_46_overcharge_protection_mode')
+            } %}
+            {% set overrides_raw = states('input_text.anenji_cfg_manual_overrides_json') %}
+            {% set overrides = overrides_raw | from_json if overrides_raw not in ['', 'unknown', 'unavailable'] else {} %}
+            {{ base | combine(overrides, recursive=True) | tojson }}
+      - service: persistent_notification.create
+        data:
+          title: "ANENJI MQTT"
+          message: >-
+            Конфигурация опубликована в MQTT topic
+            <code>anenji/inverter/config/set</code>.
+            Если параметры не применились, проверьте наличие подписчика
+            (моста MQTT → Modbus/RS485) на этом топике.
 
   anenji_inverter_save_config_snapshot:
     alias: "ANENJI: Сохранить текущую форму в JSON"
@@ -208,7 +278,7 @@ script:
           entity_id: input_text.anenji_cfg_snapshot_json
         data:
           value: >-
-            {{ {
+            {% set base = {
               "profile": states('input_text.anenji_cfg_profile_name'),
               "program_01": states('input_select.anenji_cfg_program_01_output_source_priority'),
               "program_02": states('input_number.anenji_cfg_program_02_max_charge_current') | float,
@@ -218,16 +288,25 @@ script:
               "program_06": states('input_select.anenji_cfg_program_06_charging_priority'),
               "program_07": is_state('input_boolean.anenji_cfg_program_07_overload_restart','on'),
               "program_08": is_state('input_boolean.anenji_cfg_program_08_overtemp_restart','on'),
+              "program_08_voltage": states('input_select.anenji_cfg_program_08_output_voltage'),
               "program_09": is_state('input_boolean.anenji_cfg_program_09_buzzer','on'),
+              "program_09_frequency": states('input_select.anenji_cfg_program_09_output_frequency'),
               "program_10": is_state('input_boolean.anenji_cfg_program_10_back_to_grid_auto','on'),
+              "program_10_bypass": states('input_select.anenji_cfg_program_10_auto_bypass_mode'),
               "program_11": states('input_number.anenji_cfg_program_11_max_ac_charge_current') | float,
               "program_12": states('input_number.anenji_cfg_program_12_back_to_utility_voltage') | float,
               "program_13": states('input_number.anenji_cfg_program_13_back_to_battery_voltage') | float,
               "program_16": states('input_select.anenji_cfg_program_16_output_frequency_type'),
               "program_17": states('input_select.anenji_cfg_program_17_charge_source_priority'),
+              "program_18": states('input_select.anenji_cfg_program_18_buzzer_mode'),
+              "program_19": states('input_select.anenji_cfg_program_19_screen_return_mode'),
+              "program_20": states('input_select.anenji_cfg_program_20_backlight_mode'),
+              "program_23": states('input_select.anenji_cfg_program_23_overload_bypass'),
+              "program_25": states('input_number.anenji_cfg_program_25_modbus_id') | int,
               "program_26": states('input_number.anenji_cfg_program_26_bulk_absorption_voltage') | float,
               "program_27": states('input_number.anenji_cfg_program_27_float_voltage') | float,
               "program_29": states('input_number.anenji_cfg_program_29_low_dc_cutoff_voltage') | float,
+              "program_32": states('input_select.anenji_cfg_program_32_cv_to_float_time_mode'),
               "program_33": is_state('input_boolean.anenji_cfg_program_33_equalization_enable','on'),
               "program_34": states('input_number.anenji_cfg_program_34_equalization_voltage') | float,
               "program_35": states('input_number.anenji_cfg_program_35_equalization_time') | int,
@@ -238,5 +317,9 @@ script:
               "program_42": states('input_number.anenji_cfg_program_42_bms_cutoff_voltage') | float,
               "program_43": states('input_number.anenji_cfg_program_43_bms_charge_current') | float,
               "program_44": is_state('input_boolean.anenji_cfg_program_44_bms_control_enable','on'),
-              "program_45": states('input_select.anenji_cfg_program_45_bms_mode')
-            } | tojson }}
+              "program_45": states('input_select.anenji_cfg_program_45_bms_mode'),
+              "program_46": states('input_select.anenji_cfg_program_46_overcharge_protection_mode')
+            } %}
+            {% set overrides_raw = states('input_text.anenji_cfg_manual_overrides_json') %}
+            {% set overrides = overrides_raw | from_json if overrides_raw not in ['', 'unknown', 'unavailable'] else {} %}
+            {{ base | combine(overrides, recursive=True) | tojson }}

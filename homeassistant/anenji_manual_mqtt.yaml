@@ -69,6 +69,8 @@ input_select:
     initial: "Auto"
 
 input_boolean:
+  anenji_cfg_sync_from_inverter_active:
+    name: "ANENJI · Синхронизация настроек из инвертора"
   anenji_cfg_program_04_power_saving:
     name: "Program 04 · Энергосбережение"
   anenji_cfg_program_07_overload_restart:
@@ -216,469 +218,212 @@ input_text:
     max: 255
 
 script:
-  anenji_inverter_publish_config:
-    alias: "ANENJI: Отправить конфигурацию инвертора в MQTT"
+  anenji_inverter_sync_config_from_modbus:
+    alias: "ANENJI: Синхронизировать параметры из Modbus в helpers"
+    mode: restart
     sequence:
-      - variables:
-          payload_json: >-
-            {% set base = {
-              "profile": states('input_text.anenji_cfg_profile_name'),
-              "program_01": states('input_select.anenji_cfg_program_01_output_source_priority'),
-              "program_02": states('input_number.anenji_cfg_program_02_max_charge_current') | float,
-              "program_03": states('input_select.anenji_cfg_program_03_input_voltage_range'),
-              "program_04": is_state('input_boolean.anenji_cfg_program_04_power_saving','on'),
-              "program_05": states('input_select.anenji_cfg_program_05_battery_type'),
-              "program_06": states('input_select.anenji_cfg_program_06_charging_priority'),
-              "program_07": is_state('input_boolean.anenji_cfg_program_07_overload_restart','on'),
-              "program_08": is_state('input_boolean.anenji_cfg_program_08_overtemp_restart','on'),
-              "program_08_voltage": states('input_select.anenji_cfg_program_08_output_voltage'),
-              "program_09": is_state('input_boolean.anenji_cfg_program_09_buzzer','on'),
-              "program_09_frequency": states('input_select.anenji_cfg_program_09_output_frequency'),
-              "program_10": is_state('input_boolean.anenji_cfg_program_10_back_to_grid_auto','on'),
-              "program_10_bypass": states('input_select.anenji_cfg_program_10_auto_bypass_mode'),
-              "program_11": states('input_number.anenji_cfg_program_11_max_ac_charge_current') | float,
-              "program_12": states('input_number.anenji_cfg_program_12_back_to_utility_voltage') | float,
-              "program_13": states('input_number.anenji_cfg_program_13_back_to_battery_voltage') | float,
-              "program_16": states('input_select.anenji_cfg_program_16_output_frequency_type'),
-              "program_17": states('input_select.anenji_cfg_program_17_charge_source_priority'),
-              "program_18": states('input_select.anenji_cfg_program_18_buzzer_mode'),
-              "program_19": states('input_select.anenji_cfg_program_19_screen_return_mode'),
-              "program_20": states('input_select.anenji_cfg_program_20_backlight_mode'),
-              "program_23": states('input_select.anenji_cfg_program_23_overload_bypass'),
-              "program_25": states('input_number.anenji_cfg_program_25_modbus_id') | int,
-              "program_26": states('input_number.anenji_cfg_program_26_bulk_absorption_voltage') | float,
-              "program_27": states('input_number.anenji_cfg_program_27_float_voltage') | float,
-              "program_29": states('input_number.anenji_cfg_program_29_low_dc_cutoff_voltage') | float,
-              "program_32": states('input_select.anenji_cfg_program_32_cv_to_float_time_mode'),
-              "program_33": is_state('input_boolean.anenji_cfg_program_33_equalization_enable','on'),
-              "program_34": states('input_number.anenji_cfg_program_34_equalization_voltage') | float,
-              "program_35": states('input_number.anenji_cfg_program_35_equalization_time') | int,
-              "program_36": states('input_number.anenji_cfg_program_36_equalization_timeout') | int,
-              "program_37": states('input_number.anenji_cfg_program_37_equalization_interval_days') | int,
-              "program_39": is_state('input_boolean.anenji_cfg_program_39_force_equalization','on'),
-              "program_41": states('input_number.anenji_cfg_program_41_bms_charge_voltage') | float,
-              "program_42": states('input_number.anenji_cfg_program_42_bms_cutoff_voltage') | float,
-              "program_43": states('input_number.anenji_cfg_program_43_bms_charge_current') | float,
-              "program_44": is_state('input_boolean.anenji_cfg_program_44_bms_control_enable','on'),
-              "program_45": states('input_select.anenji_cfg_program_45_bms_mode'),
-              "program_46": states('input_select.anenji_cfg_program_46_overcharge_protection_mode')
-            } %}
-            {% set overrides_raw = states('input_text.anenji_cfg_manual_overrides_json') %}
-            {% set overrides = overrides_raw | from_json if overrides_raw not in ['', 'unknown', 'unavailable'] else {} %}
-            {% set merged = base | combine(overrides, recursive=True) %}
-            {{ ({"profile": states('input_text.anenji_cfg_profile_name'), "config": merged} | combine(merged, recursive=True)) | tojson }}
-      - service: mqtt.publish
-        data:
-          qos: 1
-          retain: true
-          topic: anenji/inverter/config/set
-          payload: "{{ payload_json }}"
-      - service: input_text.set_value
+      - service: input_boolean.turn_on
         target:
-          entity_id: input_text.anenji_cfg_last_published_payload
-        data:
-          value: "{{ payload_json[:255] }}"
-      - service: persistent_notification.create
-        data:
-          title: "ANENJI MQTT"
-          message: >-
-            Конфигурация опубликована (retained) в MQTT topic
-            <code>anenji/inverter/config/set</code>.
-            Для проверки обратной синхронизации запустите
-            <code>script.anenji_inverter_request_config</code>.
-
-  anenji_inverter_save_config_snapshot:
-    alias: "ANENJI: Сохранить текущую форму в JSON"
-    sequence:
-      - service: input_text.set_value
+          entity_id: input_boolean.anenji_cfg_sync_from_inverter_active
+      - service: input_select.select_option
         target:
-          entity_id: input_text.anenji_cfg_snapshot_json
+          entity_id: input_select.anenji_cfg_program_01_output_source_priority
         data:
-          value: >-
-            {% set base = {
-              "profile": states('input_text.anenji_cfg_profile_name'),
-              "program_01": states('input_select.anenji_cfg_program_01_output_source_priority'),
-              "program_02": states('input_number.anenji_cfg_program_02_max_charge_current') | float,
-              "program_03": states('input_select.anenji_cfg_program_03_input_voltage_range'),
-              "program_04": is_state('input_boolean.anenji_cfg_program_04_power_saving','on'),
-              "program_05": states('input_select.anenji_cfg_program_05_battery_type'),
-              "program_06": states('input_select.anenji_cfg_program_06_charging_priority'),
-              "program_07": is_state('input_boolean.anenji_cfg_program_07_overload_restart','on'),
-              "program_08": is_state('input_boolean.anenji_cfg_program_08_overtemp_restart','on'),
-              "program_08_voltage": states('input_select.anenji_cfg_program_08_output_voltage'),
-              "program_09": is_state('input_boolean.anenji_cfg_program_09_buzzer','on'),
-              "program_09_frequency": states('input_select.anenji_cfg_program_09_output_frequency'),
-              "program_10": is_state('input_boolean.anenji_cfg_program_10_back_to_grid_auto','on'),
-              "program_10_bypass": states('input_select.anenji_cfg_program_10_auto_bypass_mode'),
-              "program_11": states('input_number.anenji_cfg_program_11_max_ac_charge_current') | float,
-              "program_12": states('input_number.anenji_cfg_program_12_back_to_utility_voltage') | float,
-              "program_13": states('input_number.anenji_cfg_program_13_back_to_battery_voltage') | float,
-              "program_16": states('input_select.anenji_cfg_program_16_output_frequency_type'),
-              "program_17": states('input_select.anenji_cfg_program_17_charge_source_priority'),
-              "program_18": states('input_select.anenji_cfg_program_18_buzzer_mode'),
-              "program_19": states('input_select.anenji_cfg_program_19_screen_return_mode'),
-              "program_20": states('input_select.anenji_cfg_program_20_backlight_mode'),
-              "program_23": states('input_select.anenji_cfg_program_23_overload_bypass'),
-              "program_25": states('input_number.anenji_cfg_program_25_modbus_id') | int,
-              "program_26": states('input_number.anenji_cfg_program_26_bulk_absorption_voltage') | float,
-              "program_27": states('input_number.anenji_cfg_program_27_float_voltage') | float,
-              "program_29": states('input_number.anenji_cfg_program_29_low_dc_cutoff_voltage') | float,
-              "program_32": states('input_select.anenji_cfg_program_32_cv_to_float_time_mode'),
-              "program_33": is_state('input_boolean.anenji_cfg_program_33_equalization_enable','on'),
-              "program_34": states('input_number.anenji_cfg_program_34_equalization_voltage') | float,
-              "program_35": states('input_number.anenji_cfg_program_35_equalization_time') | int,
-              "program_36": states('input_number.anenji_cfg_program_36_equalization_timeout') | int,
-              "program_37": states('input_number.anenji_cfg_program_37_equalization_interval_days') | int,
-              "program_39": is_state('input_boolean.anenji_cfg_program_39_force_equalization','on'),
-              "program_41": states('input_number.anenji_cfg_program_41_bms_charge_voltage') | float,
-              "program_42": states('input_number.anenji_cfg_program_42_bms_cutoff_voltage') | float,
-              "program_43": states('input_number.anenji_cfg_program_43_bms_charge_current') | float,
-              "program_44": is_state('input_boolean.anenji_cfg_program_44_bms_control_enable','on'),
-              "program_45": states('input_select.anenji_cfg_program_45_bms_mode'),
-              "program_46": states('input_select.anenji_cfg_program_46_overcharge_protection_mode')
-            } %}
-            {% set overrides_raw = states('input_text.anenji_cfg_manual_overrides_json') %}
-            {% set overrides = overrides_raw | from_json if overrides_raw not in ['', 'unknown', 'unavailable'] else {} %}
-            {{ base | combine(overrides, recursive=True) | tojson }}
-
-  anenji_inverter_request_config:
-    alias: "ANENJI: Запросить актуальную конфигурацию из инвертора"
-    sequence:
-      - service: mqtt.publish
+          option: >-
+            {{ {0:'UTI', 1:'SOL', 2:'SBU', 3:'SUF'}.get(states('sensor.prioritet_vykhoda_output_priority')|int(-1), states('input_select.anenji_cfg_program_01_output_source_priority')) }}
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.anenji_cfg_program_03_input_voltage_range
         data:
-          qos: 1
-          topic: anenji/inverter/config/get
-          payload: >-
-            {{ {"profile": states('input_text.anenji_cfg_profile_name')} | tojson }}
+          option: >-
+            {{ {0:'APL', 1:'UPS', 2:'GEN'}.get(states('sensor.diapazon_vkhodnogo_napriazheniia_input_voltage_range')|int(-1), states('input_select.anenji_cfg_program_03_input_voltage_range')) }}
+      - service: "{{ 'input_boolean.turn_on' if states('sensor.energosberezhenie_energy_saving')|int(0) > 0 else 'input_boolean.turn_off' }}"
+        target: {entity_id: input_boolean.anenji_cfg_program_04_power_saving}
+      - service: input_select.select_option
+        target: {entity_id: input_select.anenji_cfg_program_05_battery_type}
+        data:
+          option: >-
+            {{ {0:'AGM', 1:'Flooded', 2:'User defined', 3:'LI2', 4:'LI4', 5:'LIB'}.get(states('sensor.tip_akb_battery_type')|int(-1), states('input_select.anenji_cfg_program_05_battery_type')) }}
+      - service: input_select.select_option
+        target: {entity_id: input_select.anenji_cfg_program_06_charging_priority}
+        data:
+          option: >-
+            {{ {0:'Solar first', 1:'Solar + Utility', 2:'Solar only'}.get(states('sensor.prioritet_zariadki_battery_charging_priority')|int(-1), states('input_select.anenji_cfg_program_06_charging_priority')) }}
+      - service: "{{ 'input_boolean.turn_on' if states('sensor.avtoperezapusk_pri_peregruzke_overload_auto_restart')|int(0) > 0 else 'input_boolean.turn_off' }}"
+        target: {entity_id: input_boolean.anenji_cfg_program_07_overload_restart}
+      - service: "{{ 'input_boolean.turn_on' if states('sensor.avtoperezapusk_pri_peregreve_overtemp_auto_restart')|int(0) > 0 else 'input_boolean.turn_off' }}"
+        target: {entity_id: input_boolean.anenji_cfg_program_08_overtemp_restart}
+      - service: "{{ 'input_boolean.turn_on' if states('sensor.zummer_buzzer_mode')|int(0) > 0 else 'input_boolean.turn_off' }}"
+        target: {entity_id: input_boolean.anenji_cfg_program_09_buzzer}
+      - service: "{{ 'input_boolean.turn_on' if states('sensor.avtovkliuchenie_vykhoda_ot_seti_automatic_mains_output_enable')|int(0) > 0 else 'input_boolean.turn_off' }}"
+        target: {entity_id: input_boolean.anenji_cfg_program_10_back_to_grid_auto}
+      - service: input_number.set_value
+        target: {entity_id: input_number.anenji_cfg_program_02_max_charge_current}
+        data: {value: "{{ (states('sensor.maks_tok_zariadki_maximum_charge_current_g')|float(0) * 10)|round(0) / 10 }}"}
+      - service: input_number.set_value
+        target: {entity_id: input_number.anenji_cfg_program_11_max_ac_charge_current}
+        data: {value: "{{ (states('sensor.maks_tok_zariadki_ot_seti_maximum_mains_charge_current_h')|float(0) * 10)|round(0) / 10 }}"}
+      - service: input_number.set_value
+        target: {entity_id: input_number.anenji_cfg_program_12_back_to_utility_voltage}
+        data: {value: "{{ states('sensor.zashchita_nizkogo_napriazheniia_v_seti_mains_low_voltage_protect_e')|float(0) }}"}
+      - service: input_number.set_value
+        target: {entity_id: input_number.anenji_cfg_program_13_back_to_battery_voltage}
+        data: {value: "{{ states('sensor.vosstanovlenie_razriada_v_seti_mains_discharge_recovery_d')|float(0) }}"}
+      - service: input_select.select_option
+        target: {entity_id: input_select.anenji_cfg_program_08_output_voltage}
+        data:
+          option: >-
+            {{ ('%0.0fV' % (states('sensor.ustavka_vykhodnogo_napriazheniia_output_voltage_set')|float(230))) }}
+      - service: input_select.select_option
+        target: {entity_id: input_select.anenji_cfg_program_09_output_frequency}
+        data:
+          option: >-
+            {{ ('%0.0fHz' % (states('sensor.ustavka_vykhodnoi_chastoty_output_frequency_set')|float(50))) }}
+      - service: input_select.select_option
+        target: {entity_id: input_select.anenji_cfg_program_20_backlight_mode}
+        data:
+          option: >-
+            {{ {0:'LOF', 1:'LON'}.get(states('sensor.podsvetka_lcd_lcd_backlight')|int(-1), states('input_select.anenji_cfg_program_20_backlight_mode')) }}
+      - service: input_select.select_option
+        target: {entity_id: input_select.anenji_cfg_program_23_overload_bypass}
+        data:
+          option: >-
+            {{ {0:'bYd', 1:'bYE'}.get(states('sensor.bypass_pri_peregruzke_overload_bypass_enable')|int(-1), states('input_select.anenji_cfg_program_23_overload_bypass')) }}
+      - service: input_number.set_value
+        target: {entity_id: input_number.anenji_cfg_program_26_bulk_absorption_voltage}
+        data: {value: "{{ states('sensor.maks_napriazhenie_zariadki_maximum_charge_voltage_b')|float(0) }}"}
+      - service: input_number.set_value
+        target: {entity_id: input_number.anenji_cfg_program_27_float_voltage}
+        data: {value: "{{ states('sensor.napriazhenie_float_floating_charge_voltage_c')|float(0) }}"}
+      - service: input_select.select_option
+        target: {entity_id: input_select.anenji_cfg_program_32_cv_to_float_time_mode}
+        data:
+          option: >-
+            {% set value = states('sensor.perekhod_cv_float_cv_to_float_time')|int(-1) %}
+            {{ 'AUT' if value == 0 else value|string if value in [5,10,15,30,60,120,300,600,900] else states('input_select.anenji_cfg_program_32_cv_to_float_time_mode') }}
+      - service: "{{ 'input_boolean.turn_on' if states('sensor.vyravnivanie_akb_battery_eq_enable')|int(0) > 0 else 'input_boolean.turn_off' }}"
+        target: {entity_id: input_boolean.anenji_cfg_program_33_equalization_enable}
+      - service: input_number.set_value
+        target: {entity_id: input_number.anenji_cfg_program_34_equalization_voltage}
+        data: {value: "{{ states('sensor.napriazhenie_eq_eq_charge_voltage')|float(0) }}"}
+      - service: input_number.set_value
+        target: {entity_id: input_number.anenji_cfg_program_35_equalization_time}
+        data: {value: "{{ states('sensor.vremia_eq_bat_eq_time')|int(0) }}"}
+      - service: input_number.set_value
+        target: {entity_id: input_number.anenji_cfg_program_36_equalization_timeout}
+        data: {value: "{{ states('sensor.taimaut_eq_eq_timed_out')|int(0) }}"}
+      - service: input_number.set_value
+        target: {entity_id: input_number.anenji_cfg_program_37_equalization_interval_days}
+        data: {value: "{{ states('sensor.interval_eq_two_time_eq_interval')|int(0) }}"}
+      - service: input_select.select_option
+        target: {entity_id: input_select.anenji_cfg_program_46_overcharge_protection_mode}
+        data:
+          option: >-
+            {% set value = states('sensor.zashchita_maks_toka_razriada_maximum_discharge_current_protect')|int(0) %}
+            {{ 'OFF' if value == 0 else value|string ~ 'A' }}
+      - delay: '00:00:02'
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.anenji_cfg_sync_from_inverter_active
 
 automation:
-  - alias: "ANENJI: Запрашивать актуальную конфигурацию при старте и по расписанию"
-    id: anenji_request_config_periodic
+  - alias: "ANENJI: Синхронизировать helpers из Modbus при старте и по расписанию"
+    id: anenji_sync_config_from_modbus_periodic
     trigger:
       - platform: homeassistant
         event: start
       - platform: time_pattern
-        minutes: "/15"
+        minutes: '/5'
     action:
       - service: script.turn_on
         target:
-          entity_id: script.anenji_inverter_request_config
+          entity_id: script.anenji_inverter_sync_config_from_modbus
 
-  - alias: "ANENJI: Применить актуальную конфигурацию из MQTT"
-    id: anenji_apply_config_from_mqtt
+  - alias: "ANENJI: Записать изменённый параметр Program 01 в Modbus"
+    id: anenji_write_program_01_modbus
     trigger:
-      - platform: mqtt
-        topic: anenji/inverter/config/state
-      - platform: mqtt
-        topic: anenji/inverter/config/actual
-    variables:
-      payload_obj: "{{ trigger.payload_json if trigger.payload_json is mapping else {} }}"
-      cfg: "{{ payload_obj.config if payload_obj.config is defined and payload_obj.config is mapping else (payload_obj.settings if payload_obj.settings is defined and payload_obj.settings is mapping else (payload_obj.payload if payload_obj.payload is defined and payload_obj.payload is mapping else (payload_obj.data if payload_obj.data is defined and payload_obj.data is mapping else payload_obj))) }}"
+      - platform: state
+        entity_id: input_select.anenji_cfg_program_01_output_source_priority
+    condition:
+      - condition: state
+        entity_id: input_boolean.anenji_cfg_sync_from_inverter_active
+        state: 'off'
     action:
-      - service: input_text.set_value
-        target:
-          entity_id: input_text.anenji_cfg_last_received_payload
+      - service: modbus.write_register
         data:
-          value: "{{ trigger.payload[:255] }}"
-      - choose:
-          - conditions: "{{ cfg.program_01 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_01_output_source_priority
-                data:
-                  option: "{{ cfg.program_01 }}"
-      - choose:
-          - conditions: "{{ cfg.program_02 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_02_max_charge_current
-                data:
-                  value: "{{ cfg.program_02 | float }}"
-      - choose:
-          - conditions: "{{ cfg.program_03 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_03_input_voltage_range
-                data:
-                  option: "{{ cfg.program_03 }}"
-      - choose:
-          - conditions: "{{ cfg.program_04 is defined }}"
-            sequence:
-              - service: "{{ 'input_boolean.turn_on' if cfg.program_04 else 'input_boolean.turn_off' }}"
-                target:
-                  entity_id: input_boolean.anenji_cfg_program_04_power_saving
-      - choose:
-          - conditions: "{{ cfg.program_05 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_05_battery_type
-                data:
-                  option: "{{ cfg.program_05 }}"
-      - choose:
-          - conditions: "{{ cfg.program_06 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_06_charging_priority
-                data:
-                  option: "{{ cfg.program_06 }}"
-      - choose:
-          - conditions: "{{ cfg.program_07 is defined }}"
-            sequence:
-              - service: "{{ 'input_boolean.turn_on' if cfg.program_07 else 'input_boolean.turn_off' }}"
-                target:
-                  entity_id: input_boolean.anenji_cfg_program_07_overload_restart
-      - choose:
-          - conditions: "{{ cfg.program_08 is defined }}"
-            sequence:
-              - service: "{{ 'input_boolean.turn_on' if cfg.program_08 else 'input_boolean.turn_off' }}"
-                target:
-                  entity_id: input_boolean.anenji_cfg_program_08_overtemp_restart
-      - choose:
-          - conditions: "{{ cfg.program_08_voltage is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_08_output_voltage
-                data:
-                  option: "{{ cfg.program_08_voltage }}"
-      - choose:
-          - conditions: "{{ cfg.program_09 is defined }}"
-            sequence:
-              - service: "{{ 'input_boolean.turn_on' if cfg.program_09 else 'input_boolean.turn_off' }}"
-                target:
-                  entity_id: input_boolean.anenji_cfg_program_09_buzzer
-      - choose:
-          - conditions: "{{ cfg.program_09_frequency is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_09_output_frequency
-                data:
-                  option: "{{ cfg.program_09_frequency }}"
-      - choose:
-          - conditions: "{{ cfg.program_10 is defined }}"
-            sequence:
-              - service: "{{ 'input_boolean.turn_on' if cfg.program_10 else 'input_boolean.turn_off' }}"
-                target:
-                  entity_id: input_boolean.anenji_cfg_program_10_back_to_grid_auto
-      - choose:
-          - conditions: "{{ cfg.program_10_bypass is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_10_auto_bypass_mode
-                data:
-                  option: "{{ cfg.program_10_bypass }}"
-      - choose:
-          - conditions: "{{ cfg.program_11 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_11_max_ac_charge_current
-                data:
-                  value: "{{ cfg.program_11 | float }}"
-      - choose:
-          - conditions: "{{ cfg.program_12 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_12_back_to_utility_voltage
-                data:
-                  value: "{{ cfg.program_12 | float }}"
-      - choose:
-          - conditions: "{{ cfg.program_13 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_13_back_to_battery_voltage
-                data:
-                  value: "{{ cfg.program_13 | float }}"
-      - choose:
-          - conditions: "{{ cfg.program_16 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_16_output_frequency_type
-                data:
-                  option: "{{ cfg.program_16 }}"
-      - choose:
-          - conditions: "{{ cfg.program_17 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_17_charge_source_priority
-                data:
-                  option: "{{ cfg.program_17 }}"
-      - choose:
-          - conditions: "{{ cfg.program_18 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_18_buzzer_mode
-                data:
-                  option: "{{ cfg.program_18 }}"
-      - choose:
-          - conditions: "{{ cfg.program_19 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_19_screen_return_mode
-                data:
-                  option: "{{ cfg.program_19 }}"
-      - choose:
-          - conditions: "{{ cfg.program_20 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_20_backlight_mode
-                data:
-                  option: "{{ cfg.program_20 }}"
-      - choose:
-          - conditions: "{{ cfg.program_23 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_23_overload_bypass
-                data:
-                  option: "{{ cfg.program_23 }}"
-      - choose:
-          - conditions: "{{ cfg.program_25 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_25_modbus_id
-                data:
-                  value: "{{ cfg.program_25 | int }}"
-      - choose:
-          - conditions: "{{ cfg.program_26 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_26_bulk_absorption_voltage
-                data:
-                  value: "{{ cfg.program_26 | float }}"
-      - choose:
-          - conditions: "{{ cfg.program_27 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_27_float_voltage
-                data:
-                  value: "{{ cfg.program_27 | float }}"
-      - choose:
-          - conditions: "{{ cfg.program_29 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
-                data:
-                  value: "{{ cfg.program_29 | float }}"
-      - choose:
-          - conditions: "{{ cfg.program_32 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_32_cv_to_float_time_mode
-                data:
-                  option: "{{ cfg.program_32 }}"
-      - choose:
-          - conditions: "{{ cfg.program_33 is defined }}"
-            sequence:
-              - service: "{{ 'input_boolean.turn_on' if cfg.program_33 else 'input_boolean.turn_off' }}"
-                target:
-                  entity_id: input_boolean.anenji_cfg_program_33_equalization_enable
-      - choose:
-          - conditions: "{{ cfg.program_34 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_34_equalization_voltage
-                data:
-                  value: "{{ cfg.program_34 | float }}"
-      - choose:
-          - conditions: "{{ cfg.program_35 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_35_equalization_time
-                data:
-                  value: "{{ cfg.program_35 | int }}"
-      - choose:
-          - conditions: "{{ cfg.program_36 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_36_equalization_timeout
-                data:
-                  value: "{{ cfg.program_36 | int }}"
-      - choose:
-          - conditions: "{{ cfg.program_37 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_37_equalization_interval_days
-                data:
-                  value: "{{ cfg.program_37 | int }}"
-      - choose:
-          - conditions: "{{ cfg.program_39 is defined }}"
-            sequence:
-              - service: "{{ 'input_boolean.turn_on' if cfg.program_39 else 'input_boolean.turn_off' }}"
-                target:
-                  entity_id: input_boolean.anenji_cfg_program_39_force_equalization
-      - choose:
-          - conditions: "{{ cfg.program_41 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_41_bms_charge_voltage
-                data:
-                  value: "{{ cfg.program_41 | float }}"
-      - choose:
-          - conditions: "{{ cfg.program_42 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_42_bms_cutoff_voltage
-                data:
-                  value: "{{ cfg.program_42 | float }}"
-      - choose:
-          - conditions: "{{ cfg.program_43 is defined }}"
-            sequence:
-              - service: input_number.set_value
-                target:
-                  entity_id: input_number.anenji_cfg_program_43_bms_charge_current
-                data:
-                  value: "{{ cfg.program_43 | float }}"
-      - choose:
-          - conditions: "{{ cfg.program_44 is defined }}"
-            sequence:
-              - service: "{{ 'input_boolean.turn_on' if cfg.program_44 else 'input_boolean.turn_off' }}"
-                target:
-                  entity_id: input_boolean.anenji_cfg_program_44_bms_control_enable
-      - choose:
-          - conditions: "{{ cfg.program_45 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_45_bms_mode
-                data:
-                  option: "{{ cfg.program_45 }}"
-      - choose:
-          - conditions: "{{ cfg.program_46 is defined }}"
-            sequence:
-              - service: input_select.select_option
-                target:
-                  entity_id: input_select.anenji_cfg_program_46_overcharge_protection_mode
-                data:
-                  option: "{{ cfg.program_46 }}"
-      - service: persistent_notification.create
+          hub: ANENJI_6200W
+          slave: 1
+          address: 301
+          value: "{{ {'UTI':0, 'SOL':1, 'SBU':2, 'SUF':3}[trigger.to_state.state] }}"
+
+  - alias: "ANENJI: Записать изменённые параметры формы в Modbus"
+    id: anenji_write_supported_programs_modbus
+    mode: queued
+    trigger:
+      - platform: state
+        entity_id:
+            - input_select.anenji_cfg_program_03_input_voltage_range
+            - input_boolean.anenji_cfg_program_04_power_saving
+            - input_select.anenji_cfg_program_05_battery_type
+            - input_select.anenji_cfg_program_06_charging_priority
+            - input_boolean.anenji_cfg_program_07_overload_restart
+            - input_boolean.anenji_cfg_program_08_overtemp_restart
+            - input_boolean.anenji_cfg_program_09_buzzer
+            - input_boolean.anenji_cfg_program_10_back_to_grid_auto
+            - input_number.anenji_cfg_program_02_max_charge_current
+            - input_number.anenji_cfg_program_11_max_ac_charge_current
+            - input_number.anenji_cfg_program_12_back_to_utility_voltage
+            - input_number.anenji_cfg_program_13_back_to_battery_voltage
+            - input_select.anenji_cfg_program_08_output_voltage
+            - input_select.anenji_cfg_program_09_output_frequency
+            - input_select.anenji_cfg_program_20_backlight_mode
+            - input_select.anenji_cfg_program_23_overload_bypass
+            - input_number.anenji_cfg_program_26_bulk_absorption_voltage
+            - input_number.anenji_cfg_program_27_float_voltage
+            - input_select.anenji_cfg_program_32_cv_to_float_time_mode
+            - input_boolean.anenji_cfg_program_33_equalization_enable
+            - input_number.anenji_cfg_program_34_equalization_voltage
+            - input_number.anenji_cfg_program_35_equalization_time
+            - input_number.anenji_cfg_program_36_equalization_timeout
+            - input_number.anenji_cfg_program_37_equalization_interval_days
+            - input_select.anenji_cfg_program_46_overcharge_protection_mode
+    condition:
+      - condition: state
+        entity_id: input_boolean.anenji_cfg_sync_from_inverter_active
+        state: 'off'
+    variables:
+      map: >-
+        {{ {
+          'input_select.anenji_cfg_program_03_input_voltage_range': {'address': 302, 'value': {'APL':0, 'UPS':1, 'GEN':2}[trigger.to_state.state]},
+          'input_boolean.anenji_cfg_program_04_power_saving': {'address': 307, 'value': 1 if trigger.to_state.state == 'on' else 0},
+          'input_select.anenji_cfg_program_05_battery_type': {'address': 322, 'value': {'AGM':0, 'Flooded':1, 'User defined':2, 'LI2':3, 'LI4':4, 'LIB':5}[trigger.to_state.state]},
+          'input_select.anenji_cfg_program_06_charging_priority': {'address': 331, 'value': {'Solar first':0, 'Solar + Utility':1, 'Solar only':2}[trigger.to_state.state]},
+          'input_boolean.anenji_cfg_program_07_overload_restart': {'address': 308, 'value': 1 if trigger.to_state.state == 'on' else 0},
+          'input_boolean.anenji_cfg_program_08_overtemp_restart': {'address': 309, 'value': 1 if trigger.to_state.state == 'on' else 0},
+          'input_boolean.anenji_cfg_program_09_buzzer': {'address': 303, 'value': 1 if trigger.to_state.state == 'on' else 0},
+          'input_boolean.anenji_cfg_program_10_back_to_grid_auto': {'address': 338, 'value': 1 if trigger.to_state.state == 'on' else 0},
+          'input_number.anenji_cfg_program_02_max_charge_current': {'address': 332, 'value': (trigger.to_state.state|float(0) * 10)|round(0)|int},
+          'input_number.anenji_cfg_program_11_max_ac_charge_current': {'address': 333, 'value': (trigger.to_state.state|float(0) * 10)|round(0)|int},
+          'input_number.anenji_cfg_program_12_back_to_utility_voltage': {'address': 327, 'value': (trigger.to_state.state|float(0) * 10)|round(0)|int},
+          'input_number.anenji_cfg_program_13_back_to_battery_voltage': {'address': 326, 'value': (trigger.to_state.state|float(0) * 10)|round(0)|int},
+          'input_select.anenji_cfg_program_08_output_voltage': {'address': 320, 'value': trigger.to_state.state|replace('V','')|int(230) * 10},
+          'input_select.anenji_cfg_program_09_output_frequency': {'address': 321, 'value': trigger.to_state.state|replace('Hz','')|int(50) * 100},
+          'input_select.anenji_cfg_program_20_backlight_mode': {'address': 305, 'value': {'LOF':0, 'LON':1}[trigger.to_state.state]},
+          'input_select.anenji_cfg_program_23_overload_bypass': {'address': 310, 'value': {'bYd':0, 'bYE':1}[trigger.to_state.state]},
+          'input_number.anenji_cfg_program_26_bulk_absorption_voltage': {'address': 324, 'value': (trigger.to_state.state|float(0) * 10)|round(0)|int},
+          'input_number.anenji_cfg_program_27_float_voltage': {'address': 325, 'value': (trigger.to_state.state|float(0) * 10)|round(0)|int},
+          'input_select.anenji_cfg_program_32_cv_to_float_time_mode': {'address': 330, 'value': 0 if trigger.to_state.state == 'AUT' else trigger.to_state.state|int(0)},
+          'input_boolean.anenji_cfg_program_33_equalization_enable': {'address': 313, 'value': 1 if trigger.to_state.state == 'on' else 0},
+          'input_number.anenji_cfg_program_34_equalization_voltage': {'address': 334, 'value': (trigger.to_state.state|float(0) * 10)|round(0)|int},
+          'input_number.anenji_cfg_program_35_equalization_time': {'address': 335, 'value': trigger.to_state.state|int(0)},
+          'input_number.anenji_cfg_program_36_equalization_timeout': {'address': 336, 'value': trigger.to_state.state|int(0)},
+          'input_number.anenji_cfg_program_37_equalization_interval_days': {'address': 337, 'value': trigger.to_state.state|int(0)},
+          'input_select.anenji_cfg_program_46_overcharge_protection_mode': {'address': 351, 'value': 0 if trigger.to_state.state == 'OFF' else trigger.to_state.state|replace('A','')|int(0)}
+        }[trigger.entity_id] }}
+    action:
+      - service: modbus.write_register
         data:
-          title: "ANENJI MQTT"
-          message: >-
-            Получена актуальная конфигурация из MQTT
-            <code>{{ trigger.topic }}</code>.
+          hub: ANENJI_6200W
+          slave: 1
+          address: "{{ map.address }}"
+          value: "{{ map.value }}"

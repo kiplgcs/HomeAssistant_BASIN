@@ -265,7 +265,8 @@ script:
             } %}
             {% set overrides_raw = states('input_text.anenji_cfg_manual_overrides_json') %}
             {% set overrides = overrides_raw | from_json if overrides_raw not in ['', 'unknown', 'unavailable'] else {} %}
-            {{ base | combine(overrides, recursive=True) | tojson }}
+            {% set merged = base | combine(overrides, recursive=True) %}
+            {{ ({"profile": states('input_text.anenji_cfg_profile_name'), "config": merged} | combine(merged, recursive=True)) | tojson }}
       - service: mqtt.publish
         data:
           qos: 1
@@ -338,8 +339,11 @@ script:
             } %}
             {% set overrides_raw = states('input_text.anenji_cfg_manual_overrides_json') %}
             {% set overrides = overrides_raw | from_json if overrides_raw not in ['', 'unknown', 'unavailable'] else {} %}
-            {% set merged = base | combine(overrides, recursive=True) %}
-            {{ ({"profile": states('input_text.anenji_cfg_profile_name'), "config": merged} | combine(merged, recursive=True)) | tojson }}
+            {{ base | combine(overrides, recursive=True) | tojson }}
+
+  anenji_inverter_request_config:
+    alias: "ANENJI: Запросить актуальную конфигурацию из инвертора"
+    sequence:
       - service: mqtt.publish
         data:
           qos: 1
@@ -356,7 +360,9 @@ automation:
       - platform: time_pattern
         minutes: "/15"
     action:
-      - service: script.anenji_inverter_request_config
+      - service: script.turn_on
+        target:
+          entity_id: script.anenji_inverter_request_config
 
   - alias: "ANENJI: Применить актуальную конфигурацию из MQTT"
     id: anenji_apply_config_from_mqtt

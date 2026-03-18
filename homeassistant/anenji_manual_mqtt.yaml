@@ -5,7 +5,7 @@
 input_select:
   anenji_cfg_program_01_output_source_priority:
     name: "Program 01 · Приоритет источника питания"
-    options: ["UTI", "SOL", "SBU", "SUF"]
+    options: ["UTI", "SOL", "SBU", "SUB", "SUF"]
     initial: "SBU"
   anenji_cfg_program_03_input_voltage_range:
     name: "Program 03 · Диапазон входного напряжения"
@@ -230,7 +230,7 @@ script:
           entity_id: input_select.anenji_cfg_program_01_output_source_priority
         data:
           option: >-
-            {{ {0:'UTI', 1:'SOL', 2:'SBU', 3:'SUF'}.get(states('sensor.prioritet_vykhoda_output_priority')|int(-1), states('input_select.anenji_cfg_program_01_output_source_priority')) }}
+            {{ {0:'UTI', 1:'SOL', 2:'SBU', 3:'SUB', 4:'SUF'}.get(states('sensor.prioritet_vykhoda_output_priority')|int(-1), states('input_select.anenji_cfg_program_01_output_source_priority')) }}
       - service: input_select.select_option
         target:
           entity_id: input_select.anenji_cfg_program_03_input_voltage_range
@@ -354,7 +354,7 @@ automation:
           hub: ANENJI_6200W
           slave: 1
           address: 301
-          value: "{{ {'UTI':0, 'SOL':1, 'SBU':2, 'SUF':3}[trigger.to_state.state] }}"
+          value: "{{ {'UTI':0, 'SOL':1, 'SBU':2, 'SUB':3, 'SUF':4}[trigger.to_state.state] }}"
 
   - alias: "ANENJI: Записать изменённые параметры формы в Modbus"
     id: anenji_write_supported_programs_modbus

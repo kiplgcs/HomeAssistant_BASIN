@@ -235,15 +235,16 @@ views:
           - type: entities
             title: >-
               Ключевые параметры (UTI=сеть, SOL=солнце, SBU=солнце+АКБ,
-              SUF=солнце→сеть)
+              SUB=сначала солнце+сеть, SUF=сначала солнце→сеть; Program 03:
+              APL/UPS/GEN)
             show_header_toggle: false
             entities:
               - entity: input_select.anenji_cfg_program_01_output_source_priority
-                name: Program 01 · Приоритет питания (UTI/SOL/SBU/SUF)
+                name: Program 01 · Приоритет питания (UTI/SOL/SBU/SUB/SUF)
               - entity: input_number.anenji_cfg_program_02_max_charge_current
                 name: Program 02 · Макс. ток зарядки (PV+сеть)
               - entity: input_select.anenji_cfg_program_05_battery_type
-                name: Program 05 · Тип аккумулятора
+                name: Program 05 · Тип аккумулятора (AGM/FLD/USE/LI2/LI4/LIB)
               - entity: input_number.anenji_cfg_program_11_max_ac_charge_current
                 name: Program 11 · Макс. ток зарядки от сети
               - entity: input_number.anenji_cfg_program_12_back_to_utility_voltage

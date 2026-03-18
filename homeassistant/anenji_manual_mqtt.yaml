@@ -295,6 +295,9 @@ script:
       - service: input_number.set_value
         target: {entity_id: input_number.anenji_cfg_program_27_float_voltage}
         data: {value: "{{ states('sensor.napriazhenie_float_floating_charge_voltage_c')|float(0) }}"}
+      - service: input_number.set_value
+        target: {entity_id: input_number.anenji_cfg_program_29_low_dc_cutoff_voltage}
+        data: {value: "{{ states('sensor.zashchita_nizkogo_napriazheniia_off_grid_off_grid_low_voltage_protect_f')|float(0) }}"}
       - service: input_select.select_option
         target: {entity_id: input_select.anenji_cfg_program_32_cv_to_float_time_mode}
         data:
@@ -380,6 +383,7 @@ automation:
             - input_select.anenji_cfg_program_23_overload_bypass
             - input_number.anenji_cfg_program_26_bulk_absorption_voltage
             - input_number.anenji_cfg_program_27_float_voltage
+            - input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
             - input_select.anenji_cfg_program_32_cv_to_float_time_mode
             - input_boolean.anenji_cfg_program_33_equalization_enable
             - input_number.anenji_cfg_program_34_equalization_voltage
@@ -412,6 +416,7 @@ automation:
           'input_select.anenji_cfg_program_23_overload_bypass': {'address': 310, 'value': {'bYd':0, 'bYE':1}[trigger.to_state.state]},
           'input_number.anenji_cfg_program_26_bulk_absorption_voltage': {'address': 324, 'value': (trigger.to_state.state|float(0) * 10)|round(0)|int},
           'input_number.anenji_cfg_program_27_float_voltage': {'address': 325, 'value': (trigger.to_state.state|float(0) * 10)|round(0)|int},
+          'input_number.anenji_cfg_program_29_low_dc_cutoff_voltage': {'address': 329, 'value': (trigger.to_state.state|float(0) * 10)|round(0)|int},
           'input_select.anenji_cfg_program_32_cv_to_float_time_mode': {'address': 330, 'value': 0 if trigger.to_state.state == 'AUT' else trigger.to_state.state|int(0)},
           'input_boolean.anenji_cfg_program_33_equalization_enable': {'address': 313, 'value': 1 if trigger.to_state.state == 'on' else 0},
           'input_number.anenji_cfg_program_34_equalization_voltage': {'address': 334, 'value': (trigger.to_state.state|float(0) * 10)|round(0)|int},

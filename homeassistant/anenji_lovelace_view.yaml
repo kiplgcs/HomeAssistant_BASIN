@@ -259,6 +259,13 @@ views:
                 name: Program 29 · Низкое DC откл., В
           - type: entities
             title: Сеть / режимы / автоповедение
+            footer:
+              type: markdown
+              content: >-
+                Показаны только параметры, для которых в пакете уже настроена
+                запись в Modbus. Неподключённые helper-поля скрыты, чтобы ручной
+                ввод больше не создавал ложное впечатление, что данные
+                отправляются в инвертор.
             show_header_toggle: false
             entities:
               - entity: input_select.anenji_cfg_program_03_input_voltage_range
@@ -279,26 +286,19 @@ views:
                 name: Program 09B · Частота 50/60 Гц
               - entity: input_boolean.anenji_cfg_program_10_back_to_grid_auto
                 name: Program 10A · Автовозврат к сети
-              - entity: input_select.anenji_cfg_program_10_auto_bypass_mode
-                name: Program 10B · Автообход bypass
-              - entity: input_select.anenji_cfg_program_16_output_frequency_type
-                name: Program 16 · Частота/приоритет (по FW)
-              - entity: input_select.anenji_cfg_program_17_charge_source_priority
-                name: Program 17 · Логика PV/сеть
-              - entity: input_select.anenji_cfg_program_18_buzzer_mode
-                name: Program 18 · Режим зуммера
-              - entity: input_select.anenji_cfg_program_19_screen_return_mode
-                name: Program 19 · Возврат на главный экран
               - entity: input_select.anenji_cfg_program_20_backlight_mode
                 name: Program 20 · Подсветка LCD
               - entity: input_select.anenji_cfg_program_23_overload_bypass
                 name: Program 23 · Bypass при перегрузке
-              - entity: input_number.anenji_cfg_program_25_modbus_id
-                name: Program 25 · ID Modbus
               - entity: input_select.anenji_cfg_program_32_cv_to_float_time_mode
                 name: Program 32 · Время CV → Float
           - type: entities
             title: Выравнивание и BMS
+            footer:
+              type: markdown
+              content: >-
+                В этом блоке оставлены только параметры, которые реально
+                синхронизируются и записываются в инвертор через Modbus.
             show_header_toggle: false
             entities:
               - entity: input_boolean.anenji_cfg_program_33_equalization_enable
@@ -311,17 +311,5 @@ views:
                 name: Program 36 · Таймаут EQ
               - entity: input_number.anenji_cfg_program_37_equalization_interval_days
                 name: Program 37 · Интервал EQ, дни
-              - entity: input_boolean.anenji_cfg_program_39_force_equalization
-                name: Program 39 · Принудительный старт EQ
-              - entity: input_number.anenji_cfg_program_41_bms_charge_voltage
-                name: 'Program 41 · BMS: напряжение заряда'
-              - entity: input_number.anenji_cfg_program_42_bms_cutoff_voltage
-                name: 'Program 42 · BMS: напряжение откл.'
-              - entity: input_number.anenji_cfg_program_43_bms_charge_current
-                name: 'Program 43 · BMS: лимит тока заряда'
-              - entity: input_boolean.anenji_cfg_program_44_bms_control_enable
-                name: Program 44 · Управление от BMS
-              - entity: input_select.anenji_cfg_program_45_bms_mode
-                name: Program 45 · Режим BMS
               - entity: input_select.anenji_cfg_program_46_overcharge_protection_mode
                 name: Program 46 · Защита тока разряда

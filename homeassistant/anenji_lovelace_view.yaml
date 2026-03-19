@@ -259,13 +259,6 @@ views:
                 name: Program 29 · Низкое DC откл., В
           - type: entities
             title: Сеть / режимы / автоповедение
-            footer:
-              type: markdown
-              content: >-
-                Показаны только параметры, для которых в пакете уже настроена
-                запись в Modbus. Неподключённые helper-поля скрыты, чтобы ручной
-                ввод больше не создавал ложное впечатление, что данные
-                отправляются в инвертор.
             show_header_toggle: false
             entities:
               - entity: input_select.anenji_cfg_program_03_input_voltage_range
@@ -292,13 +285,14 @@ views:
                 name: Program 23 · Bypass при перегрузке
               - entity: input_select.anenji_cfg_program_32_cv_to_float_time_mode
                 name: Program 32 · Время CV → Float
+          - type: markdown
+            content: >-
+              Показаны только параметры, для которых уже настроена запись в
+              Modbus. После ручных правок нажмите **«Применить изменённые
+              настройки в инвертор»** — будут отправлены только параметры,
+              отличающиеся от последнего снимка, считанного из инвертора.
           - type: entities
             title: Выравнивание и BMS
-            footer:
-              type: markdown
-              content: >-
-                В этом блоке оставлены только параметры, которые реально
-                синхронизируются и записываются в инвертор через Modbus.
             show_header_toggle: false
             entities:
               - entity: input_boolean.anenji_cfg_program_33_equalization_enable
@@ -313,3 +307,12 @@ views:
                 name: Program 37 · Интервал EQ, дни
               - entity: input_select.anenji_cfg_program_46_overcharge_protection_mode
                 name: Program 46 · Защита тока разряда
+          - type: button
+            name: Применить изменённые настройки в инвертор
+            icon: mdi:content-save-cog
+            show_state: false
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.anenji_inverter_write_visible_config_to_modbus

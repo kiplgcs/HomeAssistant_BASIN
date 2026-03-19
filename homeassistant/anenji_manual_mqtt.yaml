@@ -324,10 +324,94 @@ script:
           option: >-
             {% set value = states('sensor.zashchita_maks_toka_razriada_maximum_discharge_current_protect')|int(0) %}
             {{ 'OFF' if value == 0 else value|string ~ 'A' }}
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.anenji_cfg_snapshot_json
+        data:
+          value: >-
+            {{
+              {
+                "p03": states('sensor.diapazon_vkhodnogo_napriazheniia_input_voltage_range')|int(-1),
+                "p04": 1 if states('sensor.energosberezhenie_energy_saving')|int(0) > 0 else 0,
+                "p07": 1 if states('sensor.avtoperezapusk_pri_peregruzke_overload_auto_restart')|int(0) > 0 else 0,
+                "p08a": 1 if states('sensor.avtoperezapusk_pri_peregreve_overtemp_auto_restart')|int(0) > 0 else 0,
+                "p08b": (states('sensor.ustavka_vykhodnogo_napriazheniia_output_voltage_set')|float(230) * 10)|round(0)|int,
+                "p09a": 1 if states('sensor.zummer_buzzer_mode')|int(0) > 0 else 0,
+                "p09b": (states('sensor.ustavka_vykhodnoi_chastoty_output_frequency_set')|float(50) * 100)|round(0)|int,
+                "p10a": 1 if states('sensor.avtovkliuchenie_vykhoda_ot_seti_automatic_mains_output_enable')|int(0) > 0 else 0,
+                "p20": states('sensor.podsvetka_lcd_lcd_backlight')|int(-1),
+                "p23": states('sensor.bypass_pri_peregruzke_overload_bypass_enable')|int(-1),
+                "p32": states('sensor.perekhod_cv_float_cv_to_float_time')|int(0),
+                "p33": 1 if states('sensor.vyravnivanie_akb_battery_eq_enable')|int(0) > 0 else 0,
+                "p34": (states('sensor.napriazhenie_eq_eq_charge_voltage')|float(0) * 10)|round(0)|int,
+                "p35": states('sensor.vremia_eq_bat_eq_time')|int(0),
+                "p36": states('sensor.taimaut_eq_eq_timed_out')|int(0),
+                "p37": states('sensor.interval_eq_two_time_eq_interval')|int(0),
+                "p46": states('sensor.zashchita_maks_toka_razriada_maximum_discharge_current_protect')|int(0)
+              } | tojson
+            }}
       - delay: '00:00:02'
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.anenji_cfg_sync_from_inverter_active
+  anenji_inverter_write_visible_config_to_modbus:
+    alias: "ANENJI: Записать в Modbus только изменённые параметры формы"
+    mode: queued
+    variables:
+      snapshot: >-
+        {% set raw = states('input_text.anenji_cfg_snapshot_json') %}
+        {{ raw|from_json if raw not in ['', 'unknown', 'unavailable'] else {} }}
+      changed_programs: >-
+        {% set ns = namespace(items=[]) %}
+        {% set current = [
+          {'program': 3, 'address': 302, 'value': {'APL':0, 'UPS':1, 'GEN':2}[states('input_select.anenji_cfg_program_03_input_voltage_range')], 'key': 'p03'},
+          {'program': 4, 'address': 307, 'value': 1 if is_state('input_boolean.anenji_cfg_program_04_power_saving', 'on') else 0, 'key': 'p04'},
+          {'program': 7, 'address': 308, 'value': 1 if is_state('input_boolean.anenji_cfg_program_07_overload_restart', 'on') else 0, 'key': 'p07'},
+          {'program': '08A', 'address': 309, 'value': 1 if is_state('input_boolean.anenji_cfg_program_08_overtemp_restart', 'on') else 0, 'key': 'p08a'},
+          {'program': '08B', 'address': 320, 'value': states('input_select.anenji_cfg_program_08_output_voltage')|replace('V','')|int(230) * 10, 'key': 'p08b'},
+          {'program': '09A', 'address': 303, 'value': 1 if is_state('input_boolean.anenji_cfg_program_09_buzzer', 'on') else 0, 'key': 'p09a'},
+          {'program': '09B', 'address': 321, 'value': states('input_select.anenji_cfg_program_09_output_frequency')|replace('Hz','')|int(50) * 100, 'key': 'p09b'},
+          {'program': '10A', 'address': 338, 'value': 1 if is_state('input_boolean.anenji_cfg_program_10_back_to_grid_auto', 'on') else 0, 'key': 'p10a'},
+          {'program': 20, 'address': 305, 'value': {'LOF':0, 'LON':1}[states('input_select.anenji_cfg_program_20_backlight_mode')], 'key': 'p20'},
+          {'program': 23, 'address': 310, 'value': {'bYd':0, 'bYE':1}[states('input_select.anenji_cfg_program_23_overload_bypass')], 'key': 'p23'},
+          {'program': 32, 'address': 330, 'value': 0 if states('input_select.anenji_cfg_program_32_cv_to_float_time_mode') == 'AUT' else states('input_select.anenji_cfg_program_32_cv_to_float_time_mode')|int(0), 'key': 'p32'},
+          {'program': 33, 'address': 313, 'value': 1 if is_state('input_boolean.anenji_cfg_program_33_equalization_enable', 'on') else 0, 'key': 'p33'},
+          {'program': 34, 'address': 334, 'value': (states('input_number.anenji_cfg_program_34_equalization_voltage')|float(0) * 10)|round(0)|int, 'key': 'p34'},
+          {'program': 35, 'address': 335, 'value': states('input_number.anenji_cfg_program_35_equalization_time')|int(0), 'key': 'p35'},
+          {'program': 36, 'address': 336, 'value': states('input_number.anenji_cfg_program_36_equalization_timeout')|int(0), 'key': 'p36'},
+          {'program': 37, 'address': 337, 'value': states('input_number.anenji_cfg_program_37_equalization_interval_days')|int(0), 'key': 'p37'},
+          {'program': 46, 'address': 351, 'value': 0 if states('input_select.anenji_cfg_program_46_overcharge_protection_mode') == 'OFF' else states('input_select.anenji_cfg_program_46_overcharge_protection_mode')|replace('A','')|int(0), 'key': 'p46'}
+        ] %}
+        {% for item in current %}
+          {% if snapshot.get(item.key, none) != item.value %}
+            {% set ns.items = ns.items + [item] %}
+          {% endif %}
+        {% endfor %}
+        {{ ns.items }}
+    sequence:
+      - repeat:
+          for_each: "{{ changed_programs }}"
+          sequence:
+            - service: modbus.write_register
+              data:
+                hub: ANENJI_6200W
+                slave: 1
+                address: "{{ repeat.item.address }}"
+                value: "{{ [repeat.item.value] }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.anenji_cfg_last_published_payload
+        data:
+          value: >-
+            {{
+              {
+                "source": "manual_apply_diff",
+                "programs": changed_programs | map(attribute='program') | list
+              } | tojson
+            }}
+      - service: script.turn_on
+        target:
+          entity_id: script.anenji_inverter_sync_config_from_modbus
 
 automation:
   - alias: "ANENJI: Синхронизировать helpers из Modbus при старте и по расписанию"
@@ -357,7 +441,7 @@ automation:
           hub: ANENJI_6200W
           slave: 1
           address: 301
-          value: "{{ {'UTI':0, 'SOL':1, 'SBU':2, 'SUB':3, 'SUF':4}[trigger.to_state.state] }}"
+          value: "{{ [ {'UTI':0, 'SOL':1, 'SBU':2, 'SUB':3, 'SUF':4}[trigger.to_state.state] ] }}"
 
   - alias: "ANENJI: Записать изменённые параметры формы в Modbus"
     id: anenji_write_supported_programs_modbus
@@ -431,4 +515,4 @@ automation:
           hub: ANENJI_6200W
           slave: 1
           address: "{{ map.address }}"
-          value: "{{ map.value }}"
+          value: "{{ [map.value] }}"

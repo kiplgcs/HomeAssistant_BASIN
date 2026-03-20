@@ -242,10 +242,11 @@ views:
             grid_options:
               columns: full
             content: >-
-              Ниже каждый Program оформлен как отдельная карточка: внутри строго
-              сверху вниз идут название, описание, контрол значения и отдельная
-              кнопка применения. Это сохраняет ровную сетку без наложений и
-              сразу показывает, какой контрол относится к какому параметру.
+              Ниже каждый Program оформлен как отдельная карточка: внутри
+              строго сверху вниз идут название, описание, контрол значения и
+              отдельная кнопка применения. Это сохраняет ровную сетку без
+              наложений и сразу показывает, какой контрол относится к какому
+              параметру.
           - type: entities
             grid_options:
               columns: 6
@@ -253,11 +254,12 @@ views:
             show_header_toggle: false
             entities:
               - type: section
-                label: >-
-                  Приоритет питания нагрузки — что использовать первым: сеть,
+                Приоритет питания нагрузки — что использовать первым: сеть,
                   солнце или АКБ
               - entity: input_select.anenji_cfg_program_01_output_source_priority
                 name: Значение
+              - entity: sensor.anenji_program_01_description
+                name: Что произойдет
               - type: button
                 name: Применить
                 icon: mdi:check-bold
@@ -303,6 +305,8 @@ views:
                 label: Режим диапазона входного AC-напряжения (APL/UPS/GEN)
               - entity: input_select.anenji_cfg_program_03_input_voltage_range
                 name: Значение
+              - entity: sensor.anenji_program_03_description
+                name: Что произойдет
               - type: button
                 name: Применить
                 icon: mdi:check-bold
@@ -347,6 +351,8 @@ views:
                 label: Тип аккумулятора — влияет на алгоритм зарядки
               - entity: input_select.anenji_cfg_program_05_battery_type
                 name: Значение
+              - entity: sensor.anenji_program_05_description
+                name: Что произойдет
               - type: button
                 name: Применить
                 icon: mdi:check-bold
@@ -369,6 +375,8 @@ views:
                 label: Приоритет зарядки — откуда заряжать АКБ в первую очередь
               - entity: input_select.anenji_cfg_program_06_charging_priority
                 name: Значение
+              - entity: sensor.anenji_program_06_description
+                name: Что произойдет
               - type: button
                 name: Применить
                 icon: mdi:check-bold
@@ -457,6 +465,8 @@ views:
                 label: Звуковая сигнализация событий и ошибок
               - entity: input_boolean.anenji_cfg_program_09_buzzer
                 name: Значение
+              - entity: sensor.anenji_program_09a_description
+                name: Что произойдет
               - type: button
                 name: Применить
                 icon: mdi:check-bold
@@ -501,6 +511,8 @@ views:
                 label: Автовозврат нагрузки на сеть при необходимости
               - entity: input_boolean.anenji_cfg_program_10_back_to_grid_auto
                 name: Значение
+              - entity: sensor.anenji_program_10a_description
+                name: Что произойдет
               - type: button
                 name: Применить
                 icon: mdi:check-bold
@@ -545,6 +557,8 @@ views:
                 label: Напряжение АКБ, при котором переходить на сеть
               - entity: input_number.anenji_cfg_program_12_back_to_utility_voltage
                 name: Значение
+              - entity: sensor.anenji_program_12_description
+                name: Что произойдет
               - type: button
                 name: Применить
                 icon: mdi:check-bold
@@ -568,6 +582,8 @@ views:
                 label: Напряжение АКБ, при котором возвращаться с сети на батарею
               - entity: input_number.anenji_cfg_program_13_back_to_battery_voltage
                 name: Значение
+              - entity: sensor.anenji_program_13_description
+                name: Что произойдет
               - type: button
                 name: Применить
                 icon: mdi:check-bold
@@ -613,6 +629,8 @@ views:
                 label: Обход нагрузки через сеть при перегрузке
               - entity: input_select.anenji_cfg_program_23_overload_bypass
                 name: Значение
+              - entity: sensor.anenji_program_23_description
+                name: Что произойдет
               - type: button
                 name: Применить
                 icon: mdi:check-bold
@@ -644,8 +662,7 @@ views:
                   service: script.turn_on
                   data:
                     variables:
-                      target_entity_id: >-
-                        input_number.anenji_cfg_program_26_bulk_absorption_voltage
+                      target_entity_id: input_number.anenji_cfg_program_26_bulk_absorption_voltage
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus
           - type: entities
@@ -821,8 +838,7 @@ views:
                   service: script.turn_on
                   data:
                     variables:
-                      target_entity_id: >-
-                        input_number.anenji_cfg_program_37_equalization_interval_days
+                      target_entity_id: input_number.anenji_cfg_program_37_equalization_interval_days
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus
           - type: entities
@@ -844,7 +860,6 @@ views:
                   service: script.turn_on
                   data:
                     variables:
-                      target_entity_id: >-
-                        input_select.anenji_cfg_program_46_overcharge_protection_mode
+                      target_entity_id: input_select.anenji_cfg_program_46_overcharge_protection_mode
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus

@@ -302,3 +302,97 @@ automation:
       - service: script.turn_on
         target:
           entity_id: script.anenji_inverter_sync_config_from_modbus
+
+template:
+  - sensor:
+      - name: "ANENJI Program 01 Description"
+        unique_id: anenji_program_01_description
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_01_output_source_priority') %}
+          {% if value == 'UTI' %}
+            UTI — сеть → при отсутствии → АКБ/солнце.
+          {% elif value == 'SOL' %}
+            SOL — солнце → при нехватке → сеть.
+          {% elif value == 'SBU' %}
+            SBU — солнце + АКБ → сеть только при разряде.
+          {% elif value == 'SUB' %}
+            SUB — солнце → сеть → АКБ в последнюю очередь.
+          {% elif value == 'SUF' %}
+            SUF — солнце → сеть, АКБ почти не используется.
+          {% else %}
+            Выберите режим питания нагрузки.
+          {% endif %}
+      - name: "ANENJI Program 03 Description"
+        unique_id: anenji_program_03_description
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_03_input_voltage_range') %}
+          {% if value == 'APL' %}
+            APL — широкий диапазон, для обычной сети.
+          {% elif value == 'UPS' %}
+            UPS — узкий диапазон, для чувствительной техники.
+          {% elif value == 'GEN' %}
+            GEN — для генератора с нестабильным питанием.
+          {% else %}
+            Выберите режим входного напряжения.
+          {% endif %}
+      - name: "ANENJI Program 05 Description"
+        unique_id: anenji_program_05_description
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_05_battery_type') %}
+          {% if value in ['AGM', 'Flooded'] %}
+            {{ value }} — стандартные свинцовые АКБ.
+          {% elif value == 'User defined' %}
+            User — ручная настройка напряжений.
+          {% elif value in ['LI2', 'LI4', 'LIB'] %}
+            {{ value }} — литиевые АКБ: особый алгоритм зарядки, возможна работа через BMS.
+          {% else %}
+            Выберите тип АКБ.
+          {% endif %}
+      - name: "ANENJI Program 06 Description"
+        unique_id: anenji_program_06_description
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_06_charging_priority') %}
+          {% if value == 'Solar first' %}
+            CSO — сначала солнце, сеть при необходимости.
+          {% elif value == 'Solar + Utility' %}
+            SNU — солнце + сеть одновременно.
+          {% elif value == 'Solar only' %}
+            OSO — только солнце.
+          {% else %}
+            Выберите приоритет зарядки.
+          {% endif %}
+      - name: "ANENJI Program 09A Description"
+        unique_id: anenji_program_09a_description
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_09_buzzer', 'on') %}
+            All — все события и ошибки.
+          {% else %}
+            Off — без звука.
+          {% endif %}
+      - name: "ANENJI Program 10A Description"
+        unique_id: anenji_program_10a_description
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_10_back_to_grid_auto', 'on') %}
+            Auto — авто переход на сеть при доступности.
+          {% else %}
+            Manual — без авто перехода на сеть.
+          {% endif %}
+      - name: "ANENJI Program 12 Description"
+        unique_id: anenji_program_12_description
+        state: >-
+          Program 12 — порог АКБ → сеть: при {{ states('input_number.anenji_cfg_program_12_back_to_utility_voltage')|float(0) }} В инвертор переключит нагрузку на сеть.
+      - name: "ANENJI Program 13 Description"
+        unique_id: anenji_program_13_description
+        state: >-
+          Program 13 — порог сеть → АКБ: при {{ states('input_number.anenji_cfg_program_13_back_to_battery_voltage')|float(0) }} В инвертор вернет нагрузку на АКБ/солнце.
+      - name: "ANENJI Program 23 Description"
+        unique_id: anenji_program_23_description
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_23_overload_bypass') %}
+          {% if value == 'bYE' %}
+            Enable — при перегрузке → на сеть.
+          {% elif value == 'bYd' %}
+            Disable — перегрузка → отключение.
+          {% else %}
+            Выберите режим bypass при перегрузке.
+          {% endif %}

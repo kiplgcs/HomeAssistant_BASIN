@@ -230,606 +230,661 @@ views:
                 name: Максимальный ток зарядки от сети
               - entity: sensor.udalennyi_vykliuchatel_remote_switch
                 name: Удалённый выключатель
+      - type: grid
+        column_span: 3
+        cards:
           - type: heading
             heading: Ручная настройка Program-параметров
             icon: mdi:tune-variant
-          - type: vertical-stack
-            view_layout:
-              column_span: 3
-            cards:
-              - type: markdown
-                content: >-
-                  Ниже каждый параметр подписан по-русски. Справа у каждой
-                  строки есть компактная кнопка отправки — она применяет только
-                  параметр напротив.
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_select.anenji_cfg_program_01_output_source_priority
-                        name: >-
-                          Program 01 · Приоритет питания нагрузки — что
-                          использовать первым: сеть, солнце или АКБ
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_select.anenji_cfg_program_01_output_source_priority
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_number.anenji_cfg_program_02_max_charge_current
-                        name: Program 02 · Максимальный ток зарядки АКБ от PV и сети
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_number.anenji_cfg_program_02_max_charge_current
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_select.anenji_cfg_program_03_input_voltage_range
-                        name: >-
-                          Program 03 · Режим диапазона входного AC-напряжения
-                          (APL/UPS/GEN)
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_select.anenji_cfg_program_03_input_voltage_range
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_boolean.anenji_cfg_program_04_power_saving
-                        name: >-
-                          Program 04 · Энергосбережение — снижает потребление
-                          без нагрузки
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_boolean.anenji_cfg_program_04_power_saving
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_select.anenji_cfg_program_05_battery_type
-                        name: >-
-                          Program 05 · Тип аккумулятора — влияет на алгоритм
-                          зарядки
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_select.anenji_cfg_program_05_battery_type
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_select.anenji_cfg_program_06_charging_priority
-                        name: >-
-                          Program 06 · Приоритет зарядки — откуда заряжать АКБ в
-                          первую очередь
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_select.anenji_cfg_program_06_charging_priority
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_boolean.anenji_cfg_program_07_overload_restart
-                        name: Program 07 · Автоперезапуск после перегрузки выхода
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_boolean.anenji_cfg_program_07_overload_restart
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_boolean.anenji_cfg_program_08_overtemp_restart
-                        name: Program 08A · Автоперезапуск после перегрева
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_boolean.anenji_cfg_program_08_overtemp_restart
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_select.anenji_cfg_program_08_output_voltage
-                        name: >-
-                          Program 08B · Номинальное выходное напряжение
-                          инвертора
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_select.anenji_cfg_program_08_output_voltage
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_boolean.anenji_cfg_program_09_buzzer
-                        name: Program 09A · Звуковая сигнализация событий и ошибок
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_boolean.anenji_cfg_program_09_buzzer
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_select.anenji_cfg_program_09_output_frequency
-                        name: Program 09B · Номинальная выходная частота 50/60 Гц
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_select.anenji_cfg_program_09_output_frequency
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_boolean.anenji_cfg_program_10_back_to_grid_auto
-                        name: >-
-                          Program 10A · Автовозврат нагрузки на сеть при
-                          необходимости
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_boolean.anenji_cfg_program_10_back_to_grid_auto
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_number.anenji_cfg_program_11_max_ac_charge_current
-                        name: Program 11 · Максимальный ток зарядки АКБ от сети
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_number.anenji_cfg_program_11_max_ac_charge_current
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_number.anenji_cfg_program_12_back_to_utility_voltage
-                        name: >-
-                          Program 12 · Напряжение АКБ, при котором переходить на
-                          сеть
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_number.anenji_cfg_program_12_back_to_utility_voltage
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_number.anenji_cfg_program_13_back_to_battery_voltage
-                        name: >-
-                          Program 13 · Напряжение АКБ, при котором возвращаться
-                          с сети на батарею
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_number.anenji_cfg_program_13_back_to_battery_voltage
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_select.anenji_cfg_program_20_backlight_mode
-                        name: Program 20 · Режим подсветки LCD-экрана
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_select.anenji_cfg_program_20_backlight_mode
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_select.anenji_cfg_program_23_overload_bypass
-                        name: Program 23 · Обход нагрузки через сеть при перегрузке
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_select.anenji_cfg_program_23_overload_bypass
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_number.anenji_cfg_program_26_bulk_absorption_voltage
-                        name: Program 26 · Напряжение Bulk/Absorption заряда АКБ
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_number.anenji_cfg_program_26_bulk_absorption_voltage
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_number.anenji_cfg_program_27_float_voltage
-                        name: Program 27 · Поддерживающее Float-напряжение АКБ
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_number.anenji_cfg_program_27_float_voltage
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
-                        name: >-
-                          Program 29 · Нижний порог отключения по низкому
-                          DC-напряжению
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_select.anenji_cfg_program_32_cv_to_float_time_mode
-                        name: Program 32 · Время перехода из CV в Float при зарядке
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_select.anenji_cfg_program_32_cv_to_float_time_mode
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_boolean.anenji_cfg_program_33_equalization_enable
-                        name: Program 33 · Разрешение выравнивающего заряда АКБ
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_boolean.anenji_cfg_program_33_equalization_enable
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_number.anenji_cfg_program_34_equalization_voltage
-                        name: Program 34 · Напряжение выравнивающего заряда АКБ
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_number.anenji_cfg_program_34_equalization_voltage
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: input_number.anenji_cfg_program_35_equalization_time
-                        name: Program 35 · Длительность выравнивающего заряда
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: input_number.anenji_cfg_program_35_equalization_time
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_number.anenji_cfg_program_36_equalization_timeout
-                        name: >-
-                          Program 36 · Максимальный таймаут выравнивающего
-                          заряда
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_number.anenji_cfg_program_36_equalization_timeout
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_number.anenji_cfg_program_37_equalization_interval_days
-                        name: >-
-                          Program 37 · Интервал между циклами выравнивающего
-                          заряда
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_number.anenji_cfg_program_37_equalization_interval_days
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
-              - type: horizontal-stack
-                cards:
-                  - type: entities
-                    show_header_toggle: false
-                    entities:
-                      - entity: >-
-                          input_select.anenji_cfg_program_46_overcharge_protection_mode
-                        name: Program 46 · Защита по максимальному току разряда
-                  - type: button
-                    show_name: false
-                    show_state: false
-                    icon_height: 18px
-                    icon: mdi:check-bold
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      data:
-                        variables:
-                          target_entity_id: >-
-                            input_select.anenji_cfg_program_46_overcharge_protection_mode
-                      target:
-                        entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: markdown
+            grid_options:
+              columns: full
+            content: >-
+              Ниже каждый параметр подписан по-русски. Справа у каждой
+              строки есть компактная кнопка отправки — она применяет только
+              параметр напротив.
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_select.anenji_cfg_program_01_output_source_priority
+                name: >-
+                  Program 01 · Приоритет питания нагрузки — что
+                  использовать первым: сеть, солнце или АКБ
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_select.anenji_cfg_program_01_output_source_priority
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_number.anenji_cfg_program_02_max_charge_current
+                name: Program 02 · Максимальный ток зарядки АКБ от PV и сети
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_number.anenji_cfg_program_02_max_charge_current
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_select.anenji_cfg_program_03_input_voltage_range
+                name: >-
+                  Program 03 · Режим диапазона входного AC-напряжения
+                  (APL/UPS/GEN)
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_select.anenji_cfg_program_03_input_voltage_range
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_boolean.anenji_cfg_program_04_power_saving
+                name: >-
+                  Program 04 · Энергосбережение — снижает потребление
+                  без нагрузки
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_boolean.anenji_cfg_program_04_power_saving
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_select.anenji_cfg_program_05_battery_type
+                name: >-
+                  Program 05 · Тип аккумулятора — влияет на алгоритм
+                  зарядки
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_select.anenji_cfg_program_05_battery_type
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_select.anenji_cfg_program_06_charging_priority
+                name: >-
+                  Program 06 · Приоритет зарядки — откуда заряжать АКБ в
+                  первую очередь
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_select.anenji_cfg_program_06_charging_priority
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_boolean.anenji_cfg_program_07_overload_restart
+                name: Program 07 · Автоперезапуск после перегрузки выхода
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_boolean.anenji_cfg_program_07_overload_restart
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_boolean.anenji_cfg_program_08_overtemp_restart
+                name: Program 08A · Автоперезапуск после перегрева
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_boolean.anenji_cfg_program_08_overtemp_restart
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_select.anenji_cfg_program_08_output_voltage
+                name: >-
+                  Program 08B · Номинальное выходное напряжение
+                  инвертора
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_select.anenji_cfg_program_08_output_voltage
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_boolean.anenji_cfg_program_09_buzzer
+                name: Program 09A · Звуковая сигнализация событий и ошибок
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_boolean.anenji_cfg_program_09_buzzer
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_select.anenji_cfg_program_09_output_frequency
+                name: Program 09B · Номинальная выходная частота 50/60 Гц
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_select.anenji_cfg_program_09_output_frequency
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_boolean.anenji_cfg_program_10_back_to_grid_auto
+                name: >-
+                  Program 10A · Автовозврат нагрузки на сеть при
+                  необходимости
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_boolean.anenji_cfg_program_10_back_to_grid_auto
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_number.anenji_cfg_program_11_max_ac_charge_current
+                name: Program 11 · Максимальный ток зарядки АКБ от сети
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_number.anenji_cfg_program_11_max_ac_charge_current
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_number.anenji_cfg_program_12_back_to_utility_voltage
+                name: >-
+                  Program 12 · Напряжение АКБ, при котором переходить на
+                  сеть
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_number.anenji_cfg_program_12_back_to_utility_voltage
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_number.anenji_cfg_program_13_back_to_battery_voltage
+                name: >-
+                  Program 13 · Напряжение АКБ, при котором возвращаться
+                  с сети на батарею
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_number.anenji_cfg_program_13_back_to_battery_voltage
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_select.anenji_cfg_program_20_backlight_mode
+                name: Program 20 · Режим подсветки LCD-экрана
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_select.anenji_cfg_program_20_backlight_mode
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_select.anenji_cfg_program_23_overload_bypass
+                name: Program 23 · Обход нагрузки через сеть при перегрузке
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_select.anenji_cfg_program_23_overload_bypass
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_number.anenji_cfg_program_26_bulk_absorption_voltage
+                name: Program 26 · Напряжение Bulk/Absorption заряда АКБ
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_number.anenji_cfg_program_26_bulk_absorption_voltage
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_number.anenji_cfg_program_27_float_voltage
+                name: Program 27 · Поддерживающее Float-напряжение АКБ
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_number.anenji_cfg_program_27_float_voltage
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
+                name: >-
+                  Program 29 · Нижний порог отключения по низкому
+                  DC-напряжению
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_select.anenji_cfg_program_32_cv_to_float_time_mode
+                name: Program 32 · Время перехода из CV в Float при зарядке
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_select.anenji_cfg_program_32_cv_to_float_time_mode
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_boolean.anenji_cfg_program_33_equalization_enable
+                name: Program 33 · Разрешение выравнивающего заряда АКБ
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_boolean.anenji_cfg_program_33_equalization_enable
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_number.anenji_cfg_program_34_equalization_voltage
+                name: Program 34 · Напряжение выравнивающего заряда АКБ
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_number.anenji_cfg_program_34_equalization_voltage
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: input_number.anenji_cfg_program_35_equalization_time
+                name: Program 35 · Длительность выравнивающего заряда
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: input_number.anenji_cfg_program_35_equalization_time
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_number.anenji_cfg_program_36_equalization_timeout
+                name: >-
+                  Program 36 · Максимальный таймаут выравнивающего
+                  заряда
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_number.anenji_cfg_program_36_equalization_timeout
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_number.anenji_cfg_program_37_equalization_interval_days
+                name: >-
+                  Program 37 · Интервал между циклами выравнивающего
+                  заряда
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_number.anenji_cfg_program_37_equalization_interval_days
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            grid_options:
+              columns: 10
+            show_header_toggle: false
+            entities:
+              - entity: >-
+                  input_select.anenji_cfg_program_46_overcharge_protection_mode
+                name: Program 46 · Защита по максимальному току разряда
+          - type: button
+            grid_options:
+              columns: 2
+            show_name: false
+            show_state: false
+            icon_height: 18px
+            icon: mdi:check-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              data:
+                variables:
+                  target_entity_id: >-
+                    input_select.anenji_cfg_program_46_overcharge_protection_mode
+              target:
+                entity_id: script.anenji_inverter_write_single_config_to_modbus

@@ -305,7 +305,7 @@ automation:
 
 template:
   - sensor:
-      - name: "ANENJI Program 01 Description"
+      - name: "Program 01 · Описание режима"
         unique_id: anenji_program_01_description
         state: >-
           {% set value = states('input_select.anenji_cfg_program_01_output_source_priority') %}
@@ -322,7 +322,7 @@ template:
           {% else %}
             Выберите режим питания нагрузки.
           {% endif %}
-      - name: "ANENJI Program 03 Description"
+      - name: "Program 03 · Описание режима"
         unique_id: anenji_program_03_description
         state: >-
           {% set value = states('input_select.anenji_cfg_program_03_input_voltage_range') %}
@@ -335,7 +335,7 @@ template:
           {% else %}
             Выберите режим входного напряжения.
           {% endif %}
-      - name: "ANENJI Program 05 Description"
+      - name: "Program 05 · Описание режима"
         unique_id: anenji_program_05_description
         state: >-
           {% set value = states('input_select.anenji_cfg_program_05_battery_type') %}
@@ -348,7 +348,7 @@ template:
           {% else %}
             Выберите тип АКБ.
           {% endif %}
-      - name: "ANENJI Program 06 Description"
+      - name: "Program 06 · Описание режима"
         unique_id: anenji_program_06_description
         state: >-
           {% set value = states('input_select.anenji_cfg_program_06_charging_priority') %}
@@ -361,7 +361,7 @@ template:
           {% else %}
             Выберите приоритет зарядки.
           {% endif %}
-      - name: "ANENJI Program 09A Description"
+      - name: "Program 09A · Описание режима"
         unique_id: anenji_program_09a_description
         state: >-
           {% if is_state('input_boolean.anenji_cfg_program_09_buzzer', 'on') %}
@@ -369,7 +369,7 @@ template:
           {% else %}
             Off — без звука.
           {% endif %}
-      - name: "ANENJI Program 10A Description"
+      - name: "Program 10A · Описание режима"
         unique_id: anenji_program_10a_description
         state: >-
           {% if is_state('input_boolean.anenji_cfg_program_10_back_to_grid_auto', 'on') %}
@@ -377,7 +377,7 @@ template:
           {% else %}
             Manual — без авто перехода на сеть.
           {% endif %}
-      - name: "ANENJI Program 04 Description"
+      - name: "Program 04 · Описание режима"
         unique_id: anenji_program_04_description
         state: >-
           {% if is_state('input_boolean.anenji_cfg_program_04_power_saving', 'on') %}
@@ -385,7 +385,7 @@ template:
           {% else %}
             Выключено — выход постоянно активен, отклик максимальный.
           {% endif %}
-      - name: "ANENJI Program 07 Description"
+      - name: "Program 07 · Описание режима"
         unique_id: anenji_program_07_description
         state: >-
           {% if is_state('input_boolean.anenji_cfg_program_07_overload_restart', 'on') %}
@@ -393,7 +393,7 @@ template:
           {% else %}
             Выключено — после перегрузки потребуется ручное восстановление.
           {% endif %}
-      - name: "ANENJI Program 08A Description"
+      - name: "Program 08A · Описание режима"
         unique_id: anenji_program_08a_description
         state: >-
           {% if is_state('input_boolean.anenji_cfg_program_08_overtemp_restart', 'on') %}
@@ -401,23 +401,23 @@ template:
           {% else %}
             Выключено — после перегрева нужен ручной запуск.
           {% endif %}
-      - name: "ANENJI Program 08B Description"
+      - name: "Program 08B · Описание режима"
         unique_id: anenji_program_08b_description
         state: >-
           Номинальное выходное напряжение установлено на {{ states('input_select.anenji_cfg_program_08_output_voltage') }}.
-      - name: "ANENJI Program 09B Description"
+      - name: "Program 09B · Описание режима"
         unique_id: anenji_program_09b_description
         state: >-
           Выходная частота установлена на {{ states('input_select.anenji_cfg_program_09_output_frequency') }}.
-      - name: "ANENJI Program 12 Description"
+      - name: "Program 12 · Описание режима"
         unique_id: anenji_program_12_description
         state: >-
           Program 12 — порог АКБ → сеть: при {{ states('input_number.anenji_cfg_program_12_back_to_utility_voltage')|float(0) }} В инвертор переключит нагрузку на сеть.
-      - name: "ANENJI Program 13 Description"
+      - name: "Program 13 · Описание режима"
         unique_id: anenji_program_13_description
         state: >-
           Program 13 — порог сеть → АКБ: при {{ states('input_number.anenji_cfg_program_13_back_to_battery_voltage')|float(0) }} В инвертор вернет нагрузку на АКБ/солнце.
-      - name: "ANENJI Program 23 Description"
+      - name: "Program 23 · Описание режима"
         unique_id: anenji_program_23_description
         state: >-
           {% set value = states('input_select.anenji_cfg_program_23_overload_bypass') %}
@@ -428,7 +428,7 @@ template:
           {% else %}
             Выберите режим bypass при перегрузке.
           {% endif %}
-      - name: "ANENJI Program 20 Description"
+      - name: "Program 20 · Описание режима"
         unique_id: anenji_program_20_description
         state: >-
           {% set value = states('input_select.anenji_cfg_program_20_backlight_mode') %}
@@ -439,7 +439,7 @@ template:
           {% else %}
             Выберите режим подсветки LCD.
           {% endif %}
-      - name: "ANENJI Program 32 Description"
+      - name: "Program 32 · Описание режима"
         unique_id: anenji_program_32_description
         state: >-
           {% set value = states('input_select.anenji_cfg_program_32_cv_to_float_time_mode') %}
@@ -448,7 +448,7 @@ template:
           {% else %}
             Переход из CV в Float произойдет через {{ value }}.
           {% endif %}
-      - name: "ANENJI Program 33 Description"
+      - name: "Program 33 · Описание режима"
         unique_id: anenji_program_33_description
         state: >-
           {% if is_state('input_boolean.anenji_cfg_program_33_equalization_enable', 'on') %}
@@ -456,7 +456,7 @@ template:
           {% else %}
             Выключено — выравнивающий заряд запрещен.
           {% endif %}
-      - name: "ANENJI Program 46 Description"
+      - name: "Program 46 · Описание режима"
         unique_id: anenji_program_46_description
         state: >-
           {% set value = states('input_select.anenji_cfg_program_46_overcharge_protection_mode') %}

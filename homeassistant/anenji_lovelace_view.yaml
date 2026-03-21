@@ -247,7 +247,6 @@ views:
               - entity: input_select.anenji_cfg_program_01_output_source_priority
                 name: ''
               - entity: sensor.anenji_program_01_description
-                name: ​
               - type: button
                 name: ​
                 action_name: Отправить
@@ -288,7 +287,6 @@ views:
               - entity: input_select.anenji_cfg_program_03_input_voltage_range
                 name: ''
               - entity: sensor.anenji_program_03_description
-                name: ​
               - type: button
                 name: ​
                 action_name: Отправить
@@ -328,7 +326,6 @@ views:
               - entity: input_select.anenji_cfg_program_05_battery_type
                 name: ''
               - entity: sensor.anenji_program_05_description
-                name: ​
               - type: button
                 name: ​
                 action_name: Отправить
@@ -351,7 +348,6 @@ views:
               - entity: input_select.anenji_cfg_program_06_charging_priority
                 name: ''
               - entity: sensor.anenji_program_06_description
-                name: ​
               - type: button
                 name: ​
                 action_name: Отправить
@@ -385,6 +381,25 @@ views:
           - type: entities
             title: Program 08A — Автоперезапуск после перегрева
             show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:
@@ -404,6 +419,25 @@ views:
           - type: entities
             title: Program 08B — Номинальное выходное напряжение инвертора
             show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:
@@ -429,7 +463,6 @@ views:
               - entity: input_boolean.anenji_cfg_program_09_buzzer
                 name: ''
               - entity: sensor.anenji_program_09a_description
-                name: ​
               - type: button
                 name: ​
                 action_name: Отправить
@@ -469,7 +502,6 @@ views:
               - entity: input_boolean.anenji_cfg_program_10_back_to_grid_auto
                 name: ''
               - entity: sensor.anenji_program_10a_description
-                name: ​
               - type: button
                 name: ​
                 action_name: Отправить
@@ -509,7 +541,6 @@ views:
               - entity: input_number.anenji_cfg_program_12_back_to_utility_voltage
                 name: ''
               - entity: sensor.anenji_program_12_description
-                name: ​
               - type: button
                 name: ​
                 action_name: Отправить
@@ -533,7 +564,6 @@ views:
               - entity: input_number.anenji_cfg_program_13_back_to_battery_voltage
                 name: ''
               - entity: sensor.anenji_program_13_description
-                name: ​
               - type: button
                 name: ​
                 action_name: Отправить
@@ -574,7 +604,6 @@ views:
               - entity: input_select.anenji_cfg_program_23_overload_bypass
                 name: ''
               - entity: sensor.anenji_program_23_description
-                name: ​
               - type: button
                 name: ​
                 action_name: Отправить
@@ -589,6 +618,25 @@ views:
           - type: entities
             title: Program 26 — Напряжение Bulk/Absorption заряда АКБ
             show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:
@@ -609,6 +657,25 @@ views:
           - type: entities
             title: Program 27 — Поддерживающее Float-напряжение АКБ
             show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:
@@ -628,6 +695,25 @@ views:
           - type: entities
             title: Program 29 — Нижний порог отключения по низкому DC-напряжению
             show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:
@@ -647,6 +733,25 @@ views:
           - type: entities
             title: Program 32 — Время перехода из CV в Float при зарядке
             show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:
@@ -666,6 +771,25 @@ views:
           - type: entities
             title: Program 33 — Разрешение выравнивающего заряда АКБ
             show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:
@@ -685,6 +809,25 @@ views:
           - type: entities
             title: Program 34 — Напряжение выравнивающего заряда АКБ
             show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:
@@ -704,6 +847,25 @@ views:
           - type: entities
             title: Program 35 — Длительность выравнивающего заряда
             show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:
@@ -723,6 +885,25 @@ views:
           - type: entities
             title: Program 36 — Максимальный таймаут выравнивающего заряда
             show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:
@@ -742,6 +923,25 @@ views:
           - type: entities
             title: Program 37 — Интервал между циклами выравнивающего заряда
             show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:

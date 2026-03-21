@@ -246,7 +246,8 @@ views:
             entities:
               - entity: input_select.anenji_cfg_program_01_output_source_priority
                 name: ''
-              - entity: sensor.anenji_program_01_description
+              - entity: sensor.anenji_ui_program_01_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -267,6 +268,8 @@ views:
             entities:
               - entity: input_number.anenji_cfg_program_02_max_charge_current
                 name: ''
+              - entity: sensor.anenji_ui_program_02_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -286,7 +289,8 @@ views:
             entities:
               - entity: input_select.anenji_cfg_program_03_input_voltage_range
                 name: ''
-              - entity: sensor.anenji_program_03_description
+              - entity: sensor.anenji_ui_program_03_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -305,6 +309,8 @@ views:
               columns: 12
             entities:
               - entity: input_boolean.anenji_cfg_program_04_power_saving
+                name: ''
+              - entity: sensor.anenji_ui_program_04_description
                 name: ''
               - type: button
                 name: ​
@@ -325,7 +331,8 @@ views:
             entities:
               - entity: input_select.anenji_cfg_program_05_battery_type
                 name: ''
-              - entity: sensor.anenji_program_05_description
+              - entity: sensor.anenji_ui_program_05_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -347,7 +354,8 @@ views:
             entities:
               - entity: input_select.anenji_cfg_program_06_charging_priority
                 name: ''
-              - entity: sensor.anenji_program_06_description
+              - entity: sensor.anenji_ui_program_06_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -366,6 +374,8 @@ views:
               columns: 12
             entities:
               - entity: input_boolean.anenji_cfg_program_07_overload_restart
+                name: ''
+              - entity: sensor.anenji_ui_program_07_description
                 name: ''
               - type: button
                 name: ​
@@ -405,6 +415,8 @@ views:
             entities:
               - entity: input_boolean.anenji_cfg_program_08_overtemp_restart
                 name: ''
+              - entity: sensor.anenji_ui_program_08a_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -443,6 +455,8 @@ views:
             entities:
               - entity: input_select.anenji_cfg_program_08_output_voltage
                 name: ''
+              - entity: sensor.anenji_ui_program_08b_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -462,7 +476,8 @@ views:
             entities:
               - entity: input_boolean.anenji_cfg_program_09_buzzer
                 name: ''
-              - entity: sensor.anenji_program_09a_description
+              - entity: sensor.anenji_ui_program_09a_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -481,6 +496,8 @@ views:
               columns: 12
             entities:
               - entity: input_select.anenji_cfg_program_09_output_frequency
+                name: ''
+              - entity: sensor.anenji_ui_program_09b_description
                 name: ''
               - type: button
                 name: ​
@@ -501,7 +518,8 @@ views:
             entities:
               - entity: input_boolean.anenji_cfg_program_10_back_to_grid_auto
                 name: ''
-              - entity: sensor.anenji_program_10a_description
+              - entity: sensor.anenji_ui_program_10a_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -520,6 +538,8 @@ views:
               columns: 12
             entities:
               - entity: input_number.anenji_cfg_program_11_max_ac_charge_current
+                name: ''
+              - entity: sensor.anenji_ui_program_11_description
                 name: ''
               - type: button
                 name: ​
@@ -540,7 +560,8 @@ views:
             entities:
               - entity: input_number.anenji_cfg_program_12_back_to_utility_voltage
                 name: ''
-              - entity: sensor.anenji_program_12_description
+              - entity: sensor.anenji_ui_program_12_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -563,7 +584,8 @@ views:
             entities:
               - entity: input_number.anenji_cfg_program_13_back_to_battery_voltage
                 name: ''
-              - entity: sensor.anenji_program_13_description
+              - entity: sensor.anenji_ui_program_13_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -584,6 +606,8 @@ views:
             entities:
               - entity: input_select.anenji_cfg_program_20_backlight_mode
                 name: ''
+              - entity: sensor.anenji_ui_program_20_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -603,7 +627,8 @@ views:
             entities:
               - entity: input_select.anenji_cfg_program_23_overload_bypass
                 name: ''
-              - entity: sensor.anenji_program_23_description
+              - entity: sensor.anenji_ui_program_23_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -641,6 +666,8 @@ views:
               columns: 12
             entities:
               - entity: input_number.anenji_cfg_program_26_bulk_absorption_voltage
+                name: ''
+              - entity: sensor.anenji_ui_program_26_description
                 name: ''
               - type: button
                 name: ​
@@ -681,6 +708,8 @@ views:
             entities:
               - entity: input_number.anenji_cfg_program_27_float_voltage
                 name: ''
+              - entity: sensor.anenji_ui_program_27_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -718,6 +747,8 @@ views:
               columns: 12
             entities:
               - entity: input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
+                name: ''
+              - entity: sensor.anenji_ui_program_29_description
                 name: ''
               - type: button
                 name: ​
@@ -757,6 +788,8 @@ views:
             entities:
               - entity: input_select.anenji_cfg_program_32_cv_to_float_time_mode
                 name: ''
+              - entity: sensor.anenji_ui_program_32_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -794,6 +827,8 @@ views:
               columns: 12
             entities:
               - entity: input_boolean.anenji_cfg_program_33_equalization_enable
+                name: ''
+              - entity: sensor.anenji_ui_program_33_description
                 name: ''
               - type: button
                 name: ​
@@ -833,6 +868,8 @@ views:
             entities:
               - entity: input_number.anenji_cfg_program_34_equalization_voltage
                 name: ''
+              - entity: sensor.anenji_ui_program_34_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -870,6 +907,8 @@ views:
               columns: 12
             entities:
               - entity: input_number.anenji_cfg_program_35_equalization_time
+                name: ''
+              - entity: sensor.anenji_ui_program_35_description
                 name: ''
               - type: button
                 name: ​
@@ -909,6 +948,8 @@ views:
             entities:
               - entity: input_number.anenji_cfg_program_36_equalization_timeout
                 name: ''
+              - entity: sensor.anenji_ui_program_36_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -947,6 +988,8 @@ views:
             entities:
               - entity: input_number.anenji_cfg_program_37_equalization_interval_days
                 name: ''
+              - entity: sensor.anenji_ui_program_37_description
+                name: ''
               - type: button
                 name: ​
                 action_name: Отправить
@@ -966,6 +1009,8 @@ views:
               columns: 12
             entities:
               - entity: input_select.anenji_cfg_program_46_overcharge_protection_mode
+                name: ''
+              - entity: sensor.anenji_ui_program_46_description
                 name: ''
               - type: button
                 name: ​

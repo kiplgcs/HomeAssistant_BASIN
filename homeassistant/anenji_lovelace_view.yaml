@@ -247,9 +247,9 @@ views:
               - entity: input_select.anenji_cfg_program_01_output_source_priority
                 name: ''
               - entity: sensor.anenji_program_01_description
-                name: ''
+                name: ​
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -269,7 +269,7 @@ views:
               - entity: input_number.anenji_cfg_program_02_max_charge_current
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -288,9 +288,9 @@ views:
               - entity: input_select.anenji_cfg_program_03_input_voltage_range
                 name: ''
               - entity: sensor.anenji_program_03_description
-                name: ''
+                name: ​
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -309,7 +309,7 @@ views:
               - entity: input_boolean.anenji_cfg_program_04_power_saving
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -328,9 +328,9 @@ views:
               - entity: input_select.anenji_cfg_program_05_battery_type
                 name: ''
               - entity: sensor.anenji_program_05_description
-                name: ''
+                name: ​
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -351,9 +351,9 @@ views:
               - entity: input_select.anenji_cfg_program_06_charging_priority
                 name: ''
               - entity: sensor.anenji_program_06_description
-                name: ''
+                name: ​
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -372,7 +372,7 @@ views:
               - entity: input_boolean.anenji_cfg_program_07_overload_restart
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -391,7 +391,7 @@ views:
               - entity: input_boolean.anenji_cfg_program_08_overtemp_restart
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -410,7 +410,7 @@ views:
               - entity: input_select.anenji_cfg_program_08_output_voltage
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -429,9 +429,9 @@ views:
               - entity: input_boolean.anenji_cfg_program_09_buzzer
                 name: ''
               - entity: sensor.anenji_program_09a_description
-                name: ''
+                name: ​
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -450,7 +450,7 @@ views:
               - entity: input_select.anenji_cfg_program_09_output_frequency
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -469,9 +469,9 @@ views:
               - entity: input_boolean.anenji_cfg_program_10_back_to_grid_auto
                 name: ''
               - entity: sensor.anenji_program_10a_description
-                name: ''
+                name: ​
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -490,7 +490,7 @@ views:
               - entity: input_number.anenji_cfg_program_11_max_ac_charge_current
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -509,9 +509,9 @@ views:
               - entity: input_number.anenji_cfg_program_12_back_to_utility_voltage
                 name: ''
               - entity: sensor.anenji_program_12_description
-                name: ''
+                name: ​
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -533,9 +533,9 @@ views:
               - entity: input_number.anenji_cfg_program_13_back_to_battery_voltage
                 name: ''
               - entity: sensor.anenji_program_13_description
-                name: ''
+                name: ​
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -555,7 +555,7 @@ views:
               - entity: input_select.anenji_cfg_program_20_backlight_mode
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -574,9 +574,9 @@ views:
               - entity: input_select.anenji_cfg_program_23_overload_bypass
                 name: ''
               - entity: sensor.anenji_program_23_description
-                name: ''
+                name: ​
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -595,7 +595,7 @@ views:
               - entity: input_number.anenji_cfg_program_26_bulk_absorption_voltage
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -615,7 +615,7 @@ views:
               - entity: input_number.anenji_cfg_program_27_float_voltage
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -634,7 +634,7 @@ views:
               - entity: input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -653,7 +653,7 @@ views:
               - entity: input_select.anenji_cfg_program_32_cv_to_float_time_mode
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -672,7 +672,7 @@ views:
               - entity: input_boolean.anenji_cfg_program_33_equalization_enable
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -691,7 +691,7 @@ views:
               - entity: input_number.anenji_cfg_program_34_equalization_voltage
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -710,7 +710,7 @@ views:
               - entity: input_number.anenji_cfg_program_35_equalization_time
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -729,7 +729,7 @@ views:
               - entity: input_number.anenji_cfg_program_36_equalization_timeout
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -748,7 +748,7 @@ views:
               - entity: input_number.anenji_cfg_program_37_equalization_interval_days
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service
@@ -768,7 +768,7 @@ views:
               - entity: input_select.anenji_cfg_program_46_overcharge_protection_mode
                 name: ''
               - type: button
-                name: Отправить
+                name: ​
                 action_name: Отправить
                 tap_action:
                   action: call-service

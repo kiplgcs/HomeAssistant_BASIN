@@ -352,12 +352,12 @@ template:
         unique_id: anenji_program_06_description
         state: >-
           {% set value = states('input_select.anenji_cfg_program_06_charging_priority') %}
-          {% if value == 'Solar first' %}
-            CSO — сначала солнце, сеть при необходимости.
+           {% if value == 'Solar first' %}
+            Solar first — заряд в приоритете от солнца, сеть подключается при нехватке.
           {% elif value == 'Solar + Utility' %}
-            SNU — солнце + сеть одновременно.
+            Solar + Utility — заряд идет от солнца и сети одновременно.
           {% elif value == 'Solar only' %}
-            OSO — только солнце.
+            Solar only — заряд только от солнечных панелей.
           {% else %}
             Выберите приоритет зарядки.
           {% endif %}
@@ -377,6 +377,38 @@ template:
           {% else %}
             Manual — без авто перехода на сеть.
           {% endif %}
+      - name: "ANENJI Program 04 Description"
+        unique_id: anenji_program_04_description
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_04_power_saving', 'on') %}
+            Включено — инвертор снижает собственное потребление без нагрузки.
+          {% else %}
+            Выключено — выход постоянно активен, отклик максимальный.
+          {% endif %}
+      - name: "ANENJI Program 07 Description"
+        unique_id: anenji_program_07_description
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_07_overload_restart', 'on') %}
+            Включено — после перегрузки инвертор попробует запуститься снова.
+          {% else %}
+            Выключено — после перегрузки потребуется ручное восстановление.
+          {% endif %}
+      - name: "ANENJI Program 08A Description"
+        unique_id: anenji_program_08a_description
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_08_overtemp_restart', 'on') %}
+            Включено — после перегрева инвертор перезапустится автоматически.
+          {% else %}
+            Выключено — после перегрева нужен ручной запуск.
+          {% endif %}
+      - name: "ANENJI Program 08B Description"
+        unique_id: anenji_program_08b_description
+        state: >-
+          Номинальное выходное напряжение установлено на {{ states('input_select.anenji_cfg_program_08_output_voltage') }}.
+      - name: "ANENJI Program 09B Description"
+        unique_id: anenji_program_09b_description
+        state: >-
+          Выходная частота установлена на {{ states('input_select.anenji_cfg_program_09_output_frequency') }}.
       - name: "ANENJI Program 12 Description"
         unique_id: anenji_program_12_description
         state: >-
@@ -395,4 +427,41 @@ template:
             Disable — перегрузка → отключение.
           {% else %}
             Выберите режим bypass при перегрузке.
+          {% endif %}
+      - name: "ANENJI Program 20 Description"
+        unique_id: anenji_program_20_description
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_20_backlight_mode') %}
+          {% if value == 'LON' %}
+            LON — подсветка LCD всегда включена.
+          {% elif value == 'LOF' %}
+            LOF — подсветка LCD отключается автоматически.
+          {% else %}
+            Выберите режим подсветки LCD.
+          {% endif %}
+      - name: "ANENJI Program 32 Description"
+        unique_id: anenji_program_32_description
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_32_cv_to_float_time_mode') %}
+          {% if value == 'AUT' %}
+            AUT — время перехода из CV в Float выбирается автоматически.
+          {% else %}
+            Переход из CV в Float произойдет через {{ value }}.
+          {% endif %}
+      - name: "ANENJI Program 33 Description"
+        unique_id: anenji_program_33_description
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_33_equalization_enable', 'on') %}
+            Включено — разрешен выравнивающий заряд аккумулятора.
+          {% else %}
+            Выключено — выравнивающий заряд запрещен.
+          {% endif %}
+      - name: "ANENJI Program 46 Description"
+        unique_id: anenji_program_46_description
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_46_overcharge_protection_mode') %}
+          {% if value == 'OFF' %}
+            OFF — защита по максимальному току разряда отключена.
+          {% else %}
+            Защита ограничивает ток разряда на уровне {{ value }}.
           {% endif %}

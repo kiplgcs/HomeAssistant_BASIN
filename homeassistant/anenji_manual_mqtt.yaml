@@ -41,16 +41,20 @@ input_select:
     initial: "AnL"
   anenji_cfg_program_18_buzzer_mode:
     name: "Program 18 · Режим зуммера"
-    options: ["nd1", "nd2", "nd3", "nd4"]
-    initial: "nd4"
+    options: ["Mute", "Source/Warn/Fault", "Warn/Fault", "Fault only"]
+    initial: "Fault only"
   anenji_cfg_program_19_screen_return_mode:
     name: "Program 19 · Возврат экрана"
-    options: ["CSP", "bEP"]
-    initial: "CSP"
+    options: ["Оставаться на текущем экране", "Автовозврат через 1 минуту"]
+    initial: "Оставаться на текущем экране"
   anenji_cfg_program_20_backlight_mode:
     name: "Program 20 · Подсветка"
     options: ["LON", "LOF"]
     initial: "LON"
+  anenji_cfg_program_25_modbus_id_mode:
+    name: "Program 25 · Modbus ID (режим применения)"
+    options: ["Только подготовить значение", "Требует отдельного подтверждения"]
+    initial: "Только подготовить значение"
   anenji_cfg_program_23_overload_bypass:
     name: "Program 23 · Обход при перегрузке"
     options: ["bYd", "bYE"]
@@ -85,6 +89,10 @@ input_boolean:
     name: "Program 33 · Выравнивание батареи"
   anenji_cfg_program_39_force_equalization:
     name: "Program 39 · Принудительное выравнивание"
+  anenji_cfg_program_41_lithium_auto_activation:
+    name: "Program 41 · Автоактивация литиевой АКБ"
+  anenji_cfg_program_42_lithium_manual_activation:
+    name: "Program 42 · Ручная активация литиевой АКБ"
   anenji_cfg_program_44_bms_control_enable:
     name: "Program 44 · Контроль BMS"
 
@@ -166,6 +174,27 @@ input_number:
     step: 1
     mode: box
     initial: 30
+  anenji_cfg_program_43_soc_back_to_utility:
+    name: "Program 43 · SOC перехода на сеть, %"
+    min: 20
+    max: 50
+    step: 1
+    mode: box
+    initial: 30
+  anenji_cfg_program_44_soc_back_to_battery:
+    name: "Program 44 · SOC возврата на батарею, %"
+    min: 60
+    max: 100
+    step: 1
+    mode: box
+    initial: 80
+  anenji_cfg_program_45_low_dc_cutoff_soc:
+    name: "Program 45 · Нижний порог отключения по SOC, %"
+    min: 3
+    max: 30
+    step: 1
+    mode: box
+    initial: 10
   anenji_cfg_program_41_bms_charge_voltage:
     name: "Program 41 · BMS напряжение зарядки, V"
     min: 40
@@ -261,6 +290,10 @@ script:
           'input_number.anenji_cfg_program_35_equalization_time': {'program': 35, 'address': 335, 'value': states('input_number.anenji_cfg_program_35_equalization_time')|int(0)},
           'input_number.anenji_cfg_program_36_equalization_timeout': {'program': 36, 'address': 336, 'value': states('input_number.anenji_cfg_program_36_equalization_timeout')|int(0)},
           'input_number.anenji_cfg_program_37_equalization_interval_days': {'program': 37, 'address': 337, 'value': states('input_number.anenji_cfg_program_37_equalization_interval_days')|int(0)},
+          'input_boolean.anenji_cfg_program_39_force_equalization': {'program': 39, 'address': 425, 'value': 1 if is_state('input_boolean.anenji_cfg_program_39_force_equalization', 'on') else 0},
+          'input_number.anenji_cfg_program_43_soc_back_to_utility': {'program': 43, 'address': 341, 'value': states('input_number.anenji_cfg_program_43_soc_back_to_utility')|int(0)},
+          'input_number.anenji_cfg_program_44_soc_back_to_battery': {'program': 44, 'address': 342, 'value': states('input_number.anenji_cfg_program_44_soc_back_to_battery')|int(0)},
+          'input_number.anenji_cfg_program_45_low_dc_cutoff_soc': {'program': 45, 'address': 343, 'value': states('input_number.anenji_cfg_program_45_low_dc_cutoff_soc')|int(0)},
           'input_select.anenji_cfg_program_46_overcharge_protection_mode': {'program': 46, 'address': 351, 'value': 0 if states('input_select.anenji_cfg_program_46_overcharge_protection_mode') == 'OFF' else states('input_select.anenji_cfg_program_46_overcharge_protection_mode')|replace('A','')|int(0)}
         } }}
       selected: >-
@@ -433,6 +466,61 @@ template:
         name: "ANENJI Program 13 Description"
         state: >-
           Когда напряжение АКБ поднимется до {{ states('input_number.anenji_cfg_program_13_back_to_battery_voltage')|float(0) }} В, инвертор вернёт нагрузку с сети обратно на солнце/АКБ.
+      - default_entity_id: sensor.anenji_ui_program_18_description
+        name: "ANENJI Program 18 Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_18_buzzer_mode') %}
+          {% if value == 'Mute' %}
+            Зуммер полностью отключён — инвертор не будет подавать звуковые сигналы ни при смене источника, ни при предупреждениях, ни при авариях.
+          {% elif value == 'Source/Warn/Fault' %}
+            Звук будет подаваться при смене входного источника, а также при предупреждениях и авариях.
+          {% elif value == 'Warn/Fault' %}
+            Зуммер будет срабатывать только при предупреждениях и авариях.
+          {% elif value == 'Fault only' %}
+            Звуковое оповещение останется только для аварийных состояний.
+          {% else %}
+            Выберите подходящий режим звуковой сигнализации инвертора.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_19_description
+        name: "ANENJI Program 19 Description"
+        state: >-
+          {% if is_state('input_select.anenji_cfg_program_19_screen_return_mode', 'Автовозврат через 1 минуту') %}
+            LCD автоматически вернётся на главный экран примерно через 1 минуту бездействия.
+          {% else %}
+            Инвертор останется на текущем экране до ручного переключения.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_25_description
+        name: "ANENJI Program 25 Description"
+        state: >-
+          Осторожно: Modbus ID влияет на доступность устройства в шине RS485/Modbus. Перед изменением убедитесь, что мастер и все автоматизации будут опрашивать новый адрес. Текущее подготовленное значение: {{ states('input_number.anenji_cfg_program_25_modbus_id')|int(1) }}.
+      - default_entity_id: sensor.anenji_ui_program_39_description
+        name: "ANENJI Program 39 Description"
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_39_force_equalization', 'on') %}
+            Команда немедленного запуска equalization подготовлена. Используйте её с осторожностью: обычно это актуально для обслуживаемых свинцовых АКБ и часто нежелательно для литиевых батарей.
+          {% else %}
+            Немедленный запуск equalization отключён. Для литиевых АКБ этот режим обычно не используется.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_41_description
+        name: "ANENJI Program 41 Description"
+        state: >-
+          TODO: подтвердить регистр Program 41 для вашей ревизии прошивки. По задаче это автоактивация литиевой батареи; helper добавлен как заготовка без привязки записи в Modbus, чтобы не писать в неподтверждённый регистр.
+      - default_entity_id: sensor.anenji_ui_program_42_description
+        name: "ANENJI Program 42 Description"
+        state: >-
+          TODO: подтвердить регистр Program 42 для вашей ревизии прошивки. По задаче это ручная активация литиевой батареи; helper добавлен как заготовка без привязки записи в Modbus, чтобы не писать в неподтверждённый регистр.
+      - default_entity_id: sensor.anenji_ui_program_43_description
+        name: "ANENJI Program 43 Description"
+        state: >-
+          При достижении {{ states('input_number.anenji_cfg_program_43_soc_back_to_utility')|int(0) }}% SOC инвертор может вернуть нагрузку на сеть/utility.
+      - default_entity_id: sensor.anenji_ui_program_44_description
+        name: "ANENJI Program 44 Description"
+        state: >-
+          Когда заряд АКБ восстановится до {{ states('input_number.anenji_cfg_program_44_soc_back_to_battery')|int(0) }}% SOC, инвертор сможет вернуться к питанию от батареи/солнца.
+      - default_entity_id: sensor.anenji_ui_program_45_description
+        name: "ANENJI Program 45 Description"
+        state: >-
+          При снижении SOC до {{ states('input_number.anenji_cfg_program_45_low_dc_cutoff_soc')|int(0) }}% инвертор отключит разряд по SOC для защиты батареи.
       - default_entity_id: sensor.anenji_ui_program_20_description
         name: "ANENJI Program 20 Description"
         state: >-

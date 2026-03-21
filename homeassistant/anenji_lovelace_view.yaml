@@ -208,7 +208,7 @@ views:
               - entity: sensor.kod_preduprezhdenii_bitami_warning_bitmask_masked
                 name: Код предупреждений (битовая маска)
               - entity: sensor.maska_preduprezhdenii_warning_mask_i
-            name: Маска предупреждений
+                name: Маска предупреждений
           - type: entities
             title: Параметры инвертора
             show_header_toggle: false
@@ -1024,3 +1024,264 @@ views:
                         input_select.anenji_cfg_program_46_overcharge_protection_mode
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: heading
+            heading: Доп. ручные настройки
+            icon: mdi:tune
+          - type: markdown
+            content: >
+              Дополнительные Program-параметры добавлены в том же паттерне
+              ручной записи через
+              `script.anenji_inverter_write_single_config_to_modbus`.
+
+
+              > Примечание: приоритет источника зарядки уже выведен выше в
+              существующих карточках и отдельно не дублируется.
+          - type: entities
+            title: Program 18 — Режим зуммера / звуковой сигнализации
+            show_header_toggle: false
+            grid_options:
+              columns: 12
+            entities:
+              - entity: input_select.anenji_cfg_program_18_buzzer_mode
+                name: ''
+              - entity: sensor.anenji_ui_program_18_description
+                name: ''
+              - type: button
+                name: ​
+                action_name: Отправить
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    variables:
+                      target_entity_id: input_select.anenji_cfg_program_18_buzzer_mode
+                  target:
+                    entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            title: Program 19 — Автовозврат LCD на главный экран
+            show_header_toggle: false
+            grid_options:
+              columns: 12
+            entities:
+              - entity: input_select.anenji_cfg_program_19_screen_return_mode
+                name: ''
+              - entity: sensor.anenji_ui_program_19_description
+                name: ''
+              - type: button
+                name: ​
+                action_name: Отправить
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    variables:
+                      target_entity_id: input_select.anenji_cfg_program_19_screen_return_mode
+                  target:
+                    entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            title: Program 25 — Modbus ID · Осторожно / Сервисный параметр
+            show_header_toggle: false
+            grid_options:
+              columns: 12
+            entities:
+              - entity: input_number.anenji_cfg_program_25_modbus_id
+                name: Новый Modbus ID
+              - entity: sensor.anenji_ui_program_25_description
+                name: ''
+              - entity: input_select.anenji_cfg_program_25_modbus_id_mode
+                name: Режим применения
+          - type: entities
+            title: Program 39 — Немедленный запуск equalization · Осторожно
+            show_header_toggle: false
+            grid_options:
+              columns: 12
+            entities:
+              - entity: input_boolean.anenji_cfg_program_39_force_equalization
+                name: ''
+              - entity: sensor.anenji_ui_program_39_description
+                name: ''
+              - type: button
+                name: ​
+                action_name: Отправить
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    variables:
+                      target_entity_id: input_boolean.anenji_cfg_program_39_force_equalization
+                  target:
+                    entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            title: Program 41 — Автоактивация литиевой батареи
+            show_header_toggle: false
+            grid_options:
+              columns: 12
+            entities:
+              - entity: input_boolean.anenji_cfg_program_41_lithium_auto_activation
+                name: Подготовить флаг
+              - entity: sensor.anenji_ui_program_41_description
+                name: ''
+          - type: entities
+            title: Program 42 — Ручная активация литиевой батареи
+            show_header_toggle: false
+            grid_options:
+              columns: 12
+            entities:
+              - entity: input_boolean.anenji_cfg_program_42_lithium_manual_activation
+                name: Подготовить флаг
+              - entity: sensor.anenji_ui_program_42_description
+                name: ''
+          - type: entities
+            title: Program 43 — SOC перехода на сеть
+            show_header_toggle: false
+            grid_options:
+              columns: 12
+            entities:
+              - entity: input_number.anenji_cfg_program_43_soc_back_to_utility
+                name: ''
+              - entity: sensor.anenji_ui_program_43_description
+                name: ''
+              - type: button
+                name: ​
+                action_name: Отправить
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    variables:
+                      target_entity_id: input_number.anenji_cfg_program_43_soc_back_to_utility
+                  target:
+                    entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            title: Program 44 — SOC возврата на батарею
+            show_header_toggle: false
+            grid_options:
+              columns: 12
+            entities:
+              - entity: input_number.anenji_cfg_program_44_soc_back_to_battery
+                name: ''
+              - entity: sensor.anenji_ui_program_44_description
+                name: ''
+              - type: button
+                name: ​
+                action_name: Отправить
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    variables:
+                      target_entity_id: input_number.anenji_cfg_program_44_soc_back_to_battery
+                  target:
+                    entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            title: Program 45 — Нижний порог отключения по SOC
+            show_header_toggle: false
+            grid_options:
+              columns: 12
+            entities:
+              - entity: input_number.anenji_cfg_program_45_low_dc_cutoff_soc
+                name: ''
+              - entity: sensor.anenji_ui_program_45_description
+                name: ''
+              - type: button
+                name: ​
+                action_name: Отправить
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    variables:
+                      target_entity_id: input_number.anenji_cfg_program_45_low_dc_cutoff_soc
+                  target:
+                    entity_id: script.anenji_inverter_write_single_config_to_modbus
+      - type: grid
+        column_span: 3
+        columns: 2
+        square: false
+        cards:
+          - type: heading
+            heading: Сервис и диагностика
+            icon: mdi:stethoscope
+          - type: entities
+            title: Загрузка и паспортные данные
+            show_header_toggle: false
+            entities:
+              - entity: sensor.nagruzka_load_percentage
+                name: Загрузка, %
+              - entity: sensor.nominalnaia_moshchnost_rated_power
+                name: Номинальная мощность
+              - entity: sensor.kolichestvo_iacheek_rated_cells_j
+                name: Номинальное число ячеек
+          - type: gauge
+            name: Загрузка нагрузки
+            entity: sensor.nagruzka_load_percentage
+            min: 0
+            max: 100
+            unit: '%'
+            severity:
+              green: 1
+              yellow: 50
+              red: 80
+          - type: entities
+            title: Сервисные регистры и режимы
+            show_header_toggle: false
+            entities:
+              - entity: sensor.maska_preduprezhdenii_warning_mask_i
+                name: Маска предупреждений
+              - entity: sensor.sukhoi_kontakt_dry_contact
+                name: Режим dry contact
+              - entity: sensor.rezhim_zapuska_boot_mode
+                name: Режим запуска · Сервисный параметр
+              - entity: sensor.udalennyi_vykliuchatel_remote_switch
+                name: Удалённый выключатель
+          - type: markdown
+            content: >
+              Диагностические битовые маски показаны как исходные значения.
+
+
+              TODO: добавить template-сенсоры с расшифровкой `warning mask` и
+              `fault bitmask` по битам для человекочитаемой диагностики.
+          - type: entities
+            title: Журнал ошибок и аварийные записи
+            show_header_toggle: false
+            entities:
+              - entity: sensor.info_khranilishcha_oshibok_fault_record_storage_info
+                name: Инфо хранилища ошибок
+          - type: markdown
+            content: >
+              TODO: `Program version`, `Last fault record` и `Run log`
+              подтверждены документацией, но в текущей конфигурации ещё не
+              созданы как сущности Home Assistant.
+      - type: grid
+        column_span: 3
+        columns: 2
+        square: false
+        cards:
+          - type: heading
+            heading: Lithium / BMS
+            icon: mdi:battery-heart-variant
+          - type: entities
+            title: Литиевая батарея / ограничения BMS
+            show_header_toggle: false
+            entities:
+              - entity: sensor.zariad_akb_battery_soc
+                name: SOC батареи
+              - entity: sensor.maks_napriazhenie_zariadki_maximum_charge_voltage_b
+                name: Максимальное напряжение зарядки
+              - entity: sensor.maks_tok_zariadki_maximum_charge_current_g
+                name: Максимальный ток зарядки
+          - type: entities
+            title: SOC-уставки для lithium/BMS
+            show_header_toggle: false
+            entities:
+              - entity: sensor.soc_zashchita_v_seti_mains_discharge_soc_protect_k
+                name: Текущий порог перехода на сеть (Program 43)
+              - entity: sensor.soc_vosstanovlenie_v_seti_mains_discharge_soc_recovery
+                name: Текущий порог возврата на батарею (Program 44)
+              - entity: sensor.soc_zashchita_off_grid_off_grid_discharge_soc_protect
+                name: Текущий нижний порог отключения по SOC (Program 45)
+          - type: markdown
+            content: >
+              Блок логически отделён: если BMS-сущности `charge forbidden` /
+              `discharge forbidden` ещё не заведены, здесь оставлены точечные
+              TODO без выдумывания `entity_id`.

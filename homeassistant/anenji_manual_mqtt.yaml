@@ -288,7 +288,8 @@ script:
           hub: ANENJI_6200W
           slave: 1
           address: "{{ selected.address }}"
-          value: "{{ [selected.value] }}"
+          value: "{{ selected.value | int }}"
+      - delay: "00:00:01"
       - service: input_text.set_value
         target:
           entity_id: input_text.anenji_cfg_last_published_payload

@@ -254,6 +254,41 @@ script:
       - service: input_boolean.turn_on
         target:
           entity_id: input_boolean.anenji_cfg_sync_from_inverter_active
+      - if:
+          - condition: template
+            value_template: >-
+              {{ states('sensor.maks_tok_zariadki_maximum_charge_current_g') not in ['unknown', 'unavailable', 'none', ''] }}
+        then:
+          - service: input_number.set_value
+            target:
+              entity_id: input_number.anenji_cfg_program_02_max_charge_current
+            data:
+              value: "{{ states('sensor.maks_tok_zariadki_maximum_charge_current_g')|float(0) }}"
+      - if:
+          - condition: template
+            value_template: >-
+              {{ states('sensor.maks_tok_zariadki_ot_seti_maximum_mains_charge_current_h') not in ['unknown', 'unavailable', 'none', ''] }}
+        then:
+          - service: input_number.set_value
+            target:
+              entity_id: input_number.anenji_cfg_program_11_max_ac_charge_current
+            data:
+              value: "{{ states('sensor.maks_tok_zariadki_ot_seti_maximum_mains_charge_current_h')|float(0) }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.anenji_cfg_last_received_payload
+        data:
+          value: >-
+            {{
+              {
+                "source": "modbus_sync",
+                "program_02": states('sensor.maks_tok_zariadki_maximum_charge_current_g'),
+                "program_11": states('sensor.maks_tok_zariadki_ot_seti_maximum_mains_charge_current_h')
+              } | tojson
+            }}
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.anenji_cfg_sync_from_inverter_active
   anenji_inverter_write_single_config_to_modbus:
     alias: "ANENJI: Записать в Modbus выбранный параметр формы"
     mode: queued

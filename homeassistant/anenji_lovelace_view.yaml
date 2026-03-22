@@ -6,109 +6,118 @@ views:
     max_columns: 3
     sections:
       - type: grid
+        column_span: 3
+        columns: 12
+        square: false
         cards:
-          - type: heading
-            heading: Солнечная электростанция ANENJI 6200 Вт
-            heading_style: title
-            icon: mdi:solar-power-variant
-          - type: markdown
-            content: |
-              **Сводка состояния**
-          - type: grid
-            columns: 4
-            square: false
-            cards:
-              - type: tile
-                entity: sensor.moshchnost_pv_pv_power
-                name: Мощность солнечных панелей
-                icon: mdi:solar-power
-                color: amber
-              - type: tile
-                entity: sensor.moshchnost_nagruzki_load_power
-                name: Мощность нагрузки
-                icon: mdi:home-lightning-bolt
-                color: blue
-              - type: tile
-                entity: sensor.moshchnost_seti_grid_power
-                name: Мощность сети
-                icon: mdi:transmission-tower
-                color: cyan
-              - type: tile
-                entity: sensor.zariad_akb_battery_soc
-                name: Степень заряда аккумулятора
-                icon: mdi:battery-high
-                color: green
-          - type: entities
-            title: Потоки энергии и режим работы
-            show_header_toggle: false
-            entities:
-              - entity: sensor.moshchnost_pv_pv_power
-                name: Солнечные панели — суммарная мощность
-              - entity: sensor.anenji_flow_pv_to_load
-                name: Поток от солнечных панелей к нагрузке
-              - entity: sensor.anenji_flow_pv_to_battery
-                name: Поток от солнечных панелей к аккумулятору
-              - type: section
-                label: Взаимодействие с сетью
-              - entity: sensor.moshchnost_seti_grid_power
-                name: Сеть — суммарная мощность
-              - entity: sensor.anenji_flow_grid_to_load
-                name: Поток от сети к нагрузке
-              - entity: sensor.anenji_flow_grid_to_battery
-                name: Поток от сети к аккумулятору
-              - type: section
-                label: Аккумулятор
-              - entity: sensor.anenji_flow_battery_power_signed
-                name: Аккумулятор — знаковая мощность
-              - entity: sensor.anenji_flow_battery_to_load
-                name: Поток от аккумулятора к нагрузке
-              - entity: sensor.zariad_akb_battery_soc
-                name: Степень заряда аккумулятора
-              - type: section
-                label: Состояние инвертора
-              - entity: sensor.rezhim_raboty_working_mode
-                name: Режим работы (код)
-              - entity: sensor.anenji_working_mode_text
-                name: Режим работы (текстовое описание)
-              - entity: sensor.potoki_energii_power_flow_status
-                name: Состояние потоков энергии (код)
-          - type: grid
-            columns: 2
-            square: false
-            cards:
-              - type: gauge
-                name: Мощность солнечных панелей
-                entity: sensor.moshchnost_pv_pv_power
-                min: 0
-                max: 6200
-                unit: Вт
-                severity:
-                  green: 1
-                  yellow: 2500
-                  red: 5000
-              - type: gauge
-                name: Мощность нагрузки
-                entity: sensor.moshchnost_nagruzki_load_power
-                min: 0
-                max: 6200
-                unit: Вт
-                severity:
-                  green: 1
-                  yellow: 2500
-                  red: 5000
-              - type: gauge
-                name: Мощность сети
-                entity: sensor.moshchnost_seti_grid_power
-                min: -6200
-                max: 6200
-                unit: Вт
-              - type: gauge
-                name: Мощность аккумулятора
-                entity: sensor.anenji_flow_battery_power_signed
-                min: -6200
-                max: 6200
-                unit: Вт
+          - type: gauge
+            name: Солнечные панели
+            entity: sensor.moshchnost_pv_pv_power
+            min: 0
+            max: 6200
+            unit: Вт
+            needle: true
+            grid_options:
+              columns: 3
+            severity:
+              green: 1
+              yellow: 2500
+              red: 5000
+            card_mod:
+              style: |
+                ha-card {
+                  min-height: 360px;
+                  background: linear-gradient(180deg, rgba(255, 193, 7, 0.18), rgba(18, 18, 18, 0.98));
+                  border: 1px solid rgba(255, 193, 7, 0.28);
+                  border-radius: 24px;
+                  padding: 28px 24px 18px;
+                }
+          - type: gauge
+            name: Сеть
+            entity: sensor.moshchnost_seti_grid_power
+            min: -6200
+            max: 6200
+            unit: Вт
+            needle: true
+            grid_options:
+              columns: 3
+            severity:
+              green: 0
+              yellow: 2500
+              red: 5000
+            card_mod:
+              style: |
+                ha-card {
+                  min-height: 360px;
+                  background: linear-gradient(180deg, rgba(3, 169, 244, 0.16), rgba(18, 18, 18, 0.98));
+                  border: 1px solid rgba(3, 169, 244, 0.26);
+                  border-radius: 24px;
+                  padding: 28px 24px 18px;
+                }
+          - type: gauge
+            name: Нагрузка
+            entity: sensor.moshchnost_nagruzki_load_power
+            min: 0
+            max: 6200
+            unit: Вт
+            needle: true
+            grid_options:
+              columns: 3
+            severity:
+              green: 1
+              yellow: 2500
+              red: 5000
+            card_mod:
+              style: |
+                ha-card {
+                  min-height: 360px;
+                  background: linear-gradient(180deg, rgba(76, 175, 80, 0.16), rgba(18, 18, 18, 0.98));
+                  border: 1px solid rgba(76, 175, 80, 0.26);
+                  border-radius: 24px;
+                  padding: 28px 24px 18px;
+                }
+          - type: gauge
+            name: Аккумулятор
+            entity: sensor.anenji_flow_battery_power_signed
+            min: -6200
+            max: 6200
+            unit: Вт
+            needle: true
+            grid_options:
+              columns: 3
+            severity:
+              green: 0
+              yellow: 2500
+              red: 5000
+            card_mod:
+              style: |
+                ha-card {
+                  min-height: 360px;
+                  background: linear-gradient(180deg, rgba(33, 150, 243, 0.18), rgba(18, 18, 18, 0.98));
+                  border: 1px solid rgba(33, 150, 243, 0.28);
+                  border-radius: 24px;
+                  padding: 28px 24px 18px;
+                }
+      - type: grid
+        column_span: 3
+        columns: 3
+        square: false
+        cards:
           - type: history-graph
+            grid_options:
+              columns: 12
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 22px;
+                  padding: 8px;
+                  background: linear-gradient(180deg, rgba(33, 33, 33, 0.96), rgba(18, 18, 18, 1));
+                  border: 1px solid rgba(255, 255, 255, 0.08);
+                }
+                .card-header {
+                  font-size: 1.5rem;
+                  font-weight: 700;
+                }
             title: История мощностей за 24 часа
             hours_to_show: 24
             refresh_interval: 30
@@ -121,21 +130,6 @@ views:
                 name: Сеть
               - entity: sensor.anenji_flow_battery_power_signed
                 name: Аккумулятор
-          - type: statistics-graph
-            title: Статистика мощности нагрузки (24 часа)
-            chart_type: line
-            days_to_show: 1
-            stat_types:
-              - mean
-              - max
-            entities:
-              - sensor.moshchnost_nagruzki_load_power
-      - type: grid
-        column_span: 2
-        cards:
-          - type: heading
-            heading: Подробная телеметрия
-            icon: mdi:chart-line
           - type: entities
             title: Солнечные панели
             show_header_toggle: false
@@ -199,16 +193,6 @@ views:
                 name: Температура преобразователя постоянного тока
               - entity: sensor.temperatura_invertora_inverter_temperature
                 name: Температура инвертора
-          - type: entities
-            title: Ошибки и предупреждения
-            show_header_toggle: false
-            entities:
-              - entity: sensor.kod_avarii_bitami_fault_bitmask
-                name: Код аварий (битовая маска)
-              - entity: sensor.kod_preduprezhdenii_bitami_warning_bitmask_masked
-                name: Код предупреждений (битовая маска)
-              - entity: sensor.maska_preduprezhdenii_warning_mask_i
-                name: Маска предупреждений
           - type: entities
             title: Параметры инвертора
             show_header_toggle: false

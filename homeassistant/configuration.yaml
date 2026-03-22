@@ -263,7 +263,7 @@ modbus:
         address: 201
         input_type: holding
         data_type: uint16
-        scan_interval: 15
+        scan_interval: 30
 
       - name: "Заряд АКБ % (Battery SOC)"
         slave: 1
@@ -271,14 +271,14 @@ modbus:
         input_type: holding
         data_type: uint16
         unit_of_measurement: "%"
-        scan_interval: 15
+        scan_interval: 30
 
       - name: "Потоки энергии (Power Flow Status)"
         slave: 1
         address: 231
         input_type: holding
         data_type: uint16
-        scan_interval: 15
+        scan_interval: 10
 
 
       # =========================
@@ -293,7 +293,7 @@ modbus:
         unit_of_measurement: "V"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Частота сети (Grid Frequency)"
         slave: 1
@@ -303,7 +303,7 @@ modbus:
         unit_of_measurement: "Hz"
         scale: 0.01
         precision: 2
-        scan_interval: 15
+        scan_interval: 30
 
       - name: "Мощность сети (Grid Power)"
         slave: 1
@@ -311,7 +311,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 3
 
 
       # =========================
@@ -326,7 +326,7 @@ modbus:
         unit_of_measurement: "V"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Ток инвертора (Inverter Current)"
         slave: 1
@@ -336,7 +336,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Частота инвертора (Inverter Frequency)"
         slave: 1
@@ -346,7 +346,7 @@ modbus:
         unit_of_measurement: "Hz"
         scale: 0.01
         precision: 2
-        scan_interval: 15
+        scan_interval: 30
 
       - name: "Мощность инвертора (Inverter Power)"
         slave: 1
@@ -362,7 +362,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 10
 
       - name: "Выходное напряжение (Output Voltage)"
         slave: 1
@@ -372,7 +372,7 @@ modbus:
         unit_of_measurement: "V"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Выходной ток (Output Current)"
         slave: 1
@@ -382,7 +382,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Выходная частота (Output Frequency)"
         slave: 1
@@ -392,7 +392,7 @@ modbus:
         unit_of_measurement: "Hz"
         scale: 0.01
         precision: 2
-        scan_interval: 15
+        scan_interval: 30
 
       - name: "Мощность нагрузки (Load Power)"
         slave: 1
@@ -400,7 +400,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 3
 
       - name: "Полная мощность нагрузки (Load Apparent Power)"
         slave: 1
@@ -408,7 +408,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "VA"
-        scan_interval: 5
+        scan_interval: 15
 
 
       # =========================
@@ -423,7 +423,7 @@ modbus:
         unit_of_measurement: "V"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Ток АКБ (Battery Current)"
         slave: 1
@@ -433,7 +433,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 10
 
       - name: "Мощность АКБ (Battery Power)"
         slave: 1
@@ -441,7 +441,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 3
 
       - name: "Ток АКБ знак ± (Battery Current Signed, filtered)"
         slave: 1
@@ -451,7 +451,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 10
 
       - name: "Ток зарядки от инвертора (Inverter Charging Current)"
         slave: 1
@@ -461,7 +461,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
 
       # =========================
@@ -476,7 +476,7 @@ modbus:
         unit_of_measurement: "V"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Ток PV (PV Current)"
         slave: 1
@@ -486,7 +486,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 10
 
       - name: "Мощность PV (PV Power)"
         slave: 1
@@ -494,7 +494,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 3
 
       - name: "Мощность зарядки от PV (PV Charging Power)"
         slave: 1
@@ -502,7 +502,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 10
 
       - name: "Ток зарядки от PV (PV Charging Current)"
         slave: 1
@@ -512,7 +512,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
 
       # =========================
@@ -526,7 +526,7 @@ modbus:
         data_type: int16
         unit_of_measurement: "%"
         precision: 0
-        scan_interval: 5
+        scan_interval: 10
 
       - name: "Температура DC-DC (DCDC Temperature)"
         slave: 1

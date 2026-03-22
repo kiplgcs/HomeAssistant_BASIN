@@ -207,6 +207,14 @@ modbus:
         swap: word
         scan_interval: 15
 
+      - name: "Код предупреждений битами (Warning Bitmask, raw)"
+        slave: 1
+        address: 104
+        input_type: holding
+        data_type: uint32
+        swap: word
+        scan_interval: 15
+
       - name: "Маска предупреждений (Warning Mask [I])"
         slave: 1
         address: 314
@@ -226,6 +234,29 @@ modbus:
         input_type: holding
         data_type: uint16
         scan_interval: 300
+
+      - name: "Имя устройства (Device name)"
+        slave: 1
+        address: 172
+        input_type: holding
+        data_type: string
+        count: 12
+        scan_interval: 3600
+
+      - name: "Номер протокола (Protocol number)"
+        slave: 1
+        address: 184
+        input_type: holding
+        data_type: uint16
+        scan_interval: 3600
+
+      - name: "Серийный номер (Device serial number)"
+        slave: 1
+        address: 186
+        input_type: holding
+        data_type: string
+        count: 12
+        scan_interval: 3600
 
       - name: "Режим работы (Working Mode)"
         slave: 1
@@ -854,6 +885,14 @@ modbus:
         address: 644
         input_type: holding
         data_type: uint16
+        scan_interval: 3600
+
+      - name: "Версия программы (Program version)"
+        slave: 1
+        address: 626
+        input_type: holding
+        data_type: string
+        count: 8
         scan_interval: 3600
 
 

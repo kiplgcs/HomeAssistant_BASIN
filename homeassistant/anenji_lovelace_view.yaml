@@ -245,28 +245,7 @@ views:
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus
           - type: entities
-            title: Program 02 — Максимальный ток зарядки АКБ от PV и сети
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_02_max_charge_current
-                name: ''
-              - entity: sensor.anenji_ui_program_02_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_number.anenji_cfg_program_02_max_charge_current
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 03 — Режим диапазона входного AC-напряжения (APL/UPS/GEN)
+            title: Program 03 — Режим диапазона входного AC-напряжения (APL/UPS)
             show_header_toggle: false
             grid_options:
               columns: 12
@@ -329,14 +308,12 @@ views:
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus
           - type: entities
-            title: >-
-              Program 06 — Приоритет зарядки — откуда заряжать АКБ в первую
-              очередь
+            title: Program 06 — Автоматический перезапуск при перегрузке
             show_header_toggle: false
             grid_options:
               columns: 12
             entities:
-              - entity: input_select.anenji_cfg_program_06_charging_priority
+              - entity: input_boolean.anenji_cfg_program_06_overload_restart
                 name: ''
               - entity: sensor.anenji_ui_program_06_description
                 name: ''
@@ -348,16 +325,16 @@ views:
                   service: script.turn_on
                   data:
                     variables:
-                      target_entity_id: input_select.anenji_cfg_program_06_charging_priority
+                      target_entity_id: input_boolean.anenji_cfg_program_06_overload_restart
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus
           - type: entities
-            title: Program 07 — Автоперезапуск после перегрузки выхода
+            title: Program 07 — Автоматический перезапуск при превышении температуры
             show_header_toggle: false
             grid_options:
               columns: 12
             entities:
-              - entity: input_boolean.anenji_cfg_program_07_overload_restart
+              - entity: input_boolean.anenji_cfg_program_07_overtemp_restart
                 name: ''
               - entity: sensor.anenji_ui_program_07_description
                 name: ''
@@ -369,51 +346,11 @@ views:
                   service: script.turn_on
                   data:
                     variables:
-                      target_entity_id: input_boolean.anenji_cfg_program_07_overload_restart
+                      target_entity_id: input_boolean.anenji_cfg_program_07_overtemp_restart
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus
           - type: entities
-            title: Program 08A — Автоперезапуск после перегрева
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_boolean.anenji_cfg_program_08_overtemp_restart
-                name: ''
-              - entity: sensor.anenji_ui_program_08a_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_boolean.anenji_cfg_program_08_overtemp_restart
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 08B — Номинальное выходное напряжение инвертора
+            title: Program 08 — Выходное напряжение
             show_header_toggle: false
             card_mod:
               style: |
@@ -439,7 +376,7 @@ views:
             entities:
               - entity: input_select.anenji_cfg_program_08_output_voltage
                 name: ''
-              - entity: sensor.anenji_ui_program_08b_description
+              - entity: sensor.anenji_ui_program_08_description
                 name: ''
               - type: button
                 name: ​
@@ -453,35 +390,33 @@ views:
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus
           - type: entities
-            title: Program 09A — Звуковая сигнализация событий и ошибок
+            title: Program 09 — Выходная частота
             show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_boolean.anenji_cfg_program_09_buzzer
-                name: ''
-              - entity: sensor.anenji_ui_program_09a_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_boolean.anenji_cfg_program_09_buzzer
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 09B — Номинальная выходная частота 50/60 Гц
-            show_header_toggle: false
+            card_mod:
+              style: |
+                hui-sensor-entity-row $: |
+                  :host {
+                    justify-content: flex-start !important;
+                  }
+                  .info {
+                    display: none !important;
+                    flex: 0 0 0 !important;
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                  }
+                  .value {
+                    margin-left: 0 !important;
+                    text-align: left !important;
+                    white-space: normal !important;
+                  }
             grid_options:
               columns: 12
             entities:
               - entity: input_select.anenji_cfg_program_09_output_frequency
                 name: ''
-              - entity: sensor.anenji_ui_program_09b_description
+              - entity: sensor.anenji_ui_program_09_description
                 name: ''
               - type: button
                 name: ​
@@ -495,14 +430,14 @@ views:
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus
           - type: entities
-            title: Program 10A — Автовозврат нагрузки на сеть при необходимости
+            title: Program 10 — Автоматический обход
             show_header_toggle: false
             grid_options:
               columns: 12
             entities:
-              - entity: input_boolean.anenji_cfg_program_10_back_to_grid_auto
+              - entity: input_select.anenji_cfg_program_10_auto_bypass_mode
                 name: ''
-              - entity: sensor.anenji_ui_program_10a_description
+              - entity: sensor.anenji_ui_program_10_description
                 name: ''
               - type: button
                 name: ​
@@ -512,16 +447,16 @@ views:
                   service: script.turn_on
                   data:
                     variables:
-                      target_entity_id: input_boolean.anenji_cfg_program_10_back_to_grid_auto
+                      target_entity_id: input_select.anenji_cfg_program_10_auto_bypass_mode
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus
           - type: entities
-            title: Program 11 — Максимальный ток зарядки АКБ от сети
+            title: Program 11 — Максимальный ток зарядки
             show_header_toggle: false
             grid_options:
               columns: 12
             entities:
-              - entity: input_number.anenji_cfg_program_11_max_ac_charge_current
+              - entity: input_number.anenji_cfg_program_11_max_charge_current
                 name: ''
               - entity: sensor.anenji_ui_program_11_description
                 name: ''
@@ -533,7 +468,50 @@ views:
                   service: script.turn_on
                   data:
                     variables:
-                      target_entity_id: input_number.anenji_cfg_program_11_max_ac_charge_current
+                      target_entity_id: input_number.anenji_cfg_program_11_max_charge_current
+                  target:
+                    entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            title: Program 16 — Приоритет источника зарядки
+            show_header_toggle: false
+            grid_options:
+              columns: 12
+            entities:
+              - entity: input_select.anenji_cfg_program_16_charge_source_priority
+                name: ''
+              - entity: sensor.anenji_ui_program_16_description
+                name: ''
+              - type: button
+                name: ​
+                action_name: Отправить
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    variables:
+                      target_entity_id: >-
+                        input_select.anenji_cfg_program_16_charge_source_priority
+                  target:
+                    entity_id: script.anenji_inverter_write_single_config_to_modbus
+          - type: entities
+            title: Program 18 — Режим зуммера
+            show_header_toggle: false
+            grid_options:
+              columns: 12
+            entities:
+              - entity: input_select.anenji_cfg_program_18_buzzer_mode
+                name: ''
+              - entity: sensor.anenji_ui_program_18_description
+                name: ''
+              - type: button
+                name: ​
+                action_name: Отправить
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  data:
+                    variables:
+                      target_entity_id: input_select.anenji_cfg_program_18_buzzer_mode
                   target:
                     entity_id: script.anenji_inverter_write_single_config_to_modbus
           - type: entities
@@ -1190,6 +1168,14 @@ views:
             title: Загрузка и паспортные данные
             show_header_toggle: false
             entities:
+              - entity: sensor.imia_ustroistva_device_name
+                name: Имя устройства
+              - entity: sensor.seriinyi_nomer_device_serial_number
+                name: Серийный номер
+              - entity: sensor.nomer_protokola_protocol_number
+                name: Номер протокола
+              - entity: sensor.versiia_programmy_program_version
+                name: Версия программы
               - entity: sensor.nagruzka_load_percentage
                 name: Загрузка, %
               - entity: sensor.nominalnaia_moshchnost_rated_power
@@ -1210,6 +1196,10 @@ views:
             title: Сервисные регистры и режимы
             show_header_toggle: false
             entities:
+              - entity: sensor.kod_preduprezhdenii_bitami_warning_bitmask_raw
+                name: Код предупреждений · raw
+              - entity: sensor.kod_preduprezhdenii_bitami_warning_bitmask_masked
+                name: Код предупреждений · masked
               - entity: sensor.maska_preduprezhdenii_warning_mask_i
                 name: Маска предупреждений
               - entity: sensor.sukhoi_kontakt_dry_contact
@@ -1233,9 +1223,9 @@ views:
                 name: Инфо хранилища ошибок
           - type: markdown
             content: >
-              TODO: `Program version`, `Last fault record` и `Run log`
-              подтверждены документацией, но в текущей конфигурации ещё не
-              созданы как сущности Home Assistant.
+              `Program version` уже выведен в блок выше. Для `Last fault record`
+              и `Run log` в текущей инструкции нет подтверждённых адресов
+              чтения, поэтому они пока не добавлены в конфигурацию.
       - type: grid
         column_span: 3
         columns: 2
@@ -1269,3 +1259,7 @@ views:
               Блок логически отделён: если BMS-сущности `charge forbidden` /
               `discharge forbidden` ещё не заведены, здесь оставлены точечные
               TODO без выдумывания `entity_id`.
+    header:
+      layout: center
+      badges_position: top
+      badges_wrap: scroll

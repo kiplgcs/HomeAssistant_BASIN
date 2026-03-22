@@ -9,24 +9,16 @@ input_select:
     initial: "SBU"
   anenji_cfg_program_03_input_voltage_range:
     name: "Program 03 · Диапазон входного напряжения"
-    options: ["APL", "UPS", "GEN"]
+    options: ["APL", "UPS"]
     initial: "UPS"
   anenji_cfg_program_05_battery_type:
     name: "Program 05 · Тип батареи"
-    options: ["AGM", "Flooded", "User defined", "LI2", "LI4", "LIB"]
+    options: ["AGM", "FLd", "USE", "LI2", "LI4", "LIb"]
     initial: "AGM"
-  anenji_cfg_program_06_charging_priority:
-    name: "Program 06 · Приоритет зарядки"
-    options: ["Solar first", "Solar + Utility", "Solar only"]
-    initial: "Solar first"
-  anenji_cfg_program_16_output_frequency_type:
-    name: "Program 16 · Тип выходной частоты"
-    options: ["50 Hz", "60 Hz"]
-    initial: "50 Hz"
-  anenji_cfg_program_17_charge_source_priority:
-    name: "Program 17 · Приоритет источника зарядки"
-    options: ["Solar first", "Solar + Utility", "Utility first", "Solar only"]
-    initial: "Solar first"
+  anenji_cfg_program_16_charge_source_priority:
+    name: "Program 16 · Приоритет источника зарядки"
+    options: ["CSO", "SNU", "OSO"]
+    initial: "SNU"
   anenji_cfg_program_08_output_voltage:
     name: "Program 08 · Выходное напряжение"
     options: ["220V", "230V", "240V"]
@@ -36,17 +28,17 @@ input_select:
     options: ["50Hz", "60Hz"]
     initial: "50Hz"
   anenji_cfg_program_10_auto_bypass_mode:
-    name: "Program 10 · Автообход (bypass)"
+    name: "Program 10 · Автоматический обход"
     options: ["AnL", "AEO"]
     initial: "AnL"
   anenji_cfg_program_18_buzzer_mode:
     name: "Program 18 · Режим зуммера"
-    options: ["Mute", "Source/Warn/Fault", "Warn/Fault", "Fault only"]
-    initial: "Fault only"
+    options: ["nd1", "nd2", "nd3", "nd4"]
+    initial: "nd4"
   anenji_cfg_program_19_screen_return_mode:
     name: "Program 19 · Возврат экрана"
-    options: ["Оставаться на текущем экране", "Автовозврат через 1 минуту"]
-    initial: "Оставаться на текущем экране"
+    options: ["ESP", "bEP"]
+    initial: "ESP"
   anenji_cfg_program_20_backlight_mode:
     name: "Program 20 · Подсветка"
     options: ["LON", "LOF"]
@@ -67,24 +59,15 @@ input_select:
     name: "Program 46 · Защита от макс. тока разряда"
     options: ["OFF", "50A"]
     initial: "OFF"
-  anenji_cfg_program_45_bms_mode:
-    name: "Program 45 · Режим BMS"
-    options: ["Auto", "BMS managed", "Manual override"]
-    initial: "Auto"
-
 input_boolean:
   anenji_cfg_sync_from_inverter_active:
     name: "ANENJI · Синхронизация настроек из инвертора"
   anenji_cfg_program_04_power_saving:
     name: "Program 04 · Энергосбережение"
-  anenji_cfg_program_07_overload_restart:
-    name: "Program 07 · Перезапуск после перегрузки"
-  anenji_cfg_program_08_overtemp_restart:
-    name: "Program 08 · Перезапуск после перегрева"
-  anenji_cfg_program_09_buzzer:
-    name: "Program 09 · Звуковой сигнал"
-  anenji_cfg_program_10_back_to_grid_auto:
-    name: "Program 10 · Автовозврат к сети"
+  anenji_cfg_program_06_overload_restart:
+    name: "Program 06 · Перезапуск после перегрузки"
+  anenji_cfg_program_07_overtemp_restart:
+    name: "Program 07 · Перезапуск после перегрева"
   anenji_cfg_program_33_equalization_enable:
     name: "Program 33 · Выравнивание батареи"
   anenji_cfg_program_39_force_equalization:
@@ -93,24 +76,14 @@ input_boolean:
     name: "Program 41 · Автоактивация литиевой АКБ"
   anenji_cfg_program_42_lithium_manual_activation:
     name: "Program 42 · Ручная активация литиевой АКБ"
-  anenji_cfg_program_44_bms_control_enable:
-    name: "Program 44 · Контроль BMS"
-
 input_number:
-  anenji_cfg_program_02_max_charge_current:
-    name: "Program 02 · Макс. ток зарядки (PV+AC), A"
+  anenji_cfg_program_11_max_charge_current:
+    name: "Program 11 · Максимальный ток зарядки, A"
     min: 0
     max: 90
     step: 1
     mode: box
-    initial: 60
-  anenji_cfg_program_11_max_ac_charge_current:
-    name: "Program 11 · Макс. ток зарядки от сети, A"
-    min: 0
-    max: 90
-    step: 1
-    mode: box
-    initial: 20
+    initial: 30
   anenji_cfg_program_12_back_to_utility_voltage:
     name: "Program 12 · Переход на сеть, V"
     min: 44
@@ -126,21 +99,21 @@ input_number:
     mode: box
     initial: 54
   anenji_cfg_program_26_bulk_absorption_voltage:
-    name: "Program 26 · Bulk/Absorption, V"
+    name: "Program 26 · Напряжение зарядки (C.V), V"
     min: 48
     max: 62
     step: 0.1
     mode: box
     initial: 56.4
   anenji_cfg_program_27_float_voltage:
-    name: "Program 27 · Float, V"
+    name: "Program 27 · Плавающее напряжение зарядки, V"
     min: 48
     max: 58
     step: 0.1
     mode: box
     initial: 54.0
   anenji_cfg_program_29_low_dc_cutoff_voltage:
-    name: "Program 29 · Low DC cut-off, V"
+    name: "Program 29 · Низкое напряжение отключения постоянного тока, V"
     min: 40
     max: 54
     step: 0.1
@@ -159,7 +132,7 @@ input_number:
     max: 900
     step: 1
     mode: box
-    initial: 120
+    initial: 60
   anenji_cfg_program_36_equalization_timeout:
     name: "Program 36 · Таймер выравнивания, min"
     min: 0
@@ -180,42 +153,21 @@ input_number:
     max: 50
     step: 1
     mode: box
-    initial: 30
+    initial: 50
   anenji_cfg_program_44_soc_back_to_battery:
     name: "Program 44 · SOC возврата на батарею, %"
     min: 60
     max: 100
     step: 1
     mode: box
-    initial: 80
+    initial: 95
   anenji_cfg_program_45_low_dc_cutoff_soc:
     name: "Program 45 · Нижний порог отключения по SOC, %"
     min: 3
     max: 30
     step: 1
     mode: box
-    initial: 10
-  anenji_cfg_program_41_bms_charge_voltage:
-    name: "Program 41 · BMS напряжение зарядки, V"
-    min: 40
-    max: 64
-    step: 0.1
-    mode: box
-    initial: 56.0
-  anenji_cfg_program_42_bms_cutoff_voltage:
-    name: "Program 42 · BMS напряжение отключения, V"
-    min: 40
-    max: 64
-    step: 0.1
-    mode: box
-    initial: 44.0
-  anenji_cfg_program_43_bms_charge_current:
-    name: "Program 43 · BMS ток зарядки, A"
-    min: 0
-    max: 140
-    step: 1
-    mode: box
-    initial: 60
+    initial: 20
   anenji_cfg_program_25_modbus_id:
     name: "Program 25 · Modbus ID"
     min: 1
@@ -265,20 +217,20 @@ script:
       config_map: >-
         {{ {
           'input_select.anenji_cfg_program_01_output_source_priority': {'program': 1, 'address': 301, 'value': {'UTI':0, 'SOL':1, 'SBU':2, 'SUB':3, 'SUF':4}[states('input_select.anenji_cfg_program_01_output_source_priority')]},
-          'input_number.anenji_cfg_program_02_max_charge_current': {'program': 2, 'address': 332, 'value': (states('input_number.anenji_cfg_program_02_max_charge_current')|float(0) * 10)|round(0)|int},
-          'input_select.anenji_cfg_program_03_input_voltage_range': {'program': 3, 'address': 302, 'value': {'APL':0, 'UPS':1, 'GEN':2}[states('input_select.anenji_cfg_program_03_input_voltage_range')]},
+          'input_select.anenji_cfg_program_03_input_voltage_range': {'program': 3, 'address': 302, 'value': {'APL':0, 'UPS':1}[states('input_select.anenji_cfg_program_03_input_voltage_range')]},
           'input_boolean.anenji_cfg_program_04_power_saving': {'program': 4, 'address': 307, 'value': 1 if is_state('input_boolean.anenji_cfg_program_04_power_saving', 'on') else 0},
-          'input_select.anenji_cfg_program_05_battery_type': {'program': 5, 'address': 322, 'value': {'AGM':0, 'Flooded':1, 'User defined':2, 'LI2':3, 'LI4':4, 'LIB':5}[states('input_select.anenji_cfg_program_05_battery_type')]},
-          'input_select.anenji_cfg_program_06_charging_priority': {'program': 6, 'address': 331, 'value': {'Solar first':0, 'Solar + Utility':1, 'Solar only':2}[states('input_select.anenji_cfg_program_06_charging_priority')]},
-          'input_boolean.anenji_cfg_program_07_overload_restart': {'program': 7, 'address': 308, 'value': 1 if is_state('input_boolean.anenji_cfg_program_07_overload_restart', 'on') else 0},
-          'input_boolean.anenji_cfg_program_08_overtemp_restart': {'program': '08A', 'address': 309, 'value': 1 if is_state('input_boolean.anenji_cfg_program_08_overtemp_restart', 'on') else 0},
-          'input_select.anenji_cfg_program_08_output_voltage': {'program': '08B', 'address': 320, 'value': states('input_select.anenji_cfg_program_08_output_voltage')|replace('V','')|int(230) * 10},
-          'input_boolean.anenji_cfg_program_09_buzzer': {'program': '09A', 'address': 303, 'value': 1 if is_state('input_boolean.anenji_cfg_program_09_buzzer', 'on') else 0},
-          'input_select.anenji_cfg_program_09_output_frequency': {'program': '09B', 'address': 321, 'value': states('input_select.anenji_cfg_program_09_output_frequency')|replace('Hz','')|int(50) * 100},
-          'input_boolean.anenji_cfg_program_10_back_to_grid_auto': {'program': '10A', 'address': 338, 'value': 1 if is_state('input_boolean.anenji_cfg_program_10_back_to_grid_auto', 'on') else 0},
-          'input_number.anenji_cfg_program_11_max_ac_charge_current': {'program': 11, 'address': 333, 'value': (states('input_number.anenji_cfg_program_11_max_ac_charge_current')|float(0) * 10)|round(0)|int},
+          'input_select.anenji_cfg_program_05_battery_type': {'program': 5, 'address': 322, 'value': {'AGM':0, 'FLd':1, 'USE':2, 'LI2':3, 'LI4':4, 'LIb':5}[states('input_select.anenji_cfg_program_05_battery_type')]},
+          'input_boolean.anenji_cfg_program_06_overload_restart': {'program': 6, 'address': 308, 'value': 1 if is_state('input_boolean.anenji_cfg_program_06_overload_restart', 'on') else 0},
+          'input_boolean.anenji_cfg_program_07_overtemp_restart': {'program': 7, 'address': 309, 'value': 1 if is_state('input_boolean.anenji_cfg_program_07_overtemp_restart', 'on') else 0},
+          'input_select.anenji_cfg_program_08_output_voltage': {'program': 8, 'address': 320, 'value': states('input_select.anenji_cfg_program_08_output_voltage')|replace('V','')|int(230) * 10},
+          'input_select.anenji_cfg_program_09_output_frequency': {'program': 9, 'address': 321, 'value': states('input_select.anenji_cfg_program_09_output_frequency')|replace('Hz','')|int(50) * 100},
+          'input_select.anenji_cfg_program_10_auto_bypass_mode': {'program': 10, 'address': 338, 'value': {'AnL':0, 'AEO':1}[states('input_select.anenji_cfg_program_10_auto_bypass_mode')]},
+          'input_number.anenji_cfg_program_11_max_charge_current': {'program': 11, 'address': 332, 'value': (states('input_number.anenji_cfg_program_11_max_charge_current')|float(0) * 10)|round(0)|int},
           'input_number.anenji_cfg_program_12_back_to_utility_voltage': {'program': 12, 'address': 327, 'value': (states('input_number.anenji_cfg_program_12_back_to_utility_voltage')|float(0) * 10)|round(0)|int},
           'input_number.anenji_cfg_program_13_back_to_battery_voltage': {'program': 13, 'address': 326, 'value': (states('input_number.anenji_cfg_program_13_back_to_battery_voltage')|float(0) * 10)|round(0)|int},
+          'input_select.anenji_cfg_program_16_charge_source_priority': {'program': 16, 'address': 331, 'value': {'CSO':1, 'SNU':2, 'OSO':3}[states('input_select.anenji_cfg_program_16_charge_source_priority')]},
+          'input_select.anenji_cfg_program_18_buzzer_mode': {'program': 18, 'address': 303, 'value': {'nd1':0, 'nd2':1, 'nd3':2, 'nd4':3}[states('input_select.anenji_cfg_program_18_buzzer_mode')]},
+          'input_select.anenji_cfg_program_19_screen_return_mode': {'program': 19, 'address': 306, 'value': {'bEP':0, 'ESP':1}[states('input_select.anenji_cfg_program_19_screen_return_mode')]},
           'input_select.anenji_cfg_program_20_backlight_mode': {'program': 20, 'address': 305, 'value': {'LOF':0, 'LON':1}[states('input_select.anenji_cfg_program_20_backlight_mode')]},
           'input_select.anenji_cfg_program_23_overload_bypass': {'program': 23, 'address': 310, 'value': {'bYd':0, 'bYE':1}[states('input_select.anenji_cfg_program_23_overload_bypass')]},
           'input_number.anenji_cfg_program_26_bulk_absorption_voltage': {'program': 26, 'address': 324, 'value': (states('input_number.anenji_cfg_program_26_bulk_absorption_voltage')|float(0) * 10)|round(0)|int},
@@ -355,10 +307,6 @@ template:
           {% else %}
             Выберите режим, который определяет, откуда инвертор будет питать нагрузку.
           {% endif %}
-      - default_entity_id: sensor.anenji_ui_program_02_description
-        name: "ANENJI Program 02 Description"
-        state: >-
-          Максимальный суммарный ток зарядки АКБ от солнца и сети: {{ states('input_number.anenji_cfg_program_02_max_charge_current')|int(0) }} А.
       - default_entity_id: sensor.anenji_ui_program_03_description
         name: "ANENJI Program 03 Description"
         state: >-
@@ -367,8 +315,6 @@ template:
             APL — широкий диапазон входного напряжения для обычной бытовой сети; реже переключается на АКБ при просадках.
           {% elif value == 'UPS' %}
             UPS — узкий диапазон для чувствительной техники; при отклонениях сети быстрее уходит на АКБ.
-          {% elif value == 'GEN' %}
-            GEN — режим дл генератора: допускает работу с нестабильным входом и ограничивает зарядный ток от сети.
           {% else %}
             Выберите режим допустимого входного AC-напряжения.
           {% endif %}
@@ -386,108 +332,101 @@ template:
           {% set value = states('input_select.anenji_cfg_program_05_battery_type') %}
           {% if value == 'AGM' %}
             AGM — герметичные свинцово-кислотные АКБ; инвертор использует стандартные напряжения для AGM.
-          {% elif value == 'Flooded' %}
-            Flooded — обслуживаемые свинцово-кислотные АКБ с жидким электролитом; доступны циклы выравнивания.
-          {% elif value == 'User defined' %}
-            User defined — пользовательский профиль: напряжения Bulk, Float и пороги возврата задаются вручную.
+          {% elif value == 'FLd' %}
+            FLd — затопленный свинцово-кислотный аккумулятор (Flooded).
+          {% elif value == 'USE' %}
+            USE — пользовательский режим: параметры Program 26, 27 и 29 становятся настраиваемыми вручную.
           {% elif value == 'LI2' %}
-            LI2 — литиевый профиль PYLON/совместимых АКБ с иксированным алгоритмом зарядки.
+            LI2 — поддержка протокола PYLON US2000 3.5 Version.
           {% elif value == 'LI4' %}
-            LI4 — литиевый профиль LI4 с поддержкой обмена по BMS, если он предусмотрен батареей.
-          {% elif value == 'LIB' %}
-            LIB — литиевая батарея без связи по BMS; заряд идёт по литиевому алгоритму, но контроль ограничений задаётся вручную.
+            LI4 — стандартный протокол связи с поставщиком преобразователя.
+          {% elif value == 'LIb' %}
+            LIb — литиевая батарея без связи; напряжения Program 26, 27 и 29 можно задать вручную.
           {% else %}
             Выберите тип АКБ, чтобы инвертор применил корректный алгоритм зарядки.
           {% endif %}
       - default_entity_id: sensor.anenji_ui_program_06_description
         name: "ANENJI Program 06 Description"
         state: >-
-          {% set value = states('input_select.anenji_cfg_program_06_charging_priority') %}
-          {% if value == 'Solar first' %}
-            Solar first — АКБ заряжается в первую очередь от солнца; сеть подключается только когда солнечной мощности не хватает.
-          {% elif value == 'Solar + Utility' %}
-            Solar + Utility — АКБ может одновременно заряжаться от солнца и от сети, чтобы зарядить её быстрее.
-          {% elif value == 'Solar only' %}
-            Solar only — зарядка АКБ разрешена только от солнечных панелей; сеть батарею не заряжает.
+          {% if is_state('input_boolean.anenji_cfg_program_06_overload_restart', 'on') %}
+            tYE — разрешён автоматический перезапуск после перегрузки.
           {% else %}
-            Выберите источник, откуда разрешено заряжать аккумулятор.
+            tYd — автоматический перезапуск после перегрузки отключён.
           {% endif %}
       - default_entity_id: sensor.anenji_ui_program_07_description
         name: "ANENJI Program 07 Description"
         state: >-
-          {% if is_state('input_boolean.anenji_cfg_program_07_overload_restart', 'on') %}
-            Включено — после аварии по перегрузке инвертор попробует восстановить работу автоматически.
+          {% if is_state('input_boolean.anenji_cfg_program_07_overtemp_restart', 'on') %}
+            ttE — разрешён автоматический перезапуск после перегрева.
           {% else %}
-            Выключено — после перегрузки потребуется ручной перезапуск или снятие аварии.
+            ttd — автоматический перезапуск после перегрева отключён.
           {% endif %}
-      - default_entity_id: sensor.anenji_ui_program_08a_description
-        name: "ANENJI Program 08A Description"
-        state: >-
-          {% if is_state('input_boolean.anenji_cfg_program_08_overtemp_restart', 'on') %}
-            Включено — после перегрева и последующего остывания инвертор запустится автоматически.
-          {% else %}
-            Выключено — после перегрева инвертор не перезапустится сам, понадобится ручное восстановление.
-          {% endif %}
-      - default_entity_id: sensor.anenji_ui_program_08b_description
-        name: "ANENJI Program 08B Description"
+      - default_entity_id: sensor.anenji_ui_program_08_description
+        name: "ANENJI Program 08 Description"
         state: >-
           {% set value = states('input_select.anenji_cfg_program_08_output_voltage') %}
-          {{ value }} — номинальное AC-напряжение на выходе инвертора для подключённой нагрузки.
-      - default_entity_id: sensor.anenji_ui_program_09a_description
-        name: "ANENJI Program 09A Description"
-        state: >-
-          {% if is_state('input_boolean.anenji_cfg_program_09_buzzer', 'on') %}
-            Включено — зуммер подаёт звуковые сигналы при предупреждениях, ошибках и служебных событиях.
-          {% else %}
-            Выключено — звуковые сигналы отключены.
-          {% endif %}
-      - default_entity_id: sensor.anenji_ui_program_09b_description
-        name: "ANENJI Program 09B Description"
+          {{ value }} — уставка выходного напряжения инвертора.
+      - default_entity_id: sensor.anenji_ui_program_09_description
+        name: "ANENJI Program 09 Description"
         state: >-
           {% set value = states('input_select.anenji_cfg_program_09_output_frequency') %}
-          {{ value }} — номинальная частота на выходе инвертора; должна соответствовать вашей нагрузке и сети.
-      - default_entity_id: sensor.anenji_ui_program_10a_description
-        name: "ANENJI Program 10A Description"
+          {{ value }} — уставка выходной частоты инвертора.
+      - default_entity_id: sensor.anenji_ui_program_10_description
+        name: "ANENJI Program 10 Description"
         state: >-
-          {% if is_state('input_boolean.anenji_cfg_program_10_back_to_grid_auto', 'on') %}
-            Включено — при появлении подходящей сети инвертор может автоматически вернуть нагрузку на сеть.
+          {% set value = states('input_select.anenji_cfg_program_10_auto_bypass_mode') %}
+          {% if value == 'AEO' %}
+            AEO — автоматический обход включён: при нормальной сети инвертор автоматически выходит из bypass, даже если выключатель включён.
           {% else %}
-            Выключено — автоматический возврат на сеть запрещён; переключение выполняется по другим условиям.
+            AnL — ручной режим bypass по умолчанию.
           {% endif %}
       - default_entity_id: sensor.anenji_ui_program_11_description
         name: "ANENJI Program 11 Description"
         state: >-
-          Максимальный ток зарядки АКБ от сети: {{ states('input_number.anenji_cfg_program_11_max_ac_charge_current')|int(0) }} А.
+          Максимальный ток зарядки: {{ states('input_number.anenji_cfg_program_11_max_charge_current')|int(0) }} А. В инструкции указан шаг 2 А и значение по умолчанию 30 А.
       - default_entity_id: sensor.anenji_ui_program_12_description
         name: "ANENJI Program 12 Description"
         state: >-
-          Когда напряжение АКБ опустится до {{ states('input_number.anenji_cfg_program_12_back_to_utility_voltage')|float(0) }} В, инвертор переведёт нагрузку на сеть.
+          Для 48-вольтовой модели при {{ states('input_number.anenji_cfg_program_12_back_to_utility_voltage')|float(0) }} В инвертор вернёт нагрузку на сеть в режимах SBU/SOL. Значение должно быть ниже Program 13.
       - default_entity_id: sensor.anenji_ui_program_13_description
         name: "ANENJI Program 13 Description"
         state: >-
-          Когда напряжение АКБ поднимется до {{ states('input_number.anenji_cfg_program_13_back_to_battery_voltage')|float(0) }} В, инвертор вернёт нагрузку с сети обратно на солнце/АКБ.
+          Для 48-вольтовой модели при {{ states('input_number.anenji_cfg_program_13_back_to_battery_voltage')|float(0) }} В инвертор вернёт питание с сети обратно на батарею/солнце. Значение должно быть выше Program 12.
+      - default_entity_id: sensor.anenji_ui_program_16_description
+        name: "ANENJI Program 16 Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_16_charge_source_priority') %}
+          {% if value == 'CSO' %}
+            CSO — сначала солнечная энергия; utility заряжает батарею только когда солнечная энергия недоступна.
+          {% elif value == 'SNU' %}
+            SNU — солнечная энергия и utility могут заряжать батарею одновременно.
+          {% elif value == 'OSO' %}
+            OSO — батарея заряжается только от солнечных панелей.
+          {% else %}
+            Выберите приоритет источника зарядки из инструкции.
+          {% endif %}
       - default_entity_id: sensor.anenji_ui_program_18_description
         name: "ANENJI Program 18 Description"
         state: >-
           {% set value = states('input_select.anenji_cfg_program_18_buzzer_mode') %}
-          {% if value == 'Mute' %}
-            Зуммер полностью отключён — инвертор не будет подавать звуковые сигналы ни при смене источника, ни при предупреждениях, ни при авариях.
-          {% elif value == 'Source/Warn/Fault' %}
-            Звук будет подаваться при смене входного источника, а также при предупреждениях и авариях.
-          {% elif value == 'Warn/Fault' %}
-            Зуммер будет срабатывать только при предупреждениях и авариях.
-          {% elif value == 'Fault only' %}
-            Звуковое оповещение останется только для аварийных состояний.
+          {% if value == 'nd1' %}
+            nd1 — приглушение звукового сигнала.
+          {% elif value == 'nd2' %}
+            nd2 — зуммер звучит при изменении входного источника, предупреждениях и ошибках.
+          {% elif value == 'nd3' %}
+            nd3 — зуммер звучит только при предупреждениях и ошибках.
+          {% elif value == 'nd4' %}
+            nd4 — зуммер звучит только при неисправности.
           {% else %}
             Выберите подходящий режим звуковой сигнализации инвертора.
           {% endif %}
       - default_entity_id: sensor.anenji_ui_program_19_description
         name: "ANENJI Program 19 Description"
         state: >-
-          {% if is_state('input_select.anenji_cfg_program_19_screen_return_mode', 'Автовозврат через 1 минуту') %}
-            LCD автоматически вернётся на главный экран примерно через 1 минуту бездействия.
+          {% if is_state('input_select.anenji_cfg_program_19_screen_return_mode', 'ESP') %}
+            ESP — экран автоматически возвращается на главный экран примерно через 1 минуту бездействия.
           {% else %}
-            Инвертор останется на текущем экране до ручного переключения.
+            bEP — экран остаётся на последнем экране пользователя до ручного переключения.
           {% endif %}
       - default_entity_id: sensor.anenji_ui_program_25_description
         name: "ANENJI Program 25 Description"
@@ -497,38 +436,38 @@ template:
         name: "ANENJI Program 39 Description"
         state: >-
           {% if is_state('input_boolean.anenji_cfg_program_39_force_equalization', 'on') %}
-            Команда немедленного запуска equalization подготовлена. Используйте её с осторожностью: обычно это актуально для обслуживаемых свинцовых АКБ и часто нежелательно для литиевых батарей.
+            AEn — эквализация будет активирована немедленно, если Program 33 разрешён.
           {% else %}
-            Немедленный запуск equalization отключён. Для литиевых АКБ этот режим обычно не используется.
+            Ads — немедленная активация эквализации отключена.
           {% endif %}
       - default_entity_id: sensor.anenji_ui_program_41_description
         name: "ANENJI Program 41 Description"
         state: >-
-          TODO: подтвердить регистр Program 41 для вашей ревизии прошивки. По задаче это автоактивация литиевой батареи; helper добавлен как заготовка без привязки записи в Modbus, чтобы не писать в неподтверждённый регистр.
+          AnL — автоматическая активация литиевой батареи отключена; AtO — если выбран LIx и батарея не обнаружена, инвертор пробует активировать литиевую батарею автоматически один раз. Для записи нужен отдельный подтверждённый регистр прошивки.
       - default_entity_id: sensor.anenji_ui_program_42_description
         name: "ANENJI Program 42 Description"
         state: >-
-          TODO: подтвердить регистр Program 42 для вашей ревизии прошивки. По задаче это ручная активация литиевой батареи; helper добавлен как заготовка без привязки записи в Modbus, чтобы не писать в неподтверждённый регистр.
+          nOP — ручная активация литиевой батареи отключена; Act — можно вручную активировать батарею, если в Program 05 выбран LIx. Для записи нужен отдельный подтверждённый регистр прошивки.
       - default_entity_id: sensor.anenji_ui_program_43_description
         name: "ANENJI Program 43 Description"
         state: >-
-          При достижении {{ states('input_number.anenji_cfg_program_43_soc_back_to_utility')|int(0) }}% SOC инвертор может вернуть нагрузку на сеть/utility.
+          При достижении {{ states('input_number.anenji_cfg_program_43_soc_back_to_utility')|int(0) }}% SOC инвертор переводит нагрузку на utility в режимах SBU/SOL. По инструкции допустим диапазон 5%–50%, но значение должно быть больше Program 45.
       - default_entity_id: sensor.anenji_ui_program_44_description
         name: "ANENJI Program 44 Description"
         state: >-
-          Когда заряд АКБ восстановится до {{ states('input_number.anenji_cfg_program_44_soc_back_to_battery')|int(0) }}% SOC, инвертор сможет вернуться к питанию от батареи/солнца.
+          Когда SOC восстановится до {{ states('input_number.anenji_cfg_program_44_soc_back_to_battery')|int(0) }}%, инвертор сможет вернуться к питанию от батареи/солнца. Диапазон по инструкции: 60%–100%.
       - default_entity_id: sensor.anenji_ui_program_45_description
         name: "ANENJI Program 45 Description"
         state: >-
-          При снижении SOC до {{ states('input_number.anenji_cfg_program_45_low_dc_cutoff_soc')|int(0) }}% инвертор отключит разряд по SOC для защиты батареи.
+          При снижении SOC до {{ states('input_number.anenji_cfg_program_45_low_dc_cutoff_soc')|int(0) }}% инвертор отключит разряд по SOC. По инструкции значение должно быть меньше Program 43.
       - default_entity_id: sensor.anenji_ui_program_20_description
         name: "ANENJI Program 20 Description"
         state: >-
           {% set value = states('input_select.anenji_cfg_program_20_backlight_mode') %}
           {% if value == 'LON' %}
-            LON — подсветка экрана горит постоянно.
+            LON — подсветка включена.
           {% elif value == 'LOF' %}
-            LOF — подсветка отключается автоматически, чтобы снизить потребление и не светить постоянно.
+            LOF — подсветка выключена.
           {% else %}
             Выберите режим работы подсветки дисплея.
           {% endif %}
@@ -546,15 +485,15 @@ template:
       - default_entity_id: sensor.anenji_ui_program_26_description
         name: "ANENJI Program 26 Description"
         state: >-
-          Bulk/Absorption: до {{ states('input_number.anenji_cfg_program_26_bulk_absorption_voltage')|float(0) }} В инвертор поднимает напряжение на основном этапе заряда.
+          Если в Program 05 выбран USE, можно задать напряжение C.V. вручную. Для 48 В модели текущая уставка: {{ states('input_number.anenji_cfg_program_26_bulk_absorption_voltage')|float(0) }} В; значение должно быть не ниже Program 27 и используется вместе с Program 29.
       - default_entity_id: sensor.anenji_ui_program_27_description
         name: "ANENJI Program 27 Description"
         state: >-
-          Float: после полного заряда инвертор удерживает АКБ на уровне {{ states('input_number.anenji_cfg_program_27_float_voltage')|float(0) }} В.
+          Плавающее напряжение зарядки: {{ states('input_number.anenji_cfg_program_27_float_voltage')|float(0) }} В. В режиме USE параметр настраивается вручную и должен быть не выше Program 26.
       - default_entity_id: sensor.anenji_ui_program_29_description
         name: "ANENJI Program 29 Description"
         state: >-
-          При падении напряжения АКБ до {{ states('input_number.anenji_cfg_program_29_low_dc_cutoff_voltage')|float(0) }} В инвертор отключит выход, чтобы защитить батарею от глубокого разряда.
+          Низкое напряжение отключения постоянного тока: {{ states('input_number.anenji_cfg_program_29_low_dc_cutoff_voltage')|float(0) }} В. В режиме USE этот порог задаётся вручную и должен быть ниже Program 12.
       - default_entity_id: sensor.anenji_ui_program_32_description
         name: "ANENJI Program 32 Description"
         state: >-
@@ -568,32 +507,32 @@ template:
         name: "ANENJI Program 33 Description"
         state: >-
           {% if is_state('input_boolean.anenji_cfg_program_33_equalization_enable', 'on') %}
-            Включено — инвертору разрешён выравнивающий заряд обслуживаемых свинцовых АКБ.
+            EEn — выравнивание заряда батареи включено.
           {% else %}
-            Выключено — выравнивающий заряд полностью запрещён.
+            EdS — выравнивание заряда батареи отключено.
           {% endif %}
       - default_entity_id: sensor.anenji_ui_program_34_description
         name: "ANENJI Program 34 Description"
         state: >-
-          Во время выравнивания напряжение АКБ будет поднято до {{ states('input_number.anenji_cfg_program_34_equalization_voltage')|float(0) }} В.
+          Напряжение выравнивания батареи: {{ states('input_number.anenji_cfg_program_34_equalization_voltage')|float(0) }} В. Для 48 В модели шаг настройки 0.1 В, диапазон по инструкции до 64 В.
       - default_entity_id: sensor.anenji_ui_program_35_description
         name: "ANENJI Program 35 Description"
         state: >-
-          Один цикл выравнивающего заряда будет длиться {{ states('input_number.anenji_cfg_program_35_equalization_time')|int(0) }} мин.
+          Время выравнивания заряда батареи: {{ states('input_number.anenji_cfg_program_35_equalization_time')|int(0) }} мин. Диапазон по инструкции 0–900 мин, значение по умолчанию 60 мин.
       - default_entity_id: sensor.anenji_ui_program_36_description
         name: "ANENJI Program 36 Description"
         state: >-
-          Максимально допустимая суммарная продолжительность выравнивания: {{ states('input_number.anenji_cfg_program_36_equalization_timeout')|int(0) }} мин.
+          Тайм-аут выравнивания заряда батареи: {{ states('input_number.anenji_cfg_program_36_equalization_timeout')|int(0) }} мин. Диапазон по инструкции 0–900 мин.
       - default_entity_id: sensor.anenji_ui_program_37_description
         name: "ANENJI Program 37 Description"
         state: >-
-          Выравнивающий заряд будет запускаться каждые {{ states('input_number.anenji_cfg_program_37_equalization_interval_days')|int(0) }} дн.
+          Интервал эквализации: {{ states('input_number.anenji_cfg_program_37_equalization_interval_days')|int(0) }} дн. Диапазон по инструкции 1–90 дней.
       - default_entity_id: sensor.anenji_ui_program_46_description
         name: "ANENJI Program 46 Description"
         state: >-
           {% set value = states('input_select.anenji_cfg_program_46_overcharge_protection_mode') %}
           {% if value == 'OFF' %}
-            OFF — ограничение по максимальному току разряда отключено.
+            OFF — защита по максимальному току разряда отключена.
           {% else %}
-            {{ value }} — инвертор ограничит максимальный ток разряда этим значением.
+            {{ value }} — защита ограничивает максимальный ток разряда этим значением. В инструкции отмечено, что функция доступна только для Single-модели.
           {% endif %}

@@ -122,13 +122,13 @@ views:
             hours_to_show: 24
             refresh_interval: 30
             entities:
-              - entity: sensor.moshchnost_pv_pv_power
+              - entity: sensor.anenji_pv_power_history
                 name: Солнечные панели
-              - entity: sensor.moshchnost_nagruzki_load_power
+              - entity: sensor.anenji_load_power_history
                 name: Нагрузка
-              - entity: sensor.moshchnost_seti_grid_power
+              - entity: sensor.anenji_grid_power_history
                 name: Сеть
-              - entity: sensor.anenji_flow_battery_power_signed
+              - entity: sensor.anenji_battery_power_history
                 name: Аккумулятор
           - type: entities
             title: Солнечные панели

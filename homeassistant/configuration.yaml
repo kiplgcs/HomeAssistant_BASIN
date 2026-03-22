@@ -2,6 +2,16 @@
 # Загружает стандартные интеграции
 default_config:
 
+recorder:
+  # Быстрые мощности обновляются часто для UI, но в историю пишем отдельные 15-сек. датчики.
+  exclude:
+    entities:
+      - sensor.moshchnost_pv_pv_power
+      - sensor.moshchnost_nagruzki_load_power
+      - sensor.moshchnost_seti_grid_power
+      - sensor.anenji_flow_battery_power_signed
+
+
 # Загрузка пользовательских тем интерфейса из папки themes
 frontend:
   themes: !include_dir_merge_named themes
@@ -262,7 +272,7 @@ modbus:
         unit_of_measurement: "V"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Частота сети (Grid Frequency)"
         slave: 1
@@ -274,13 +284,14 @@ modbus:
         precision: 2
         scan_interval: 15
 
+      # Ключевые мощности для дашборда опрашиваем каждые 2 секунды.
       - name: "Мощность сети (Grid Power)"
         slave: 1
         address: 204
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 2
 
 
       # =========================
@@ -295,7 +306,7 @@ modbus:
         unit_of_measurement: "V"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Ток инвертора (Inverter Current)"
         slave: 1
@@ -305,7 +316,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Частота инвертора (Inverter Frequency)"
         slave: 1
@@ -331,7 +342,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Выходное напряжение (Output Voltage)"
         slave: 1
@@ -341,7 +352,7 @@ modbus:
         unit_of_measurement: "V"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Выходной ток (Output Current)"
         slave: 1
@@ -351,7 +362,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Выходная частота (Output Frequency)"
         slave: 1
@@ -369,7 +380,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 2
 
       - name: "Полная мощность нагрузки (Load Apparent Power)"
         slave: 1
@@ -377,7 +388,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "VA"
-        scan_interval: 5
+        scan_interval: 15
 
 
       # =========================
@@ -392,7 +403,7 @@ modbus:
         unit_of_measurement: "V"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 2
 
       - name: "Ток АКБ (Battery Current)"
         slave: 1
@@ -402,7 +413,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Мощность АКБ (Battery Power)"
         slave: 1
@@ -410,7 +421,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Ток АКБ знак ± (Battery Current Signed, filtered)"
         slave: 1
@@ -420,7 +431,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 2
 
       - name: "Ток зарядки от инвертора (Inverter Charging Current)"
         slave: 1
@@ -430,7 +441,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 30
 
 
       # =========================
@@ -445,7 +456,7 @@ modbus:
         unit_of_measurement: "V"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Ток PV (PV Current)"
         slave: 1
@@ -455,7 +466,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Мощность PV (PV Power)"
         slave: 1
@@ -463,7 +474,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 2
 
       - name: "Мощность зарядки от PV (PV Charging Power)"
         slave: 1
@@ -471,7 +482,7 @@ modbus:
         input_type: holding
         data_type: int16
         unit_of_measurement: "W"
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Ток зарядки от PV (PV Charging Current)"
         slave: 1
@@ -481,7 +492,7 @@ modbus:
         unit_of_measurement: "A"
         scale: 0.1
         precision: 1
-        scan_interval: 5
+        scan_interval: 30
 
 
       # =========================
@@ -495,7 +506,7 @@ modbus:
         data_type: int16
         unit_of_measurement: "%"
         precision: 0
-        scan_interval: 5
+        scan_interval: 15
 
       - name: "Температура DC-DC (DCDC Temperature)"
         slave: 1
@@ -1048,6 +1059,35 @@ template:
         device_class: energy
         state_class: total_increasing
         state: "{{ (states('sensor.energiia_vsego_energy_total')|float(0) / 1000) | round(3) }}"
+
+  - trigger:
+      - platform: time_pattern
+        seconds: "/15"
+    sensor:
+      - name: "ANENJI PV Power History"
+        unique_id: anenji_pv_power_history
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.moshchnost_pv_pv_power')|float(0) | round(0) }}"
+      - name: "ANENJI Load Power History"
+        unique_id: anenji_load_power_history
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.moshchnost_nagruzki_load_power')|float(0) | round(0) }}"
+      - name: "ANENJI Grid Power History"
+        unique_id: anenji_grid_power_history
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.moshchnost_seti_grid_power')|float(0) | round(0) }}"
+      - name: "ANENJI Battery Power History"
+        unique_id: anenji_battery_power_history
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.anenji_flow_battery_power_signed')|float(0) | round(0) }}"
 
 
 # =========================

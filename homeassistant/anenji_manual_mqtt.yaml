@@ -1,1265 +1,599 @@
-views:
-  - title: Инвертор ANENJI
-    path: anenji
-    icon: mdi:solar-power-variant
-    type: sections
-    max_columns: 3
-    sections:
-      - type: grid
-        column_span: 3
-        columns: 12
-        square: false
-        cards:
-          - type: gauge
-            name: Солнечные панели
-            entity: sensor.moshchnost_pv_pv_power
-            min: 0
-            max: 6200
-            unit: Вт
-            needle: true
-            grid_options:
-              columns: 3
-            severity:
-              green: 1
-              yellow: 2500
-              red: 5000
-            card_mod:
-              style: |
-                ha-card {
-                  min-height: 360px;
-                  background: linear-gradient(180deg, rgba(255, 193, 7, 0.18), rgba(18, 18, 18, 0.98));
-                  border: 1px solid rgba(255, 193, 7, 0.28);
-                  border-radius: 24px;
-                  padding: 28px 24px 18px;
-                }
-          - type: gauge
-            name: Сеть
-            entity: sensor.moshchnost_seti_grid_power
-            min: -6200
-            max: 6200
-            unit: Вт
-            needle: true
-            grid_options:
-              columns: 3
-            severity:
-              green: 0
-              yellow: 2500
-              red: 5000
-            card_mod:
-              style: |
-                ha-card {
-                  min-height: 360px;
-                  background: linear-gradient(180deg, rgba(3, 169, 244, 0.16), rgba(18, 18, 18, 0.98));
-                  border: 1px solid rgba(3, 169, 244, 0.26);
-                  border-radius: 24px;
-                  padding: 28px 24px 18px;
-                }
-          - type: gauge
-            name: Нагрузка
-            entity: sensor.moshchnost_nagruzki_load_power
-            min: 0
-            max: 6200
-            unit: Вт
-            needle: true
-            grid_options:
-              columns: 3
-            severity:
-              green: 1
-              yellow: 2500
-              red: 5000
-            card_mod:
-              style: |
-                ha-card {
-                  min-height: 360px;
-                  background: linear-gradient(180deg, rgba(76, 175, 80, 0.16), rgba(18, 18, 18, 0.98));
-                  border: 1px solid rgba(76, 175, 80, 0.26);
-                  border-radius: 24px;
-                  padding: 28px 24px 18px;
-                }
-          - type: gauge
-            name: Аккумулятор
-            entity: sensor.anenji_flow_battery_power_signed
-            min: -6200
-            max: 6200
-            unit: Вт
-            needle: true
-            grid_options:
-              columns: 3
-            severity:
-              green: 0
-              yellow: 2500
-              red: 5000
-            card_mod:
-              style: |
-                ha-card {
-                  min-height: 360px;
-                  background: linear-gradient(180deg, rgba(33, 150, 243, 0.18), rgba(18, 18, 18, 0.98));
-                  border: 1px solid rgba(33, 150, 243, 0.28);
-                  border-radius: 24px;
-                  padding: 28px 24px 18px;
-                }
-      - type: grid
-        column_span: 3
-        columns: 3
-        square: false
-        cards:
-          - type: history-graph
-            grid_options:
-              columns: 12
-            card_mod:
-              style: |
-                ha-card {
-                  border-radius: 22px;
-                  padding: 8px;
-                  background: linear-gradient(180deg, rgba(33, 33, 33, 0.96), rgba(18, 18, 18, 1));
-                  border: 1px solid rgba(255, 255, 255, 0.08);
-                }
-                .card-header {
-                  font-size: 1.5rem;
-                  font-weight: 700;
-                }
-            title: История мощностей за 24 часа
-            hours_to_show: 24
-            refresh_interval: 30
-            entities:
-              - entity: sensor.moshchnost_pv_pv_power
-                name: Солнечные панели
-              - entity: sensor.moshchnost_nagruzki_load_power
-                name: Нагрузка
-              - entity: sensor.moshchnost_seti_grid_power
-                name: Сеть
-              - entity: sensor.anenji_flow_battery_power_signed
-                name: Аккумулятор
-          - type: entities
-            title: Солнечные панели
-            show_header_toggle: false
-            entities:
-              - entity: sensor.napriazhenie_pv_pv_voltage
-                name: Напряжение солнечных панелей
-              - entity: sensor.tok_pv_pv_current
-                name: Ток солнечных панелей
-              - entity: sensor.moshchnost_pv_pv_power
-                name: Мощность солнечных панелей
-              - entity: sensor.tok_zariadki_ot_pv_pv_charging_current
-                name: Ток зарядки от солнечных панелей
-              - entity: sensor.moshchnost_zariadki_ot_pv_pv_charging_power
-                name: Мощность зарядки от солнечных панелей
-          - type: entities
-            title: Аккумулятор
-            show_header_toggle: false
-            entities:
-              - entity: sensor.napriazhenie_akb_battery_voltage
-                name: Напряжение аккумулятора
-              - entity: sensor.tok_akb_battery_current
-                name: Ток аккумулятора
-              - entity: sensor.tok_akb_znak_battery_current_signed_filtered
-                name: Ток аккумулятора (со знаком)
-              - entity: sensor.moshchnost_akb_battery_power
-                name: Мощность аккумулятора
-              - entity: sensor.zariad_akb_battery_soc
-                name: Степень заряда аккумулятора
-          - type: entities
-            title: Сеть и выход
-            show_header_toggle: false
-            entities:
-              - entity: sensor.napriazhenie_seti_grid_voltage
-                name: Напряжение сети
-              - entity: sensor.chastota_seti_grid_frequency
-                name: Частота сети
-              - entity: sensor.vykhodnoe_napriazhenie_output_voltage
-                name: Выходное напряжение
-              - entity: sensor.vykhodnoi_tok_output_current
-                name: Выходной ток
-              - entity: sensor.vykhodnaia_chastota_output_frequency
-                name: Выходная частота
-              - entity: sensor.polnaia_moshchnost_nagruzki_load_apparent_power
-                name: Полная мощность нагрузки
-          - type: entities
-            title: Инвертор и температура
-            show_header_toggle: false
-            entities:
-              - entity: sensor.napriazhenie_invertora_inverter_voltage
-                name: Напряжение инвертора
-              - entity: sensor.tok_invertora_inverter_current
-                name: Ток инвертора
-              - entity: sensor.moshchnost_invertora_inverter_power
-                name: Мощность инвертора
-              - entity: >-
-                  sensor.moshchnost_zariadki_ot_invertora_inverter_charging_power
-                name: Мощность зарядки от инвертора
-              - entity: sensor.tok_zariadki_ot_invertora_inverter_charging_current
-                name: Ток зарядки от инвертора
-              - entity: sensor.temperatura_dc_dc_dcdc_temperature
-                name: Температура преобразователя постоянного тока
-              - entity: sensor.temperatura_invertora_inverter_temperature
-                name: Температура инвертора
-          - type: entities
-            title: Параметры инвертора
-            show_header_toggle: false
-            entities:
-              - entity: sensor.rezhim_vykhoda_output_mode
-                name: Режим выхода
-              - entity: sensor.prioritet_vykhoda_output_priority
-                name: Приоритет источника питания на выходе
-              - entity: sensor.diapazon_vkhodnogo_napriazheniia_input_voltage_range
-                name: Диапазон входного напряжения
-              - entity: sensor.ustavka_vykhodnogo_napriazheniia_output_voltage_set
-                name: Установка выходного напряжения
-              - entity: sensor.ustavka_vykhodnoi_chastoty_output_frequency_set
-                name: Установка выходной частоты
-              - entity: sensor.maks_tok_zariadki_maximum_charge_current_g
-                name: Максимальный ток зарядки
-              - entity: >-
-                  sensor.maks_tok_zariadki_ot_seti_maximum_mains_charge_current_h
-                name: Максимальный ток зарядки от сети
-              - entity: sensor.udalennyi_vykliuchatel_remote_switch
-                name: Удалённый выключатель
-      - type: grid
-        column_span: 3
-        columns: 1
-        square: false
-        cards:
-          - type: heading
-            heading: Ручная настройка Program-параметров
-            icon: mdi:tune-variant
-          - type: entities
-            title: 'Program 01 — Приоритет питания нагрузки: сеть, солнце или АКБ'
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_01_output_source_priority
-                name: ''
-              - entity: sensor.anenji_ui_program_01_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: >-
-                        input_select.anenji_cfg_program_01_output_source_priority
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 03 — Режим диапазона входного AC-напряжения (APL/UPS)
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_03_input_voltage_range
-                name: ''
-              - entity: sensor.anenji_ui_program_03_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_select.anenji_cfg_program_03_input_voltage_range
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 04 — Энергосбережение — снижает потребление без нагрузки
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_boolean.anenji_cfg_program_04_power_saving
-                name: ''
-              - entity: sensor.anenji_ui_program_04_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_boolean.anenji_cfg_program_04_power_saving
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 05 — Тип аккумулятора — влияет на алгоритм зарядки
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_05_battery_type
-                name: ''
-              - entity: sensor.anenji_ui_program_05_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_select.anenji_cfg_program_05_battery_type
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 06 — Автоматический перезапуск при перегрузке
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_boolean.anenji_cfg_program_06_overload_restart
-                name: ''
-              - entity: sensor.anenji_ui_program_06_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_boolean.anenji_cfg_program_06_overload_restart
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 07 — Автоматический перезапуск при превышении температуры
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_boolean.anenji_cfg_program_07_overtemp_restart
-                name: ''
-              - entity: sensor.anenji_ui_program_07_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_boolean.anenji_cfg_program_07_overtemp_restart
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 08 — Выходное напряжение
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_08_output_voltage
-                name: ''
-              - entity: sensor.anenji_ui_program_08_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_select.anenji_cfg_program_08_output_voltage
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 09 — Выходная частота
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_09_output_frequency
-                name: ''
-              - entity: sensor.anenji_ui_program_09_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_select.anenji_cfg_program_09_output_frequency
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 10 — Автоматический обход
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_10_auto_bypass_mode
-                name: ''
-              - entity: sensor.anenji_ui_program_10_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_select.anenji_cfg_program_10_auto_bypass_mode
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 11 — Максимальный ток зарядки
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_11_max_charge_current
-                name: ''
-              - entity: sensor.anenji_ui_program_11_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_number.anenji_cfg_program_11_max_charge_current
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 16 — Приоритет источника зарядки
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_16_charge_source_priority
-                name: ''
-              - entity: sensor.anenji_ui_program_16_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: >-
-                        input_select.anenji_cfg_program_16_charge_source_priority
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 18 — Режим зуммера
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_18_buzzer_mode
-                name: ''
-              - entity: sensor.anenji_ui_program_18_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_select.anenji_cfg_program_18_buzzer_mode
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 12 — Напряжение АКБ, при котором переходить на сеть
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_12_back_to_utility_voltage
-                name: ''
-              - entity: sensor.anenji_ui_program_12_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: >-
-                        input_number.anenji_cfg_program_12_back_to_utility_voltage
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: >-
-              Program 13 — Напряжение АКБ, при котором возвращаться с сети на
-              батарею
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_13_back_to_battery_voltage
-                name: ''
-              - entity: sensor.anenji_ui_program_13_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: >-
-                        input_number.anenji_cfg_program_13_back_to_battery_voltage
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 20 — Режим подсветки LCD-экрана
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_20_backlight_mode
-                name: ''
-              - entity: sensor.anenji_ui_program_20_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_select.anenji_cfg_program_20_backlight_mode
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 23 — Обход нагрузки через сеть при перегрузке
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_23_overload_bypass
-                name: ''
-              - entity: sensor.anenji_ui_program_23_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_select.anenji_cfg_program_23_overload_bypass
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 26 — Напряжение Bulk/Absorption заряда АКБ
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_26_bulk_absorption_voltage
-                name: ''
-              - entity: sensor.anenji_ui_program_26_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: >-
-                        input_number.anenji_cfg_program_26_bulk_absorption_voltage
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 27 — Поддерживающее Float-напряжение АКБ
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_27_float_voltage
-                name: ''
-              - entity: sensor.anenji_ui_program_27_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_number.anenji_cfg_program_27_float_voltage
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 29 — Нижний порог отключения по низкому DC-напряжению
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
-                name: ''
-              - entity: sensor.anenji_ui_program_29_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_number.anenji_cfg_program_29_low_dc_cutoff_voltage
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 32 — Время перехода из CV в Float при зарядке
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_32_cv_to_float_time_mode
-                name: ''
-              - entity: sensor.anenji_ui_program_32_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_select.anenji_cfg_program_32_cv_to_float_time_mode
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 33 — Разрешение выравнивающего заряда АКБ
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_boolean.anenji_cfg_program_33_equalization_enable
-                name: ''
-              - entity: sensor.anenji_ui_program_33_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_boolean.anenji_cfg_program_33_equalization_enable
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 34 — Напряжение выравнивающего заряда АКБ
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_34_equalization_voltage
-                name: ''
-              - entity: sensor.anenji_ui_program_34_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_number.anenji_cfg_program_34_equalization_voltage
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 35 — Длительность выравнивающего заряда
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_35_equalization_time
-                name: ''
-              - entity: sensor.anenji_ui_program_35_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_number.anenji_cfg_program_35_equalization_time
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 36 — Максимальный таймаут выравнивающего заряда
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_36_equalization_timeout
-                name: ''
-              - entity: sensor.anenji_ui_program_36_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_number.anenji_cfg_program_36_equalization_timeout
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 37 — Интервал между циклами выравнивающего заряда
-            show_header_toggle: false
-            card_mod:
-              style: |
-                hui-sensor-entity-row $: |
-                  :host {
-                    justify-content: flex-start !important;
-                  }
-                  .info {
-                    display: none !important;
-                    flex: 0 0 0 !important;
-                    width: 0 !important;
-                    min-width: 0 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                  }
-                  .value {
-                    margin-left: 0 !important;
-                    text-align: left !important;
-                    white-space: normal !important;
-                  }
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_37_equalization_interval_days
-                name: ''
-              - entity: sensor.anenji_ui_program_37_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: >-
-                        input_number.anenji_cfg_program_37_equalization_interval_days
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 46 — Защита по максимальному току разряда
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_46_overcharge_protection_mode
-                name: ''
-              - entity: sensor.anenji_ui_program_46_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: >-
-                        input_select.anenji_cfg_program_46_overcharge_protection_mode
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: heading
-            heading: Доп. ручные настройки
-            icon: mdi:tune
-          - type: markdown
-            content: >
-              Дополнительные Program-параметры добавлены в том же паттерне
-              ручной записи через
-              `script.anenji_inverter_write_single_config_to_modbus`.
+# =========================
+# Конфигурация инвертора ANENJI (Program 01..46)
+# =========================
+# Важно: файл должен содержать только валидный YAML.
+input_select:
+  anenji_cfg_program_01_output_source_priority:
+    name: "Program 01 · Приоритет источника питания"
+    options: ["UTI", "SOL", "SBU", "SUB", "SUF"]
+    initial: "SBU"
+  anenji_cfg_program_03_input_voltage_range:
+    name: "Program 03 · Диапазон входного напряжения"
+    options: ["APL", "UPS", "GEN"]
+    initial: "UPS"
+  anenji_cfg_program_05_battery_type:
+    name: "Program 05 · Тип батареи"
+    options: ["AGM", "Flooded", "User defined", "LI2", "LI4", "LIB"]
+    initial: "AGM"
+  anenji_cfg_program_06_charging_priority:
+    name: "Program 06 · Приоритет зарядки"
+    options: ["Solar first", "Solar + Utility", "Solar only"]
+    initial: "Solar first"
+  anenji_cfg_program_16_output_frequency_type:
+    name: "Program 16 · Тип выходной частоты"
+    options: ["50 Hz", "60 Hz"]
+    initial: "50 Hz"
+  anenji_cfg_program_17_charge_source_priority:
+    name: "Program 17 · Приоритет источника зарядки"
+    options: ["Solar first", "Solar + Utility", "Utility first", "Solar only"]
+    initial: "Solar first"
+  anenji_cfg_program_08_output_voltage:
+    name: "Program 08 · Выходное напряжение"
+    options: ["220V", "230V", "240V"]
+    initial: "230V"
+  anenji_cfg_program_09_output_frequency:
+    name: "Program 09 · Выходная частота"
+    options: ["50Hz", "60Hz"]
+    initial: "50Hz"
+  anenji_cfg_program_10_auto_bypass_mode:
+    name: "Program 10 · Автообход (bypass)"
+    options: ["AnL", "AEO"]
+    initial: "AnL"
+  anenji_cfg_program_18_buzzer_mode:
+    name: "Program 18 · Режим зуммера"
+    options: ["Mute", "Source/Warn/Fault", "Warn/Fault", "Fault only"]
+    initial: "Fault only"
+  anenji_cfg_program_19_screen_return_mode:
+    name: "Program 19 · Возврат экрана"
+    options: ["Оставаться на текущем экране", "Автовозврат через 1 минуту"]
+    initial: "Оставаться на текущем экране"
+  anenji_cfg_program_20_backlight_mode:
+    name: "Program 20 · Подсветка"
+    options: ["LON", "LOF"]
+    initial: "LON"
+  anenji_cfg_program_25_modbus_id_mode:
+    name: "Program 25 · Modbus ID (режим применения)"
+    options: ["Только подготовить значение", "Требует отдельного подтверждения"]
+    initial: "Только подготовить значение"
+  anenji_cfg_program_23_overload_bypass:
+    name: "Program 23 · Обход при перегрузке"
+    options: ["bYd", "bYE"]
+    initial: "bYE"
+  anenji_cfg_program_32_cv_to_float_time_mode:
+    name: "Program 32 · Время заряда (CV→Float)"
+    options: ["AUT", "5", "10", "15", "30", "60", "120", "300", "600", "900"]
+    initial: "AUT"
+  anenji_cfg_program_46_overcharge_protection_mode:
+    name: "Program 46 · Защита от макс. тока разряда"
+    options: ["OFF", "50A"]
+    initial: "OFF"
+  anenji_cfg_program_45_bms_mode:
+    name: "Program 45 · Режим BMS"
+    options: ["Auto", "BMS managed", "Manual override"]
+    initial: "Auto"
 
+input_boolean:
+  anenji_cfg_sync_from_inverter_active:
+    name: "ANENJI · Синхронизация настроек из инвертора"
+  anenji_cfg_program_04_power_saving:
+    name: "Program 04 · Энергосбережение"
+  anenji_cfg_program_07_overload_restart:
+    name: "Program 07 · Перезапуск после перегрузки"
+  anenji_cfg_program_08_overtemp_restart:
+    name: "Program 08 · Перезапуск после перегрева"
+  anenji_cfg_program_09_buzzer:
+    name: "Program 09 · Звуковой сигнал"
+  anenji_cfg_program_10_back_to_grid_auto:
+    name: "Program 10 · Автовозврат к сети"
+  anenji_cfg_program_33_equalization_enable:
+    name: "Program 33 · Выравнивание батареи"
+  anenji_cfg_program_39_force_equalization:
+    name: "Program 39 · Принудительное выравнивание"
+  anenji_cfg_program_41_lithium_auto_activation:
+    name: "Program 41 · Автоактивация литиевой АКБ"
+  anenji_cfg_program_42_lithium_manual_activation:
+    name: "Program 42 · Ручная активация литиевой АКБ"
+  anenji_cfg_program_44_bms_control_enable:
+    name: "Program 44 · Контроль BMS"
 
-              > Примечание: приоритет источника зарядки уже выведен выше в
-              существующих карточках и отдельно не дублируется.
-          - type: entities
-            title: Program 18 — Режим зуммера / звуковой сигнализации
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_18_buzzer_mode
-                name: ''
-              - entity: sensor.anenji_ui_program_18_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_select.anenji_cfg_program_18_buzzer_mode
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 19 — Автовозврат LCD на главный экран
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_select.anenji_cfg_program_19_screen_return_mode
-                name: ''
-              - entity: sensor.anenji_ui_program_19_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_select.anenji_cfg_program_19_screen_return_mode
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 25 — Modbus ID · Осторожно / Сервисный параметр
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_25_modbus_id
-                name: Новый Modbus ID
-              - entity: sensor.anenji_ui_program_25_description
-                name: ''
-              - entity: input_select.anenji_cfg_program_25_modbus_id_mode
-                name: Режим применения
-          - type: entities
-            title: Program 39 — Немедленный запуск equalization · Осторожно
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_boolean.anenji_cfg_program_39_force_equalization
-                name: ''
-              - entity: sensor.anenji_ui_program_39_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_boolean.anenji_cfg_program_39_force_equalization
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 41 — Автоактивация литиевой батареи
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_boolean.anenji_cfg_program_41_lithium_auto_activation
-                name: Подготовить флаг
-              - entity: sensor.anenji_ui_program_41_description
-                name: ''
-          - type: entities
-            title: Program 42 — Ручная активация литиевой батареи
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_boolean.anenji_cfg_program_42_lithium_manual_activation
-                name: Подготовить флаг
-              - entity: sensor.anenji_ui_program_42_description
-                name: ''
-          - type: entities
-            title: Program 43 — SOC перехода на сеть
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_43_soc_back_to_utility
-                name: ''
-              - entity: sensor.anenji_ui_program_43_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_number.anenji_cfg_program_43_soc_back_to_utility
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 44 — SOC возврата на батарею
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_44_soc_back_to_battery
-                name: ''
-              - entity: sensor.anenji_ui_program_44_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_number.anenji_cfg_program_44_soc_back_to_battery
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-          - type: entities
-            title: Program 45 — Нижний порог отключения по SOC
-            show_header_toggle: false
-            grid_options:
-              columns: 12
-            entities:
-              - entity: input_number.anenji_cfg_program_45_low_dc_cutoff_soc
-                name: ''
-              - entity: sensor.anenji_ui_program_45_description
-                name: ''
-              - type: button
-                name: ​
-                action_name: Отправить
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  data:
-                    variables:
-                      target_entity_id: input_number.anenji_cfg_program_45_low_dc_cutoff_soc
-                  target:
-                    entity_id: script.anenji_inverter_write_single_config_to_modbus
-      - type: grid
-        column_span: 3
-        columns: 2
-        square: false
-        cards:
-          - type: heading
-            heading: Сервис и диагностика
-            icon: mdi:stethoscope
-          - type: entities
-            title: Загрузка и паспортные данные
-            show_header_toggle: false
-            entities:
-              - entity: sensor.imia_ustroistva_device_name
-                name: Имя устройства
-              - entity: sensor.seriinyi_nomer_device_serial_number
-                name: Серийный номер
-              - entity: sensor.nomer_protokola_protocol_number
-                name: Номер протокола
-              - entity: sensor.versiia_programmy_program_version
-                name: Версия программы
-              - entity: sensor.nagruzka_load_percentage
-                name: Загрузка, %
-              - entity: sensor.nominalnaia_moshchnost_rated_power
-                name: Номинальная мощность
-              - entity: sensor.kolichestvo_iacheek_rated_cells_j
-                name: Номинальное число ячеек
-          - type: gauge
-            name: Загрузка нагрузки
-            entity: sensor.nagruzka_load_percentage
-            min: 0
-            max: 100
-            unit: '%'
-            severity:
-              green: 1
-              yellow: 50
-              red: 80
-          - type: entities
-            title: Сервисные регистры и режимы
-            show_header_toggle: false
-            entities:
-              - entity: sensor.kod_preduprezhdenii_bitami_warning_bitmask_raw
-                name: Код предупреждений · raw
-              - entity: sensor.kod_preduprezhdenii_bitami_warning_bitmask_masked
-                name: Код предупреждений · masked
-              - entity: sensor.maska_preduprezhdenii_warning_mask_i
-                name: Маска предупреждений
-              - entity: sensor.sukhoi_kontakt_dry_contact
-                name: Режим dry contact
-              - entity: sensor.rezhim_zapuska_boot_mode
-                name: Режим запуска · Сервисный параметр
-              - entity: sensor.udalennyi_vykliuchatel_remote_switch
-                name: Удалённый выключатель
-          - type: markdown
-            content: >
-              Диагностические битовые маски показаны как исходные значения.
+input_number:
+  anenji_cfg_program_02_max_charge_current:
+    name: "Program 02 · Макс. ток зарядки (PV+AC), A"
+    min: 0
+    max: 90
+    step: 1
+    mode: box
+    initial: 60
+  anenji_cfg_program_11_max_ac_charge_current:
+    name: "Program 11 · Макс. ток зарядки от сети, A"
+    min: 0
+    max: 90
+    step: 1
+    mode: box
+    initial: 20
+  anenji_cfg_program_12_back_to_utility_voltage:
+    name: "Program 12 · Переход на сеть, V"
+    min: 44
+    max: 57.2
+    step: 0.1
+    mode: box
+    initial: 48
+  anenji_cfg_program_13_back_to_battery_voltage:
+    name: "Program 13 · Возврат на батарею, V"
+    min: 44
+    max: 60
+    step: 0.1
+    mode: box
+    initial: 54
+  anenji_cfg_program_26_bulk_absorption_voltage:
+    name: "Program 26 · Bulk/Absorption, V"
+    min: 48
+    max: 62
+    step: 0.1
+    mode: box
+    initial: 56.4
+  anenji_cfg_program_27_float_voltage:
+    name: "Program 27 · Float, V"
+    min: 48
+    max: 58
+    step: 0.1
+    mode: box
+    initial: 54.0
+  anenji_cfg_program_29_low_dc_cutoff_voltage:
+    name: "Program 29 · Low DC cut-off, V"
+    min: 40
+    max: 54
+    step: 0.1
+    mode: box
+    initial: 46.0
+  anenji_cfg_program_34_equalization_voltage:
+    name: "Program 34 · Напряжение выравнивания, V"
+    min: 48
+    max: 64
+    step: 0.1
+    mode: box
+    initial: 58.4
+  anenji_cfg_program_35_equalization_time:
+    name: "Program 35 · Время выравнивния, min"
+    min: 0
+    max: 900
+    step: 1
+    mode: box
+    initial: 120
+  anenji_cfg_program_36_equalization_timeout:
+    name: "Program 36 · Таймер выравнивания, min"
+    min: 0
+    max: 900
+    step: 1
+    mode: box
+    initial: 180
+  anenji_cfg_program_37_equalization_interval_days:
+    name: "Program 37 · Интервал выравнивания, days"
+    min: 1
+    max: 90
+    step: 1
+    mode: box
+    initial: 30
+  anenji_cfg_program_43_soc_back_to_utility:
+    name: "Program 43 · SOC перехода на сеть, %"
+    min: 20
+    max: 50
+    step: 1
+    mode: box
+    initial: 30
+  anenji_cfg_program_44_soc_back_to_battery:
+    name: "Program 44 · SOC возврата на батарею, %"
+    min: 60
+    max: 100
+    step: 1
+    mode: box
+    initial: 80
+  anenji_cfg_program_45_low_dc_cutoff_soc:
+    name: "Program 45 · Нижний порог отключения по SOC, %"
+    min: 3
+    max: 30
+    step: 1
+    mode: box
+    initial: 10
+  anenji_cfg_program_41_bms_charge_voltage:
+    name: "Program 41 · BMS напряжение зарядки, V"
+    min: 40
+    max: 64
+    step: 0.1
+    mode: box
+    initial: 56.0
+  anenji_cfg_program_42_bms_cutoff_voltage:
+    name: "Program 42 · BMS напряжение отключения, V"
+    min: 40
+    max: 64
+    step: 0.1
+    mode: box
+    initial: 44.0
+  anenji_cfg_program_43_bms_charge_current:
+    name: "Program 43 · BMS ток зарядки, A"
+    min: 0
+    max: 140
+    step: 1
+    mode: box
+    initial: 60
+  anenji_cfg_program_25_modbus_id:
+    name: "Program 25 · Modbus ID"
+    min: 1
+    max: 247
+    step: 1
+    mode: box
+    initial: 1
 
+input_text:
+  anenji_cfg_profile_name:
+    name: "Профиль конфигурации"
+    initial: "default"
+    max: 64
+  anenji_cfg_snapshot_json:
+    name: "Снимок конфигурации (JSON)"
+    initial: "{}"
+    max: 255
+  anenji_cfg_manual_overrides_json:
+    name: "Ручные override-параметры (JSON)"
+    initial: "{}"
+    max: 255
+  anenji_cfg_last_published_payload:
+    name: "Последний отправленный payload"
+    initial: ""
+    max: 255
+  anenji_cfg_last_received_payload:
+    name: "Последний полученный payload"
+    initial: ""
+    max: 255
 
-              TODO: добавить template-сенсоры с расшифровкой `warning mask` и
-              `fault bitmask` по битам для человекочитаемой диагностики.
-          - type: entities
-            title: Журнал ошибок и аварийные записи
-            show_header_toggle: false
-            entities:
-              - entity: sensor.info_khranilishcha_oshibok_fault_record_storage_info
-                name: Инфо хранилища ошибок
-          - type: markdown
-            content: >
-              `Program version` уже выведен в блок выше. Для `Last fault record`
-              и `Run log` в текущей инструкции нет подтверждённых адресов
-              чтения, поэтому они пока не добавлены в конфигурацию.
-      - type: grid
-        column_span: 3
-        columns: 2
-        square: false
-        cards:
-          - type: heading
-            heading: Lithium / BMS
-            icon: mdi:battery-heart-variant
-          - type: entities
-            title: Литиевая батарея / ограничения BMS
-            show_header_toggle: false
-            entities:
-              - entity: sensor.zariad_akb_battery_soc
-                name: SOC батареи
-              - entity: sensor.maks_napriazhenie_zariadki_maximum_charge_voltage_b
-                name: Максимальное напряжение зарядки
-              - entity: sensor.maks_tok_zariadki_maximum_charge_current_g
-                name: Максимальный ток зарядки
-          - type: entities
-            title: SOC-уставки для lithium/BMS
-            show_header_toggle: false
-            entities:
-              - entity: sensor.soc_zashchita_v_seti_mains_discharge_soc_protect_k
-                name: Текущий порог перехода на сеть (Program 43)
-              - entity: sensor.soc_vosstanovlenie_v_seti_mains_discharge_soc_recovery
-                name: Текущий порог возврата на батарею (Program 44)
-              - entity: sensor.soc_zashchita_off_grid_off_grid_discharge_soc_protect
-                name: Текущий нижний порог отключения по SOC (Program 45)
-          - type: markdown
-            content: >
-              Блок логически отделён: если BMS-сущности `charge forbidden` /
-              `discharge forbidden` ещё не заведены, здесь оставлены точечные
-              TODO без выдумывания `entity_id`.
-    header:
-      layout: center
-      badges_position: top
-      badges_wrap: scroll
+script:
+  anenji_inverter_sync_config_from_modbus:
+    alias: "ANENJI: Синхронизировать параметры из Modbus в helpers"
+    mode: restart
+    sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.anenji_cfg_sync_from_inverter_active
+  anenji_inverter_write_single_config_to_modbus:
+    alias: "ANENJI: Записать в Modbus выбранный параметр формы"
+    mode: queued
+    fields:
+      target_entity_id:
+        description: "Entity ID helper-параметра для отправки в инвертор"
+        example: "input_number.anenji_cfg_program_12_back_to_utility_voltage"
+    variables:
+      config_map: >-
+        {{ {
+          'input_select.anenji_cfg_program_01_output_source_priority': {'program': 1, 'address': 301, 'value': {'UTI':0, 'SOL':1, 'SBU':2, 'SUB':3, 'SUF':4}[states('input_select.anenji_cfg_program_01_output_source_priority')]},
+          'input_number.anenji_cfg_program_02_max_charge_current': {'program': 2, 'address': 332, 'value': (states('input_number.anenji_cfg_program_02_max_charge_current')|float(0) * 10)|round(0)|int},
+          'input_select.anenji_cfg_program_03_input_voltage_range': {'program': 3, 'address': 302, 'value': {'APL':0, 'UPS':1, 'GEN':2}[states('input_select.anenji_cfg_program_03_input_voltage_range')]},
+          'input_boolean.anenji_cfg_program_04_power_saving': {'program': 4, 'address': 307, 'value': 1 if is_state('input_boolean.anenji_cfg_program_04_power_saving', 'on') else 0},
+          'input_select.anenji_cfg_program_05_battery_type': {'program': 5, 'address': 322, 'value': {'AGM':0, 'Flooded':1, 'User defined':2, 'LI2':3, 'LI4':4, 'LIB':5}[states('input_select.anenji_cfg_program_05_battery_type')]},
+          'input_select.anenji_cfg_program_06_charging_priority': {'program': 6, 'address': 331, 'value': {'Solar first':0, 'Solar + Utility':1, 'Solar only':2}[states('input_select.anenji_cfg_program_06_charging_priority')]},
+          'input_boolean.anenji_cfg_program_07_overload_restart': {'program': 7, 'address': 308, 'value': 1 if is_state('input_boolean.anenji_cfg_program_07_overload_restart', 'on') else 0},
+          'input_boolean.anenji_cfg_program_08_overtemp_restart': {'program': '08A', 'address': 309, 'value': 1 if is_state('input_boolean.anenji_cfg_program_08_overtemp_restart', 'on') else 0},
+          'input_select.anenji_cfg_program_08_output_voltage': {'program': '08B', 'address': 320, 'value': states('input_select.anenji_cfg_program_08_output_voltage')|replace('V','')|int(230) * 10},
+          'input_boolean.anenji_cfg_program_09_buzzer': {'program': '09A', 'address': 303, 'value': 1 if is_state('input_boolean.anenji_cfg_program_09_buzzer', 'on') else 0},
+          'input_select.anenji_cfg_program_09_output_frequency': {'program': '09B', 'address': 321, 'value': states('input_select.anenji_cfg_program_09_output_frequency')|replace('Hz','')|int(50) * 100},
+          'input_boolean.anenji_cfg_program_10_back_to_grid_auto': {'program': '10A', 'address': 338, 'value': 1 if is_state('input_boolean.anenji_cfg_program_10_back_to_grid_auto', 'on') else 0},
+          'input_number.anenji_cfg_program_11_max_ac_charge_current': {'program': 11, 'address': 333, 'value': (states('input_number.anenji_cfg_program_11_max_ac_charge_current')|float(0) * 10)|round(0)|int},
+          'input_number.anenji_cfg_program_12_back_to_utility_voltage': {'program': 12, 'address': 327, 'value': (states('input_number.anenji_cfg_program_12_back_to_utility_voltage')|float(0) * 10)|round(0)|int},
+          'input_number.anenji_cfg_program_13_back_to_battery_voltage': {'program': 13, 'address': 326, 'value': (states('input_number.anenji_cfg_program_13_back_to_battery_voltage')|float(0) * 10)|round(0)|int},
+          'input_select.anenji_cfg_program_20_backlight_mode': {'program': 20, 'address': 305, 'value': {'LOF':0, 'LON':1}[states('input_select.anenji_cfg_program_20_backlight_mode')]},
+          'input_select.anenji_cfg_program_23_overload_bypass': {'program': 23, 'address': 310, 'value': {'bYd':0, 'bYE':1}[states('input_select.anenji_cfg_program_23_overload_bypass')]},
+          'input_number.anenji_cfg_program_26_bulk_absorption_voltage': {'program': 26, 'address': 324, 'value': (states('input_number.anenji_cfg_program_26_bulk_absorption_voltage')|float(0) * 10)|round(0)|int},
+          'input_number.anenji_cfg_program_27_float_voltage': {'program': 27, 'address': 325, 'value': (states('input_number.anenji_cfg_program_27_float_voltage')|float(0) * 10)|round(0)|int},
+          'input_number.anenji_cfg_program_29_low_dc_cutoff_voltage': {'program': 29, 'address': 329, 'value': (states('input_number.anenji_cfg_program_29_low_dc_cutoff_voltage')|float(0) * 10)|round(0)|int},
+          'input_select.anenji_cfg_program_32_cv_to_float_time_mode': {'program': 32, 'address': 330, 'value': 0 if states('input_select.anenji_cfg_program_32_cv_to_float_time_mode') == 'AUT' else states('input_select.anenji_cfg_program_32_cv_to_float_time_mode')|int(0)},
+          'input_boolean.anenji_cfg_program_33_equalization_enable': {'program': 33, 'address': 313, 'value': 1 if is_state('input_boolean.anenji_cfg_program_33_equalization_enable', 'on') else 0},
+          'input_number.anenji_cfg_program_34_equalization_voltage': {'program': 34, 'address': 334, 'value': (states('input_number.anenji_cfg_program_34_equalization_voltage')|float(0) * 10)|round(0)|int},
+          'input_number.anenji_cfg_program_35_equalization_time': {'program': 35, 'address': 335, 'value': states('input_number.anenji_cfg_program_35_equalization_time')|int(0)},
+          'input_number.anenji_cfg_program_36_equalization_timeout': {'program': 36, 'address': 336, 'value': states('input_number.anenji_cfg_program_36_equalization_timeout')|int(0)},
+          'input_number.anenji_cfg_program_37_equalization_interval_days': {'program': 37, 'address': 337, 'value': states('input_number.anenji_cfg_program_37_equalization_interval_days')|int(0)},
+          'input_boolean.anenji_cfg_program_39_force_equalization': {'program': 39, 'address': 425, 'value': 1 if is_state('input_boolean.anenji_cfg_program_39_force_equalization', 'on') else 0},
+          'input_number.anenji_cfg_program_43_soc_back_to_utility': {'program': 43, 'address': 341, 'value': states('input_number.anenji_cfg_program_43_soc_back_to_utility')|int(0)},
+          'input_number.anenji_cfg_program_44_soc_back_to_battery': {'program': 44, 'address': 342, 'value': states('input_number.anenji_cfg_program_44_soc_back_to_battery')|int(0)},
+          'input_number.anenji_cfg_program_45_low_dc_cutoff_soc': {'program': 45, 'address': 343, 'value': states('input_number.anenji_cfg_program_45_low_dc_cutoff_soc')|int(0)},
+          'input_select.anenji_cfg_program_46_overcharge_protection_mode': {'program': 46, 'address': 351, 'value': 0 if states('input_select.anenji_cfg_program_46_overcharge_protection_mode') == 'OFF' else states('input_select.anenji_cfg_program_46_overcharge_protection_mode')|replace('A','')|int(0)}
+        } }}
+      selected: >-
+        {{ config_map.get(target_entity_id) }}
+    sequence:
+      - condition: template
+        value_template: "{{ selected is mapping }}"
+      - service: modbus.write_register
+        data:
+          hub: ANENJI_6200W
+          slave: 1
+          address: "{{ selected.address }}"
+          value: "{{ [selected.value] }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.anenji_cfg_last_published_payload
+        data:
+          value: >-
+            {{
+              {
+                "source": "manual_apply_single",
+                "entity_id": target_entity_id,
+                "program": selected.program
+              } | tojson
+            }}
+      - service: script.turn_on
+        target:
+          entity_id: script.anenji_inverter_sync_config_from_modbus
+
+automation:
+  - alias: "ANENJI: Синхронизировать helpers из Modbus при старте и по расписанию"
+    id: anenji_sync_config_from_modbus_periodic
+    trigger:
+      - platform: homeassistant
+        event: start
+      - platform: time_pattern
+        minutes: '/5'
+    action:
+      - service: script.turn_on
+        target:
+          entity_id: script.anenji_inverter_sync_config_from_modbus
+
+template:
+  - sensor:
+      - default_entity_id: sensor.anenji_ui_program_01_description
+        name: "ANENJI Program 01 Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_01_output_source_priority') %}
+          {% if value == 'UTI' %}
+            UTI — нагрузка питается от сети; если сеть пропадёт, инвертор переключит питание на солнце и АКБ.
+          {% elif value == 'SOL' %}
+            SOL — нагрузка питается в первую очередь от солнца; при нехватке солнца подключается сеть, АКБ почти не разряжается.
+          {% elif value == 'SBU' %}
+            SBU — сначала солнце, затем АКБ; сеть подключится только когда батарея разрядится до порога Program 12.
+          {% elif value == 'SUB' %}
+            SUB — сначала солнце, затем сеть; АКБ используется только если сети нет.
+          {% elif value == 'SUF' %}
+            SUF — солнце и сеть могут питать нагрузку одновременно; если солнца мало, недостающее берётся из сети, АКБ не участвует.
+          {% else %}
+            Выберите режим, который определяет, откуда инвертор будет питать нагрузку.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_02_description
+        name: "ANENJI Program 02 Description"
+        state: >-
+          Максимальный суммарный ток зарядки АКБ от солнца и сети: {{ states('input_number.anenji_cfg_program_02_max_charge_current')|int(0) }} А.
+      - default_entity_id: sensor.anenji_ui_program_03_description
+        name: "ANENJI Program 03 Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_03_input_voltage_range') %}
+          {% if value == 'APL' %}
+            APL — широкий диапазон входного напряжения для обычной бытовой сети; реже переключается на АКБ при просадках.
+          {% elif value == 'UPS' %}
+            UPS — узкий диапазон для чувствительной техники; при отклонениях сети быстрее уходит на АКБ.
+          {% elif value == 'GEN' %}
+            GEN — режим дл генератора: допускает работу с нестабильным входом и ограничивает зарядный ток от сети.
+          {% else %}
+            Выберите режим допустимого входного AC-напряжения.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_04_description
+        name: "ANENJI Program 04 Description"
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_04_power_saving', 'on') %}
+            Включено — без нагрузки инвертор снижает собственное потребление, но может чуть медленнее реагировать на появление нагрузки.
+          {% else %}
+            Выключено — выход инвертора постоянно активен, отклик максимальный, собственное потребление выше.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_05_description
+        name: "ANENJI Program 05 Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_05_battery_type') %}
+          {% if value == 'AGM' %}
+            AGM — герметичные свинцово-кислотные АКБ; инвертор использует стандартные напряжения для AGM.
+          {% elif value == 'Flooded' %}
+            Flooded — обслуживаемые свинцово-кислотные АКБ с жидким электролитом; доступны циклы выравнивания.
+          {% elif value == 'User defined' %}
+            User defined — пользовательский профиль: напряжения Bulk, Float и пороги возврата задаются вручную.
+          {% elif value == 'LI2' %}
+            LI2 — литиевый профиль PYLON/совместимых АКБ с иксированным алгоритмом зарядки.
+          {% elif value == 'LI4' %}
+            LI4 — литиевый профиль LI4 с поддержкой обмена по BMS, если он предусмотрен батареей.
+          {% elif value == 'LIB' %}
+            LIB — литиевая батарея без связи по BMS; заряд идёт по литиевому алгоритму, но контроль ограничений задаётся вручную.
+          {% else %}
+            Выберите тип АКБ, чтобы инвертор применил корректный алгоритм зарядки.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_06_description
+        name: "ANENJI Program 06 Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_06_charging_priority') %}
+          {% if value == 'Solar first' %}
+            Solar first — АКБ заряжается в первую очередь от солнца; сеть подключается только когда солнечной мощности не хватает.
+          {% elif value == 'Solar + Utility' %}
+            Solar + Utility — АКБ может одновременно заряжаться от солнца и от сети, чтобы зарядить её быстрее.
+          {% elif value == 'Solar only' %}
+            Solar only — зарядка АКБ разрешена только от солнечных панелей; сеть батарею не заряжает.
+          {% else %}
+            Выберите источник, откуда разрешено заряжать аккумулятор.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_07_description
+        name: "ANENJI Program 07 Description"
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_07_overload_restart', 'on') %}
+            Включено — после аварии по перегрузке инвертор попробует восстановить работу автоматически.
+          {% else %}
+            Выключено — после перегрузки потребуется ручной перезапуск или снятие аварии.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_08a_description
+        name: "ANENJI Program 08A Description"
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_08_overtemp_restart', 'on') %}
+            Включено — после перегрева и последующего остывания инвертор запустится автоматически.
+          {% else %}
+            Выключено — после перегрева инвертор не перезапустится сам, понадобится ручное восстановление.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_08b_description
+        name: "ANENJI Program 08B Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_08_output_voltage') %}
+          {{ value }} — номинальное AC-напряжение на выходе инвертора для подключённой нагрузки.
+      - default_entity_id: sensor.anenji_ui_program_09a_description
+        name: "ANENJI Program 09A Description"
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_09_buzzer', 'on') %}
+            Включено — зуммер подаёт звуковые сигналы при предупреждениях, ошибках и служебных событиях.
+          {% else %}
+            Выключено — звуковые сигналы отключены.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_09b_description
+        name: "ANENJI Program 09B Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_09_output_frequency') %}
+          {{ value }} — номинальная частота на выходе инвертора; должна соответствовать вашей нагрузке и сети.
+      - default_entity_id: sensor.anenji_ui_program_10a_description
+        name: "ANENJI Program 10A Description"
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_10_back_to_grid_auto', 'on') %}
+            Включено — при появлении подходящей сети инвертор может автоматически вернуть нагрузку на сеть.
+          {% else %}
+            Выключено — автоматический возврат на сеть запрещён; переключение выполняется по другим условиям.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_11_description
+        name: "ANENJI Program 11 Description"
+        state: >-
+          Максимальный ток зарядки АКБ от сети: {{ states('input_number.anenji_cfg_program_11_max_ac_charge_current')|int(0) }} А.
+      - default_entity_id: sensor.anenji_ui_program_12_description
+        name: "ANENJI Program 12 Description"
+        state: >-
+          Когда напряжение АКБ опустится до {{ states('input_number.anenji_cfg_program_12_back_to_utility_voltage')|float(0) }} В, инвертор переведёт нагрузку на сеть.
+      - default_entity_id: sensor.anenji_ui_program_13_description
+        name: "ANENJI Program 13 Description"
+        state: >-
+          Когда напряжение АКБ поднимется до {{ states('input_number.anenji_cfg_program_13_back_to_battery_voltage')|float(0) }} В, инвертор вернёт нагрузку с сети обратно на солнце/АКБ.
+      - default_entity_id: sensor.anenji_ui_program_18_description
+        name: "ANENJI Program 18 Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_18_buzzer_mode') %}
+          {% if value == 'Mute' %}
+            Зуммер полностью отключён — инвертор не будет подавать звуковые сигналы ни при смене источника, ни при предупреждениях, ни при авариях.
+          {% elif value == 'Source/Warn/Fault' %}
+            Звук будет подаваться при смене входного источника, а также при предупреждениях и авариях.
+          {% elif value == 'Warn/Fault' %}
+            Зуммер будет срабатывать только при предупреждениях и авариях.
+          {% elif value == 'Fault only' %}
+            Звуковое оповещение останется только для аварийных состояний.
+          {% else %}
+            Выберите подходящий режим звуковой сигнализации инвертора.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_19_description
+        name: "ANENJI Program 19 Description"
+        state: >-
+          {% if is_state('input_select.anenji_cfg_program_19_screen_return_mode', 'Автовозврат через 1 минуту') %}
+            LCD автоматически вернётся на главный экран примерно через 1 минуту бездействия.
+          {% else %}
+            Инвертор останется на текущем экране до ручного переключения.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_25_description
+        name: "ANENJI Program 25 Description"
+        state: >-
+          Осторожно: Modbus ID влияет на доступность устройства в шине RS485/Modbus. Перед изменением убедитесь, что мастер и все автоматизации будут опрашивать новый адрес. Текущее подготовленное значение: {{ states('input_number.anenji_cfg_program_25_modbus_id')|int(1) }}.
+      - default_entity_id: sensor.anenji_ui_program_39_description
+        name: "ANENJI Program 39 Description"
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_39_force_equalization', 'on') %}
+            Команда немедленного запуска equalization подготовлена. Используйте её с осторожностью: обычно это актуально для обслуживаемых свинцовых АКБ и часто нежелательно для литиевых батарей.
+          {% else %}
+            Немедленный запуск equalization отключён. Для литиевых АКБ этот режим обычно не используется.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_41_description
+        name: "ANENJI Program 41 Description"
+        state: >-
+          TODO: подтвердить регистр Program 41 для вашей ревизии прошивки. По задаче это автоактивация литиевой батареи; helper добавлен как заготовка без привязки записи в Modbus, чтобы не писать в неподтверждённый регистр.
+      - default_entity_id: sensor.anenji_ui_program_42_description
+        name: "ANENJI Program 42 Description"
+        state: >-
+          TODO: подтвердить регистр Program 42 для вашей ревизии прошивки. По задаче это ручная активация литиевой батареи; helper добавлен как заготовка без привязки записи в Modbus, чтобы не писать в неподтверждённый регистр.
+      - default_entity_id: sensor.anenji_ui_program_43_description
+        name: "ANENJI Program 43 Description"
+        state: >-
+          При достижении {{ states('input_number.anenji_cfg_program_43_soc_back_to_utility')|int(0) }}% SOC инвертор может вернуть нагрузку на сеть/utility.
+      - default_entity_id: sensor.anenji_ui_program_44_description
+        name: "ANENJI Program 44 Description"
+        state: >-
+          Когда заряд АКБ восстановится до {{ states('input_number.anenji_cfg_program_44_soc_back_to_battery')|int(0) }}% SOC, инвертор сможет вернуться к питанию от батареи/солнца.
+      - default_entity_id: sensor.anenji_ui_program_45_description
+        name: "ANENJI Program 45 Description"
+        state: >-
+          При снижении SOC до {{ states('input_number.anenji_cfg_program_45_low_dc_cutoff_soc')|int(0) }}% инвертор отключит разряд по SOC для защиты батареи.
+      - default_entity_id: sensor.anenji_ui_program_20_description
+        name: "ANENJI Program 20 Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_20_backlight_mode') %}
+          {% if value == 'LON' %}
+            LON — подсветка экрана горит постоянно.
+          {% elif value == 'LOF' %}
+            LOF — подсветка отключается автоматически, чтобы снизить потребление и не светить постоянно.
+          {% else %}
+            Выберите режим работы подсветки дисплея.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_23_description
+        name: "ANENJI Program 23 Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_23_overload_bypass') %}
+          {% if value == 'bYE' %}
+            bYE — при перегрузке инвертор попробует перевести нагрузку на сеть через bypass.
+          {% elif value == 'bYd' %}
+            bYd — при перегрузке bypass запрещён, нагрузка будет отключена аварийно.
+          {% else %}
+            Выберите поведение инвертора при перегрузке.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_26_description
+        name: "ANENJI Program 26 Description"
+        state: >-
+          Bulk/Absorption: до {{ states('input_number.anenji_cfg_program_26_bulk_absorption_voltage')|float(0) }} В инвертор поднимает напряжение на основном этапе заряда.
+      - default_entity_id: sensor.anenji_ui_program_27_description
+        name: "ANENJI Program 27 Description"
+        state: >-
+          Float: после полного заряда инвертор удерживает АКБ на уровне {{ states('input_number.anenji_cfg_program_27_float_voltage')|float(0) }} В.
+      - default_entity_id: sensor.anenji_ui_program_29_description
+        name: "ANENJI Program 29 Description"
+        state: >-
+          При падении напряжения АКБ до {{ states('input_number.anenji_cfg_program_29_low_dc_cutoff_voltage')|float(0) }} В инвертор отключит выход, чтобы защитить батарею от глубокого разряда.
+      - default_entity_id: sensor.anenji_ui_program_32_description
+        name: "ANENJI Program 32 Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_32_cv_to_float_time_mode') %}
+          {% if value == 'AUT' %}
+            AUT — время перехода из режима CV в Float инвертор рассчитает автоматически.
+          {% else %}
+            Через {{ value }} мин после этапа CV инвертор перейдёт в поддерживающий режим Float.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_33_description
+        name: "ANENJI Program 33 Description"
+        state: >-
+          {% if is_state('input_boolean.anenji_cfg_program_33_equalization_enable', 'on') %}
+            Включено — инвертору разрешён выравнивающий заряд обслуживаемых свинцовых АКБ.
+          {% else %}
+            Выключено — выравнивающий заряд полностью запрещён.
+          {% endif %}
+      - default_entity_id: sensor.anenji_ui_program_34_description
+        name: "ANENJI Program 34 Description"
+        state: >-
+          Во время выравнивания напряжение АКБ будет поднято до {{ states('input_number.anenji_cfg_program_34_equalization_voltage')|float(0) }} В.
+      - default_entity_id: sensor.anenji_ui_program_35_description
+        name: "ANENJI Program 35 Description"
+        state: >-
+          Один цикл выравнивающего заряда будет длиться {{ states('input_number.anenji_cfg_program_35_equalization_time')|int(0) }} мин.
+      - default_entity_id: sensor.anenji_ui_program_36_description
+        name: "ANENJI Program 36 Description"
+        state: >-
+          Максимально допустимая суммарная продолжительность выравнивания: {{ states('input_number.anenji_cfg_program_36_equalization_timeout')|int(0) }} мин.
+      - default_entity_id: sensor.anenji_ui_program_37_description
+        name: "ANENJI Program 37 Description"
+        state: >-
+          Выравнивающий заряд будет запускаться каждые {{ states('input_number.anenji_cfg_program_37_equalization_interval_days')|int(0) }} дн.
+      - default_entity_id: sensor.anenji_ui_program_46_description
+        name: "ANENJI Program 46 Description"
+        state: >-
+          {% set value = states('input_select.anenji_cfg_program_46_overcharge_protection_mode') %}
+          {% if value == 'OFF' %}
+            OFF — ограничение по максимальному току разряда отключено.
+          {% else %}
+            {{ value }} — инвертор ограничит максимальный ток разряда этим значением.
+          {% endif %}

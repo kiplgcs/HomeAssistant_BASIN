@@ -7,119 +7,92 @@ views:
     sections:
       - type: grid
         column_span: 3
-        columns: 12
+        columns: 15
         square: false
         cards:
           - type: gauge
-            name: Солнечные панели
+            name: Мощность панелей PV
             entity: sensor.moshchnost_pv_pv_power
-            min: 0
-            max: 6200
-            unit: Вт
             needle: true
-            grid_options:
-              columns: 3
             severity:
-              green: 1
-              yellow: 2500
-              red: 5000
-            card_mod:
-              style: |
-                ha-card {
-                  min-height: 360px;
-                  background: linear-gradient(180deg, rgba(255, 193, 7, 0.18), rgba(18, 18, 18, 0.98));
-                  border: 1px solid rgba(255, 193, 7, 0.28);
-                  border-radius: 24px;
-                  padding: 28px 24px 18px;
-                }
+              green: 2000
+              yellow: 5000
+              red: 6200
+            max: 6200
+            min: 0
+            unit: W
+            grid_options:
+              columns: 6
+              rows: auto
           - type: gauge
-            name: Сеть
             entity: sensor.moshchnost_seti_grid_power
-            min: -6200
-            max: 6200
             unit: Вт
-            needle: true
-            grid_options:
-              columns: 3
-            severity:
-              green: 0
-              yellow: 2500
-              red: 5000
-            card_mod:
-              style: |
-                ha-card {
-                  min-height: 360px;
-                  background: linear-gradient(180deg, rgba(3, 169, 244, 0.16), rgba(18, 18, 18, 0.98));
-                  border: 1px solid rgba(3, 169, 244, 0.26);
-                  border-radius: 24px;
-                  padding: 28px 24px 18px;
-                }
-          - type: gauge
-            name: Нагрузка
-            entity: sensor.moshchnost_nagruzki_load_power
-            min: 0
             max: 6200
-            unit: Вт
-            needle: true
-            grid_options:
-              columns: 3
             severity:
               green: 1
               yellow: 2500
               red: 5000
-            card_mod:
-              style: |
-                ha-card {
-                  min-height: 360px;
-                  background: linear-gradient(180deg, rgba(76, 175, 80, 0.16), rgba(18, 18, 18, 0.98));
-                  border: 1px solid rgba(76, 175, 80, 0.26);
-                  border-radius: 24px;
-                  padding: 28px 24px 18px;
-                }
-          - type: gauge
-            name: Аккумулятор
-            entity: sensor.anenji_flow_battery_power_signed
-            min: -6200
-            max: 6200
-            unit: Вт
             needle: true
+            min: -6200
             grid_options:
-              columns: 3
+              columns: 6
+              rows: auto
+          - type: gauge
+            entity: sensor.moshchnost_nagruzki_load_power
+            max: 6200
+            needle: true
             severity:
-              green: 0
-              yellow: 2500
-              red: 5000
-            card_mod:
-              style: |
-                ha-card {
-                  min-height: 360px;
-                  background: linear-gradient(180deg, rgba(33, 150, 243, 0.18), rgba(18, 18, 18, 0.98));
-                  border: 1px solid rgba(33, 150, 243, 0.28);
-                  border-radius: 24px;
-                  padding: 28px 24px 18px;
-                }
-      - type: grid
-        column_span: 3
-        columns: 3
-        square: false
-        cards:
+              green: 2000
+              yellow: 5000
+              red: 6200
+            unit: Вт
+            min: 0
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: gauge
+            name: Аккумуляторы
+            entity: sensor.anenji_flow_battery_power_signed
+            unit: W
+            max: 6200
+            needle: true
+            min: -6200
+            severity:
+              green: 6200
+              yellow: 0
+              red: -6200
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: gauge
+            name: Избыток PV
+            entity: sensor.anenji_surplus_power
+            max: 6200
+            needle: true
+            severity:
+              green: 2000
+              yellow: 4500
+              red: 6200
+            min: 0
+            unit: W
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: entities
+            title: Порог резерва сети
+            show_header_toggle: false
+            entities:
+              - entity: input_number.anenji_surplus_power_reserve
+                name: Резерв для сети
+            grid_options:
+              columns: 6
+              rows: auto
           - type: history-graph
             grid_options:
-              columns: 12
-            card_mod:
-              style: |
-                ha-card {
-                  border-radius: 22px;
-                  padding: 8px;
-                  background: linear-gradient(180deg, rgba(33, 33, 33, 0.96), rgba(18, 18, 18, 1));
-                  border: 1px solid rgba(255, 255, 255, 0.08);
-                }
-                .card-header {
-                  font-size: 1.5rem;
-                  font-weight: 700;
-                }
-            title: История мощностей за 24 часа
-            hours_to_show: 24
+              columns: full
+              rows: 8
+            title: История мощностей за  2 дня
+            hours_to_show: 48
             refresh_interval: 30
             entities:
               - entity: sensor.anenji_pv_power_history
@@ -130,6 +103,26 @@ views:
                 name: Сеть
               - entity: sensor.anenji_battery_power_history
                 name: Аккумулятор
+            logarithmic_scale: false
+          - chart_type: line
+            period: 5minute
+            type: statistics-graph
+            entities:
+              - sensor.anenji_pv_power_history
+            days_to_show: 30
+            stat_types:
+              - mean
+            hide_legend: true
+            logarithmic_scale: false
+            title: Статистика солнца
+            grid_options:
+              columns: full
+              rows: 5
+      - type: grid
+        column_span: 3
+        columns: 3
+        square: false
+        cards:
           - type: entities
             title: Солнечные панели
             show_header_toggle: false
@@ -174,6 +167,8 @@ views:
                 name: Выходная частота
               - entity: sensor.polnaia_moshchnost_nagruzki_load_apparent_power
                 name: Полная мощность нагрузки
+              - entity: sensor.anenji_surplus_power
+                name: Доступный избыток PV
           - type: entities
             title: Инвертор и температура
             show_header_toggle: false
@@ -1196,16 +1191,6 @@ views:
                 name: Номинальная мощность
               - entity: sensor.kolichestvo_iacheek_rated_cells_j
                 name: Номинальное число ячеек
-          - type: gauge
-            name: Загрузка нагрузки
-            entity: sensor.nagruzka_load_percentage
-            min: 0
-            max: 100
-            unit: '%'
-            severity:
-              green: 1
-              yellow: 50
-              red: 80
           - type: entities
             title: Сервисные регистры и режимы
             show_header_toggle: false
@@ -1218,24 +1203,12 @@ views:
                 name: Режим запуска · Сервисный параметр
               - entity: sensor.udalennyi_vykliuchatel_remote_switch
                 name: Удалённый выключатель
-          - type: markdown
-            content: >
-              Диагностические битовые маски показаны как исходные значения.
-
-
-              TODO: добавить template-сенсоры с расшифровкой `warning mask` и
-              `fault bitmask` по битам для человекочитаемой диагностики.
           - type: entities
             title: Журнал ошибок и аварийные записи
             show_header_toggle: false
             entities:
               - entity: sensor.info_khranilishcha_oshibok_fault_record_storage_info
                 name: Инфо хранилища ошибок
-          - type: markdown
-            content: >
-              TODO: `Program version`, `Last fault record` и `Run log`
-              подтверждены документацией, но в текущей конфигурации ещё не
-              созданы как сущности Home Assistant.
       - type: grid
         column_span: 3
         columns: 2
@@ -1264,8 +1237,13 @@ views:
                 name: Текущий порог возврата на батарею (Program 44)
               - entity: sensor.soc_zashchita_off_grid_off_grid_discharge_soc_protect
                 name: Текущий нижний порог отключения по SOC (Program 45)
-          - type: markdown
-            content: >
-              Блок логически отделён: если BMS-сущности `charge forbidden` /
-              `discharge forbidden` ещё не заведены, здесь оставлены точечные
-              TODO без выдумывания `entity_id`.
+          - type: gauge
+            name: Загрузка нагрузки
+            entity: sensor.nagruzka_load_percentage
+            min: 0
+            max: 100
+            unit: '%'
+            severity:
+              green: 1
+              yellow: 50
+              red: 80

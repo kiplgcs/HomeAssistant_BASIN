@@ -69,7 +69,7 @@ shell_command:
   poliv_restart: 'curl http://192.168.0.70/restart'
 #   poliv_restart: 'mosquitto_pub -h localhost -t "jee/set/RestartESP32" -m "true"'
 
-mqtt: !include mqtt_irrigation.yaml
+# mqtt: !include mqtt_irrigation.yaml
 
 # rest_command:
 #   poliv_restart:
@@ -77,111 +77,119 @@ mqtt: !include mqtt_irrigation.yaml
 #     method: GET
 
     
-# binary_sensor:
-#   - platform: ping
-#     host: 192.168.0.75  # IP-адрес телефона
-#     name: phone_online
-#     count: 2             # сколько пакетов отправить
-#     scan_interval: 15    # как часто проверять (в секундах)
+binary_sensor:
+  - platform: ping
+    host: 192.168.0.75  # IP-адрес телефона
+    name: phone_online
+    count: 2             # сколько пакетов отправить
+    scan_interval: 15    # как часто проверять (в секундах)
 
-input_datetime:
-  poliv_1_vremia_nachala_taimera_1:
-    name: "Полив 1 - Время начала Таймера 1"
-    has_time: true
-    has_date: false
+# input_datetime:
+#   poliv_1_vremia_nachala_taimera_1:
+#     name: "Полив 1 - Время начала Таймера 1"
+#     has_time: true
+#     has_date: false
 
-  poliv_1_vremia_nachala_taimera_2:
-    name: "Полив 1 - Время начала Таймера 2"
-    has_time: true
-    has_date: false
+#   poliv_1_vremia_nachala_taimera_2:
+#     name: "Полив 1 - Время начала Таймера 2"
+#     has_time: true
+#     has_date: false
 
-  poliv_2_vremia_nachala_taimera_1:
-    name: "Полив 2 - Время начала Таймера 1"
-    has_time: true
-    has_date: false
+#   poliv_2_vremia_nachala_taimera_1:
+#     name: "Полив 2 - Время начала Таймера 1"
+#     has_time: true
+#     has_date: false
 
-  poliv_2_vremia_nachala_taimera_2:
-    name: "Полив 2 - Время начала Таймера 2"
-    has_time: true
-    has_date: false
+#   poliv_2_vremia_nachala_taimera_2:
+#     name: "Полив 2 - Время начала Таймера 2"
+#     has_time: true
+#     has_date: false
 
-  poliv_3_vremia_nachala_taimera_1:
-    name: "Полив 3 - Время начала Таймера 1"
-    has_time: true
-    has_date: false
+#   poliv_3_vremia_nachala_taimera_1:
+#     name: "Полив 3 - Время начала Таймера 1"
+#     has_time: true
+#     has_date: false
 
-  poliv_3_vremia_nachala_taimera_2:
-    name: "Полив 3 - Время начала Таймера 2"
-    has_time: true
-    has_date: false
+#   poliv_3_vremia_nachala_taimera_2:
+#     name: "Полив 3 - Время начала Таймера 2"
+#     has_time: true
+#     has_date: false
 
-  poliv_4_vremia_nachala_taimera_1:
-    name: "Полив 4 - Время начала Таймера 1"
-    has_time: true
-    has_date: false
+#   poliv_4_vremia_nachala_taimera_1:
+#     name: "Полив 4 - Время начала Таймера 1"
+#     has_time: true
+#     has_date: false
 
-  poliv_4_vremia_nachala_taimera_2:
-    name: "Полив 4 - Время начала Таймера 2"
-    has_time: true
-    has_date: false
+#   poliv_4_vremia_nachala_taimera_2:
+#     name: "Полив 4 - Время начала Таймера 2"
+#     has_time: true
+#     has_date: false
 
-input_number:
-  poliv_1_dlitelnost_taimera_1:
-    name: "Полив 1 - Длительность Таймера 1"
-    min: 1
-    max: 30
-    step: 1
-    unit_of_measurement: "мин"
+# input_number:
+#   poliv_1_dlitelnost_taimera_1:
+#     name: "Полив 1 - Длительность Таймера 1"
+#     min: 1
+#     max: 30
+#     step: 1
+#     unit_of_measurement: "мин"
 
-  poliv_1_dlitelnost_taimera_2:
-    name: "Полив 1 - Длительность Таймера 2"
-    min: 1
-    max: 30
-    step: 1
-    unit_of_measurement: "мин"
+#   poliv_1_dlitelnost_taimera_2:
+#     name: "Полив 1 - Длительность Таймера 2"
+#     min: 1
+#     max: 30
+#     step: 1
+#     unit_of_measurement: "мин"
 
-  poliv_2_dlitelnost_taimera_1:
-    name: "Полив 2 - Длительность Таймера 1"
-    min: 1
-    max: 30
-    step: 1
-    unit_of_measurement: "мин"
+#   poliv_2_dlitelnost_taimera_1:
+#     name: "Полив 2 - Длительность Таймера 1"
+#     min: 1
+#     max: 30
+#     step: 1
+#     unit_of_measurement: "мин"
 
-  poliv_2_dlitelnost_taimera_2:
-    name: "Полив 2 - Длительность Таймера 2"
-    min: 1
-    max: 30
-    step: 1
-    unit_of_measurement: "мин"
+#   poliv_2_dlitelnost_taimera_2:
+#     name: "Полив 2 - Длительность Таймера 2"
+#     min: 1
+#     max: 30
+#     step: 1
+#     unit_of_measurement: "мин"
 
-  poliv_3_dlitelnost_taimera_1:
-    name: "Полив 3 - Длительность Таймера 1"
-    min: 1
-    max: 30
-    step: 1
-    unit_of_measurement: "мин"
+#   poliv_3_dlitelnost_taimera_1:
+#     name: "Полив 3 - Длительность Таймера 1"
+#     min: 1
+#     max: 30
+#     step: 1
+#     unit_of_measurement: "мин"
 
-  poliv_3_dlitelnost_taimera_2:
-    name: "Полив 3 - Длительность Таймера 2"
-    min: 1
-    max: 30
-    step: 1
-    unit_of_measurement: "мин"
+#   poliv_3_dlitelnost_taimera_2:
+#     name: "Полив 3 - Длительность Таймера 2"
+#     min: 1
+#     max: 30
+#     step: 1
+#     unit_of_measurement: "мин"
 
-  poliv_4_dlitelnost_taimera_1:
-    name: "Полив 4 - Длительность Таймера 1"
-    min: 1
-    max: 30
-    step: 1
-    unit_of_measurement: "мин"
+#   poliv_4_dlitelnost_taimera_1:
+#     name: "Полив 4 - Длительность Таймера 1"
+#     min: 1
+#     max: 30
+#     step: 1
+#     unit_of_measurement: "мин"
 
-  poliv_4_dlitelnost_taimera_2:
-    name: "Полив 4 - Длительность Таймера 2"
-    min: 1
-    max: 30
-    step: 1
-    unit_of_measurement: "мин"
+#   poliv_4_dlitelnost_taimera_2:
+#     name: "Полив 4 - Длительность Таймера 2"
+#     min: 1
+#     max: 30
+#     step: 1
+#     unit_of_measurement: "мин"
  
+#   anenji_surplus_power_reserve:
+#     name: "ANENJI · Резерв избыточной мощности"
+#     min: 0
+#     max: 1000
+#     step: 10
+#     mode: box
+#     initial: 200
+#     unit_of_measurement: "Вт"
 
 modbus:
   - name: "ANENJI_6200W"
@@ -1033,17 +1041,25 @@ template:
           {% set p = states('sensor.anenji_grid_power_norm')|float(0) %}
           {{ [0 - p, 0] | max | round(0) }}
 
-      # Battery split: charge/discharge (по знаку Battery Power Signed)
-      - name: "ANENJI Battery Charge Power"
-        unique_id: anenji_batt_charge_power
+      - name: "ANENJI Surplus Power"
+        unique_id: anenji_surplus_power
         unit_of_measurement: "W"
         device_class: power
         state_class: measurement
+        icon: mdi:water-boiler
+        availability: >
+          {{ states('sensor.moshchnost_seti_grid_power') not in ['unknown', 'unavailable', 'none', ''] }}
         state: >
-          {% set p = states('sensor.anenji_batt_power_signed_norm')|float(0) %}
-          {{ [p, 0] | max | round(0) }}
+          {% set grid = states('sensor.moshchnost_seti_grid_power')|float(0) %}
+          {% set reserve = states('input_number.anenji_surplus_power_reserve')|float(200) %}
+          {% if grid < (0 - reserve) %}
+            {{ ((0 - grid) - reserve) | round(0) }}
+          {% else %}
+            0
+          {% endif %}
 
-      - name: "ANENJI Battery Discharge Power"
+      # Battery split: charge/discharge (по знаку Battery Power Signed)
+      - name: "ANENJI Battery Charge Power"
         unique_id: anenji_batt_discharge_power
         unit_of_measurement: "W"
         device_class: power

@@ -1,0 +1,435 @@
+sensor:
+
+ # Качество сигнала WiFi ESP32
+  - name: "RSSI WiFi"
+    unique_id: "RSSI WiFi"
+    state_topic: "70B8F6451B59/jee/set/RSSI_WiFi"
+    value_template: "{{ value }}"
+
+ # Полив 1 - Таймеры
+  - name: "Полив 1 - Время начала Таймера 1"
+    unique_id: "poliv_1_vremia_nachala_taimera_1"
+    state_topic: "70B8F6451B59/jee/set/Relay1_timeON1"
+    value_template: "{{ value[:5] }}"  # Получаем только часы и минуты
+    unit_of_measurement: "часы:минуты"
+    qos: 1
+    device_class: timestamp
+
+  - name: "Полив 1 - Длительность Таймера 1"
+    unique_id: "poliv_1_dlitelnost_taimera_1"
+    state_topic: "70B8F6451B59/jee/set/Relay1_timeOFF1"
+    value_template: "{{ value | int }}"  # Получаем целое значение (длительность)
+    unit_of_measurement: "мин"
+    qos: 1
+
+  - name: "Полив 1 - Время начала Таймера 2"
+    unique_id: "poliv_1_vremia_nachala_taimera_2"
+    state_topic: "70B8F6451B59/jee/set/Relay1_timeON2"
+    value_template: "{{ value[:5] }}"  # Получаем только часы и минуты
+    unit_of_measurement: "часы:минуты"
+    qos: 1
+    device_class: timestamp
+
+  - name: "Полив 1 - Длительность Таймера 2"
+    unique_id: "poliv_1_dlitelnost_taimera_2"
+    state_topic: "70B8F6451B59/jee/set/Relay1_timeOFF2"
+    value_template: "{{ value | int }}"  # Получаем целое значение (длительность)
+    unit_of_measurement: "мин"
+    qos: 1
+    
+ # Полив 2 - Таймеры
+ 
+  - name: "Полив 2 - Время начала Таймера 1"
+    unique_id: "poliv_2_vremia_nachala_taimera_1"
+    state_topic: "70B8F6451B59/jee/set/Relay2_timeON1"
+    value_template: "{{ value[:5] }}"  # Получаем только часы и минуты
+    unit_of_measurement: "часы:минуты"
+    qos: 1
+    device_class: timestamp
+
+  - name: "Полив 2 - Длительность Таймера 1"
+    unique_id: "poliv_2_dlitelnost_taimera_1"
+    state_topic: "70B8F6451B59/jee/set/Relay2_timeOFF1"
+    value_template: "{{ value | int }}"  # Получаем целое значение (длительность)
+    unit_of_measurement: "мин"
+    qos: 1
+
+  - name: "Полив 2 - Время начала Таймера 2"
+    unique_id: "poliv_2_vremia_nachala_taimera_2"
+    state_topic: "70B8F6451B59/jee/set/Relay2_timeON2"
+    value_template: "{{ value[:5] }}"  # Получаем только часы и минуты
+    unit_of_measurement: "часы:минуты"
+    qos: 1
+    device_class: timestamp
+
+  - name: "Полив 2 - Длительность Таймера 2"
+    unique_id: "poliv_2_dlitelnost_taimera_2"
+    state_topic: "70B8F6451B59/jee/set/Relay2_timeOFF2"
+    value_template: "{{ value | int }}"  # Получаем целое значение (длительность)
+    unit_of_measurement: "мин"
+    qos: 1
+
+ # Полив 3 - Таймеры
+  - name: "Полив 3 - Время начала Таймера 1"
+    unique_id: "poliv_3_vremia_nachala_taimera_1"
+    state_topic: "70B8F6451B59/jee/set/Relay3_timeON1"
+    value_template: "{{ value[:5] }}"
+    unit_of_measurement: "часы:минуты"
+    qos: 1
+    device_class: timestamp
+    
+  - name: "Полив 3 - Длительность Таймера 1"
+    unique_id: "poliv_3_dlitelnost_taimera_1"
+    state_topic: "70B8F6451B59/jee/set/Relay3_timeOFF1"
+    value_template: "{{ value | int }}"
+    unit_of_measurement: "мин"
+    qos: 1
+    
+  - name: "Полив 3 - Время начала Таймера 2"
+    unique_id: "poliv_3_vremia_nachala_taimera_2"
+    state_topic: "70B8F6451B59/jee/set/Relay3_timeON2"
+    value_template: "{{ value[:5] }}"
+    unit_of_measurement: "часы:минуты"
+    qos: 1
+    device_class: timestamp
+    
+  - name: "Полив 3 - Длительность Таймера 2"
+    unique_id: "poliv_3_dlitelnost_taimera_2"
+    state_topic: "70B8F6451B59/jee/set/Relay3_timeOFF2"
+    value_template: "{{ value | int }}"
+    unit_of_measurement: "мин"
+    qos: 1
+
+  # Полив 4 - Таймеры
+  - name: "Полив 4 - Время начала Таймера 1"
+    unique_id: "poliv_4_vremia_nachala_taimera_1"
+    state_topic: "jee/set/Relay4_timeON1"
+    value_template: "{{ value[:5] }}"
+    unit_of_measurement: "часы:минуты"
+    qos: 1
+    device_class: timestamp
+    
+  - name: "Полив 4 - Длительность Таймера 1"
+    unique_id: "poliv_4_dlitelnost_taimera_1"
+    state_topic: "70B8F6451B59/jee/set/Relay4_timeOFF1"
+    value_template: "{{ value | int }}"
+    unit_of_measurement: "мин"
+    qos: 1
+    
+  - name: "Полив 4 - Время начала Таймера 2"
+    unique_id: "poliv_4_vremia_nachala_taimera_2"
+    state_topic: "70B8F6451B59/jee/set/Relay4_timeON2"
+    value_template: "{{ value[:5] }}"
+    unit_of_measurement: "часы:минуты"
+    qos: 1
+    device_class: timestamp
+    
+  - name: "Полив 4 - Длительность Таймера 2"
+    unique_id: "poliv_4_dlitelnost_taimera_2"
+    state_topic: "70B8F6451B59/jee/set/Relay4_timeOFF2"
+    value_template: "{{ value | int }}"
+    unit_of_measurement: "мин"
+    qos: 1
+# .........................................................
+# .........................................................
+# .........................................................
+
+switch:
+  - name: "Полив Зона 1"
+    unique_id: "poliv_z_1"
+    state_topic: "70B8F6451B59/jee/set/Power_Relay1"
+    command_topic: "70B8F6451B59/jee/set/Power_Relay1"
+    payload_on: "true"
+    payload_off: "false"
+
+  ## Таймеры для полива зоны 1
+  - name: "Полив 1 - Таймер 1"
+    unique_id: "poliv_1_taymer_1"
+    state_topic: "70B8F6451B59/jee/set/Relay1_Time1"
+    command_topic: "70B8F6451B59/jee/set/Relay1_Time1"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 1 - Таймер 2"
+    unique_id: "poliv_1_taymer_2"
+    state_topic: "70B8F6451B59/jee/set/Relay1_Time2"
+    command_topic: "70B8F6451B59/jee/set/Relay1_Time2"
+    payload_on: "true"
+    payload_off: "false"
+
+  ## Дни недели для полива зоны 1
+  - name: "Полив 1 - Пн"
+    unique_id: "poliv_1_pn"
+    state_topic: "70B8F6451B59/jee/set/r1_chk1"
+    command_topic: "70B8F6451B59/jee/set/r1_chk1"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 1 - Вт"
+    unique_id: "poliv_1_vt"
+    state_topic: "70B8F6451B59/jee/set/r1_chk2"
+    command_topic: "70B8F6451B59/jee/set/r1_chk2"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 1 - Ср"
+    unique_id: "poliv_1_sr"
+    state_topic: "70B8F6451B59/jee/set/r1_chk3"
+    command_topic: "70B8F6451B59/jee/set/r1_chk3"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 1 - Чт"
+    unique_id: "poliv_1_cht"
+    state_topic: "70B8F6451B59/jee/set/r1_chk4"
+    command_topic: "70B8F6451B59/jee/set/r1_chk4"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 1 - Пт"
+    unique_id: "poliv_1_pt"
+    state_topic: "70B8F6451B59/jee/set/r1_chk5"
+    command_topic: "70B8F6451B59/jee/set/r1_chk5"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 1 - Сб"
+    unique_id: "poliv_1_sb"
+    state_topic: "70B8F6451B59/jee/set/r1_chk6"
+    command_topic: "70B8F6451B59/jee/set/r1_chk6"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 1 - Вс"
+    unique_id: "poliv_1_vs"
+    state_topic: "70B8F6451B59/jee/set/r1_chk7"
+    command_topic: "70B8F6451B59/jee/set/r1_chk7"
+    payload_on: "true"
+    payload_off: "false"
+# .........................................................
+# .........................................................
+# .........................................................
+
+  - name: "Полив Зона 2"
+    unique_id: "poliv_z_2"
+    state_topic: "70B8F6451B59/jee/set/Power_Relay2"
+    command_topic: "70B8F6451B59/jee/set/Power_Relay2"
+    payload_on: "true"
+    payload_off: "false"
+
+  ## Таймеры для полива зоны 2
+  - name: "Полив 2 - Таймер 1"
+    unique_id: "poliv_2_taymer_1"
+    state_topic: "70B8F6451B59/jee/set/Relay2_Time1"
+    command_topic: "70B8F6451B59/jee/set/Relay2_Time1"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 2 - Таймер 2"
+    unique_id: "poliv_2_taymer_2"
+    state_topic: "70B8F6451B59/jee/set/Relay2_Time2"
+    command_topic: "70B8F6451B59/jee/set/Relay2_Time2"
+    payload_on: "true"
+    payload_off: "false"
+
+  ## Дни недели для полива зоны 2
+  - name: "Полив 2 - Пн"
+    unique_id: "poliv_2_pn"
+    state_topic: "70B8F6451B59/jee/set/r2_chk1"
+    command_topic: "70B8F6451B59/jee/set/r2_chk1"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 2 - Вт"
+    unique_id: "poliv_2_vt"
+    state_topic: "70B8F6451B59/jee/set/r2_chk2"
+    command_topic: "70B8F6451B59/jee/set/r2_chk2"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 2 - Ср"
+    unique_id: "poliv_2_sr"
+    state_topic: "70B8F6451B59/jee/set/r2_chk3"
+    command_topic: "70B8F6451B59/jee/set/r2_chk3"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 2 - Чт"
+    unique_id: "poliv_2_cht"
+    state_topic: "70B8F6451B59/jee/set/r2_chk4"
+    command_topic: "70B8F6451B59/jee/set/r2_chk4"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 2 - Пт"
+    unique_id: "poliv_2_pt"
+    state_topic: "70B8F6451B59/jee/set/r2_chk5"
+    command_topic: "70B8F6451B59/jee/set/r2_chk5"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 2 - Сб"
+    unique_id: "poliv_2_sb"
+    state_topic: "70B8F6451B59/jee/set/r2_chk6"
+    command_topic: "70B8F6451B59/jee/set/r2_chk6"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 2 - Вс"
+    unique_id: "poliv_2_vs"
+    state_topic: "70B8F6451B59/jee/set/r2_chk7"
+    command_topic: "70B8F6451B59/jee/set/r2_chk7"
+    payload_on: "true"
+    payload_off: "false"
+
+# .........................................................
+# .........................................................
+# ......................................................... 
+    
+  - name: "Полив Зона 3"
+    unique_id: "poliv_z_3"
+    state_topic: "70B8F6451B59/jee/set/Power_Relay3"
+    command_topic: "70B8F6451B59/jee/set/Power_Relay3"
+    payload_on: "true"
+    payload_off: "false"
+
+  ## Таймеры для полива зоны 3
+  - name: "Полив 3 - Таймер 1"
+    unique_id: "poliv_3_taymer_1"
+    state_topic: "70B8F6451B59/jee/set/Relay3_Time1"
+    command_topic: "70B8F6451B59/jee/set/Relay3_Time1"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 3 - Таймер 2"
+    unique_id: "poliv_3_taymer_2"
+    state_topic: "70B8F6451B59/jee/set/Relay3_Time2"
+    command_topic: "70B8F6451B59/jee/set/Relay3_Time2"
+    payload_on: "true"
+    payload_off: "false"
+
+  ## Дни недели для полива зоны 3
+  - name: "Полив 3 - Пн"
+    unique_id: "poliv_3_pn"
+    state_topic: "70B8F6451B59/jee/set/r3_chk1"
+    command_topic: "70B8F6451B59/jee/set/r3_chk1"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 3 - Вт"
+    unique_id: "poliv_3_vt"
+    state_topic: "70B8F6451B59/jee/set/r3_chk2"
+    command_topic: "70B8F6451B59/jee/set/r3_chk2"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 3 - Ср"
+    unique_id: "poliv_3_sr"
+    state_topic: "70B8F6451B59/jee/set/r3_chk3"
+    command_topic: "70B8F6451B59/jee/set/r3_chk3"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 3 - Чт"
+    unique_id: "poliv_3_cht"
+    state_topic: "70B8F6451B59/jee/set/r3_chk4"
+    command_topic: "70B8F6451B59/jee/set/r3_chk4"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 3 - Пт"
+    unique_id: "poliv_3_pt"
+    state_topic: "70B8F6451B59/jee/set/r3_chk5"
+    command_topic: "70B8F6451B59/jee/set/r3_chk5"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 3 - Сб"
+    unique_id: "poliv_3_sb"
+    state_topic: "70B8F6451B59/jee/set/r3_chk6"
+    command_topic: "70B8F6451B59/jee/set/r3_chk6"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 3 - Вс"
+    unique_id: "poliv_3_vs"
+    state_topic: "70B8F6451B59/jee/set/r3_chk7"
+    command_topic: "70B8F6451B59/jee/set/r3_chk7"
+    payload_on: "true"
+    payload_off: "false"
+    
+# .........................................................
+# .........................................................
+# .........................................................
+
+  - name: "Полив Зона 4"
+    unique_id: "poliv_z_4"
+    state_topic: "70B8F6451B59/jee/set/Power_Relay4"
+    command_topic: "70B8F6451B59/jee/set/Power_Relay4"
+    payload_on: "true"
+    payload_off: "false"
+
+  ## Таймеры для полива зоны 4
+  - name: "Полив 4 - Таймер 1"
+    unique_id: "poliv_4_taymer_1"
+    state_topic: "70B8F6451B59/jee/set/Relay4_Time1"
+    command_topic: "70B8F6451B59/jee/set/Relay4_Time1"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 4 - Таймер 2"
+    unique_id: "poliv_4_taymer_2"
+    state_topic: "70B8F6451B59/jee/set/Relay4_Time2"
+    command_topic: "70B8F6451B59/jee/set/Relay4_Time2"
+    payload_on: "true"
+    payload_off: "false"
+
+  ## Дни недели для полива зоны 4
+  - name: "Полив 4 - Пн"
+    unique_id: "poliv_4_pn"
+    state_topic: "70B8F6451B59/jee/set/r4_chk1"
+    command_topic: "70B8F6451B59/jee/set/r4_chk1"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 4 - Вт"
+    unique_id: "poliv_4_vt"
+    state_topic: "70B8F6451B59/jee/set/r4_chk2"
+    command_topic: "70B8F6451B59/jee/set/r4_chk2"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 4 - Ср"
+    unique_id: "poliv_4_sr"
+    state_topic: "70B8F6451B59/jee/set/r4_chk3"
+    command_topic: "70B8F6451B59/jee/set/r4_chk3"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 4 - Чт"
+    unique_id: "poliv_4_cht"
+    state_topic: "70B8F6451B59/jee/set/r4_chk4"
+    command_topic: "70B8F6451B59/jee/set/r4_chk4"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 4 - Пт"
+    unique_id: "poliv_4_pt"
+    state_topic: "70B8F6451B59/jee/set/r4_chk5"
+    command_topic: "70B8F6451B59/jee/set/r4_chk5"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 4 - Сб"
+    unique_id: "poliv_4_sb"
+    state_topic: "70B8F6451B59/jee/set/r4_chk6"
+    command_topic: "70B8F6451B59/jee/set/r4_chk6"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Полив 4 - Вс"
+    unique_id: "poliv_4_vs"
+    state_topic: "70B8F6451B59/jee/set/r4_chk7"
+    command_topic: "70B8F6451B59/jee/set/r4_chk7"
+    payload_on: "true"
+    payload_off: "false"

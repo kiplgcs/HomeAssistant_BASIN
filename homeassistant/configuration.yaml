@@ -77,12 +77,12 @@ shell_command:
 #     method: GET
 
     
-binary_sensor:
-  - platform: ping
-    host: 192.168.0.75  # IP-адрес телефона
-    name: phone_online
-    count: 2             # сколько пакетов отправить
-    scan_interval: 15    # как часто проверять (в секундах)
+# binary_sensor:
+#   - platform: ping
+#     host: 192.168.0.75  # IP-адрес телефона
+#     name: phone_online
+#     count: 2             # сколько пакетов отправить
+#     scan_interval: 15    # как часто проверять (в секундах)
 
 # input_datetime:
 #   poliv_1_vremia_nachala_taimera_1:
@@ -182,14 +182,15 @@ binary_sensor:
 #     step: 1
 #     unit_of_measurement: "мин"
  
-#   anenji_surplus_power_reserve:
-#     name: "ANENJI · Резерв избыточной мощности"
-#     min: 0
-#     max: 1000
-#     step: 10
-#     mode: box
-#     initial: 200
-#     unit_of_measurement: "Вт"
+input_number:
+  anenji_surplus_power_reserve:
+    name: "ANENJI · Резерв избыточной мощности"
+    min: 0
+    max: 1000
+    step: 10
+    mode: box
+    initial: 200
+    unit_of_measurement: "Вт"
 
 modbus:
   - name: "ANENJI_6200W"

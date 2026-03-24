@@ -1,0 +1,576 @@
+- id: '1702808251521'
+  alias: Обновление сертификата Let's Encrypt
+  description: https://www.youtube.com/watch?v=-Tp1l4-N14A&ab_channel=BootUseDinamontuz
+  trigger:
+  - platform: state
+    entity_id: sensor.raspberry_kiplgcs_keenetic_pro_cert_expiry
+    attribute: is_valid
+    from: 'true'
+    to: 'false'
+  condition: []
+  action:
+  - service: shell_command.letsencrypt_restart
+    data: {}
+  mode: single
+- alias: Автообновление SSL-сертификатов
+  trigger:
+  - platform: template
+    value_template: '{{ now().day == 1 }}'
+  action:
+  - service: shell_command.letsencrypt_restart
+  mode: single
+  id: a2a6306b357a4104bee301504916f164
+- alias: Обновление времени начала Таймера 1
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay1_timeON1
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.poliv_1_vremia_nachala_taimera_1
+    data:
+      time: '{{ trigger.payload[:5] }}'
+  id: 6c120e111e934490847a6da9dac67092
+- alias: Обновление длительности Таймера 1
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay1_timeOFF1
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.poliv_1_dlitelnost_taimera_1
+    data:
+      value: '{{ trigger.payload | int }}'
+  id: b4a8e3042a3f4eb3817433931521c7fd
+- alias: Обновление времени начала Таймера 2
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay1_timeON2
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.poliv_1_vremia_nachala_taimera_2
+    data:
+      time: '{{ trigger.payload[:5] }}'
+  id: e914d8327605476eba459d361a2e8ae5
+- alias: Обновление длительности Таймера 2
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay1_timeOFF2
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.poliv_1_dlitelnost_taimera_2
+    data:
+      value: '{{ trigger.payload | int }}'
+  id: cb899597c8ca463ab08c99825bdf1ae0
+- alias: Отправка времени начала Таймера 1 в MQTT
+  trigger:
+  - platform: state
+    entity_id: input_datetime.poliv_1_vremia_nachala_taimera_1
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay1_timeON1
+      payload: '{{ states(''input_datetime.poliv_1_vremia_nachala_taimera_1'')[:5]
+        }}'
+      retain: true
+  id: 9446609203274fae88585eb4febb4cfc
+- alias: Отправка времени начала Таймера 2 в MQTT
+  trigger:
+  - platform: state
+    entity_id: input_datetime.poliv_1_vremia_nachala_taimera_2
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay1_timeON2
+      payload: '{{ states(''input_datetime.poliv_1_vremia_nachala_taimera_2'')[:5]
+        }}'
+      retain: true
+  id: 54119d418a3c43f090d5b39089d7fdf3
+- alias: Отправка длительности Таймера 1 в MQTT
+  trigger:
+  - platform: state
+    entity_id: input_number.poliv_1_dlitelnost_taimera_1
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay1_timeOFF1
+      payload: '{{ states(''input_number.poliv_1_dlitelnost_taimera_1'') | int }}'
+      retain: true
+  id: de48df8fff7a451085db97a320be6133
+- alias: Отправка длительности Таймера 2 в MQTT
+  trigger:
+  - platform: state
+    entity_id: input_number.poliv_1_dlitelnost_taimera_2
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay1_timeOFF2
+      payload: '{{ states(''input_number.poliv_1_dlitelnost_taimera_2'') | int }}'
+      retain: true
+  id: 5e18057f3708486a9e9ac9bd3c9cf567
+- alias: Обновление времени начала Таймера 1 - Зона 2
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay2_timeON1
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.poliv_2_vremia_nachala_taimera_1
+    data:
+      time: '{{ trigger.payload[:5] }}'
+  id: 8f37f2031b1d430f9d40c33ac9832a78
+- alias: Обновление длительности Таймера 1 - Зона 2
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay2_timeOFF1
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.poliv_2_dlitelnost_taimera_1
+    data:
+      value: '{{ trigger.payload | int }}'
+  id: 378b273e64cf4cec844f06ae1a3b1c11
+- alias: Обновление времени начала Таймера 2 - Зона 2
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay2_timeON2
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.poliv_2_vremia_nachala_taimera_2
+    data:
+      time: '{{ trigger.payload[:5] }}'
+  id: 7a192433ee344884816080491b580a02
+- alias: Обновление длительности Таймера 2 - Зона 2
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay2_timeOFF2
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.poliv_2_dlitelnost_taimera_2
+    data:
+      value: '{{ trigger.payload | int }}'
+  id: 88599ea1c6e248afbaa02e7b8474bf1d
+- alias: Отправка времени начала Таймера 1 в MQTT - Зона 2
+  trigger:
+  - platform: state
+    entity_id: input_datetime.poliv_2_vremia_nachala_taimera_1
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay2_timeON1
+      payload: '{{ states(''input_datetime.poliv_2_vremia_nachala_taimera_1'')[:5]
+        }}'
+      retain: true
+  id: eb693b210c7e49fb892f7d3f5940b83b
+- alias: Отправка времени начала Таймера 2 в MQTT - Зона 2
+  trigger:
+  - platform: state
+    entity_id: input_datetime.poliv_2_vremia_nachala_taimera_2
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay2_timeON2
+      payload: '{{ states(''input_datetime.poliv_2_vremia_nachala_taimera_2'')[:5]
+        }}'
+      retain: true
+  id: e75605f45f6a4bf4afd792d457034480
+- alias: Отправка длительности Таймера 1 в MQTT - Зона 2
+  trigger:
+  - platform: state
+    entity_id: input_number.poliv_2_dlitelnost_taimera_1
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay2_timeOFF1
+      payload: '{{ states(''input_number.poliv_2_dlitelnost_taimera_1'') | int }}'
+      retain: true
+  id: 5764c371bc56466d8a28413a5decddd7
+- alias: Отправка длительности Таймера 2 в MQTT - Зона 2
+  trigger:
+  - platform: state
+    entity_id: input_number.poliv_2_dlitelnost_taimera_2
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay2_timeOFF2
+      payload: '{{ states(''input_number.poliv_2_dlitelnost_taimera_2'') | int }}'
+      retain: true
+  id: 0b1d14daf1134ab5899706ace04af961
+- alias: Обновление времени начала Таймера 1 - Зона 3
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay3_timeON1
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.poliv_3_vremia_nachala_taimera_1
+    data:
+      time: '{{ trigger.payload[:5] }}'
+  id: f282a3803319475da276956985097331
+- alias: Обновление длительности Таймера 1 - Зона 3
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay3_timeOFF1
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.poliv_3_dlitelnost_taimera_1
+    data:
+      value: '{{ trigger.payload | int }}'
+  id: 727ae9e4cede44b1848ea994e3481ae1
+- alias: Обновление времени начала Таймера 2 - Зона 3
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay3_timeON2
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.poliv_3_vremia_nachala_taimera_2
+    data:
+      time: '{{ trigger.payload[:5] }}'
+  id: 652fb00fdc50485ba2f15e5a2a894960
+- alias: Обновление длительности Таймера 2 - Зона 3
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay3_timeOFF2
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.poliv_3_dlitelnost_taimera_2
+    data:
+      value: '{{ trigger.payload | int }}'
+  id: b53ad4aa8db54dd2a065089d014151a2
+- alias: Отправка времени начала Таймера 1 в MQTT - Зона 3
+  trigger:
+  - platform: state
+    entity_id: input_datetime.poliv_3_vremia_nachala_taimera_1
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay3_timeON1
+      payload: '{{ states(''input_datetime.poliv_3_vremia_nachala_taimera_1'')[:5]
+        }}'
+      retain: true
+  id: bb501777b9a54b2ab0167fe1b11236ce
+- alias: Отправка времени начала Таймера 2 в MQTT - Зона 3
+  trigger:
+  - platform: state
+    entity_id: input_datetime.poliv_3_vremia_nachala_taimera_2
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay3_timeON2
+      payload: '{{ states(''input_datetime.poliv_3_vremia_nachala_taimera_2'')[:5]
+        }}'
+      retain: true
+  id: 10cffca054e040a8853e23e7b899e6dc
+- alias: Отправка длительности Таймера 1 в MQTT - Зона 3
+  trigger:
+  - platform: state
+    entity_id: input_number.poliv_3_dlitelnost_taimera_1
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay3_timeOFF1
+      payload: '{{ states(''input_number.poliv_3_dlitelnost_taimera_1'') | int }}'
+      retain: true
+  id: 410be444a93247f087e015b131432b7e
+- alias: Отправка длительности Таймера 2 в MQTT - Зона 3
+  trigger:
+  - platform: state
+    entity_id: input_number.poliv_3_dlitelnost_taimera_2
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay3_timeOFF2
+      payload: '{{ states(''input_number.poliv_3_dlitelnost_taimera_2'') | int }}'
+      retain: true
+  id: 430db5be8ecd4c4f9478c2c84a5e3bb7
+- alias: Обновление времени начала Таймера 1 - Зона 4
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay4_timeON1
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.poliv_4_vremia_nachala_taimera_1
+    data:
+      time: '{{ trigger.payload[:5] }}'
+  id: 71bc03662d1948c59e9827b73995c0e6
+- alias: Обновление длительности Таймера 1 - Зона 4
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay4_timeOFF1
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.poliv_4_dlitelnost_taimera_1
+    data:
+      value: '{{ trigger.payload | int }}'
+  id: bd1ea54830f549368ce43dd1227d7148
+- alias: Обновление времени начала Таймера 2 - Зона 4
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay4_timeON2
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.poliv_4_vremia_nachala_taimera_2
+    data:
+      time: '{{ trigger.payload[:5] }}'
+  id: 3ddfd1d3a2e44f15b2fb5c5b88c57de0
+- alias: Обновление длительности Таймера 2 - Зона 4
+  trigger:
+  - platform: mqtt
+    topic: 70B8F6451B59/jee/set/Relay4_timeOFF2
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.poliv_4_dlitelnost_taimera_2
+    data:
+      value: '{{ trigger.payload | int }}'
+  id: e1ea3f98db6444e7b74008544bb653db
+- alias: Отправка времени начала Таймера 1 в MQTT - Зона 4
+  trigger:
+  - platform: state
+    entity_id: input_datetime.poliv_4_vremia_nachala_taimera_1
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay4_timeON1
+      payload: '{{ states(''input_datetime.poliv_4_vremia_nachala_taimera_1'')[:5]
+        }}'
+      retain: true
+  id: f52055cb192b4ec5972cbdc0e4a00830
+- alias: Отправка времени начала Таймера 2 в MQTT - Зона 4
+  trigger:
+  - platform: state
+    entity_id: input_datetime.poliv_4_vremia_nachala_taimera_2
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay4_timeON2
+      payload: '{{ states(''input_datetime.poliv_4_vremia_nachala_taimera_2'')[:5]
+        }}'
+      retain: true
+  id: c65f0e5cf1cc49b7a4bbf3e1d2ccdc87
+- alias: Отправка длительности Таймера 1 в MQTT - Зона 4
+  trigger:
+  - platform: state
+    entity_id: input_number.poliv_4_dlitelnost_taimera_1
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay4_timeOFF1
+      payload: '{{ states(''input_number.poliv_4_dlitelnost_taimera_1'') | int }}'
+      retain: true
+  id: d825811e6fb9427c8b500fb432c7bca2
+- alias: Отправка длительности Таймера 2 в MQTT - Зона 4
+  trigger:
+  - platform: state
+    entity_id: input_number.poliv_4_dlitelnost_taimera_2
+  action:
+  - service: mqtt.publish
+    data:
+      topic: 70B8F6451B59/jee/set/Relay4_timeOFF2
+      payload: '{{ states(''input_number.poliv_4_dlitelnost_taimera_2'') | int }}'
+      retain: true
+  id: 2340280b4e5a4067aac8268871711633
+- id: '1744877016258'
+  alias: LED гирлянда - включить на 4 часа по заходу солнца
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: a66bb8c86d983a5e6cc45254213ff7f5
+    entity_id: a3296c879ecaf469e56e95cd4019312e
+    domain: switch
+  - type: turn_on
+    device_id: dbb3648a098cec2bf769e4c9aeb0f7f3
+    entity_id: 223b9186ac87cd8b658c018088a4f23c
+    domain: switch
+  - delay:
+      hours: 7
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: a66bb8c86d983a5e6cc45254213ff7f5
+    entity_id: a3296c879ecaf469e56e95cd4019312e
+    domain: switch
+  - type: turn_off
+    device_id: dbb3648a098cec2bf769e4c9aeb0f7f3
+    entity_id: 223b9186ac87cd8b658c018088a4f23c
+    domain: switch
+  mode: single
+- id: '1749288198031'
+  alias: 1 - Определение присутствия дома
+  description: ''
+  triggers:
+  - type: not_connected
+    device_id: 49f67d2313ba5d3ffb8d6a613e0f8b47
+    entity_id: 715aa4c2483b3af35c6050795e6470cd
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: or
+    conditions:
+    - type: is_not_connected
+      condition: device
+      device_id: 49f67d2313ba5d3ffb8d6a613e0f8b47
+      entity_id: 715aa4c2483b3af35c6050795e6470cd
+      domain: binary_sensor
+    - type: is_not_connected
+      condition: device
+      device_id: c24b2438d3ed89697480500a41d2778e
+      entity_id: 9e5a58408d9044ec53701f272e98357d
+      domain: binary_sensor
+  actions:
+  - delay:
+      hours: 0
+      minutes: 59
+      seconds: 0
+      milliseconds: 0
+  - action: input_text.set_value
+    metadata: {}
+    data:
+      value: Нет дома
+    target:
+      entity_id: input_text.prisutstvie_doma
+  mode: single
+- id: '1762115307663'
+  alias: Подсветка зеркала в душевой по датчику присутствия
+  description: ''
+  triggers:
+  - type: occupied
+    device_id: fbc0d0ce625b60fc9059a293766db99d
+    entity_id: 19ae68147d17a3978927eaf9b38c37c4
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+  conditions:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  actions:
+  - type: turn_on
+    device_id: c403a10a291b06108c5600ae70914c06
+    entity_id: 108b362f1309451386a3c5b4c71e968f
+    domain: switch
+  - wait_for_trigger:
+    - type: not_occupied
+      device_id: fbc0d0ce625b60fc9059a293766db99d
+      entity_id: 19ae68147d17a3978927eaf9b38c37c4
+      domain: binary_sensor
+      trigger: device
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 20
+  - type: turn_off
+    device_id: c403a10a291b06108c5600ae70914c06
+    entity_id: 108b362f1309451386a3c5b4c71e968f
+    domain: switch
+  mode: single
+- id: '1762446690839'
+  alias: Включение света перед входной дверью во дворе
+  description: ''
+  triggers:
+  - type: occupied
+    device_id: 97d1764ec5d0d4226d8e4167a9773308
+    entity_id: 46f74f5f8a5de0950812f5345413aa90
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  actions:
+  - type: turn_on
+    device_id: d08ebc0562ec7372ff25c23285369bb4
+    entity_id: 01a6025bddb6d1348734f86e83a73085
+    domain: switch
+  - if:
+    - type: is_not_occupied
+      condition: device
+      device_id: 97d1764ec5d0d4226d8e4167a9773308
+      entity_id: 46f74f5f8a5de0950812f5345413aa90
+      domain: binary_sensor
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+    then:
+    - type: turn_off
+      device_id: d08ebc0562ec7372ff25c23285369bb4
+      entity_id: 01a6025bddb6d1348734f86e83a73085
+      domain: switch
+    else:
+    - delay:
+        hours: 0
+        minutes: 10
+        seconds: 0
+        milliseconds: 0
+    - type: turn_off
+      device_id: d08ebc0562ec7372ff25c23285369bb4
+      entity_id: 01a6025bddb6d1348734f86e83a73085
+      domain: switch
+  mode: single
+- id: '1762889631902'
+  alias: 'LED  гирлянда - выключить на рассвете '
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: 0
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: a66bb8c86d983a5e6cc45254213ff7f5
+    entity_id: a3296c879ecaf469e56e95cd4019312e
+    domain: switch
+  mode: single
+- id: '1770485914812'
+  alias: '!!! Сообщение  - датчик Коридор'
+  description: ''
+  triggers:
+  - type: changed_states
+    device_id: 8f9a39fe069ddd0038817bd64816ef70
+    entity_id: b68417b0e0ffd3b99f786e8546cd2954
+    domain: switch
+    trigger: device
+  conditions: []
+  actions:
+  - action: notify.mobile_app_ne2213
+    metadata: {}
+    data:
+      message: Датчик -Коридор
+  mode: single
+- id: '1774333666055'
+  alias: Переключение режима ANJ солнечного инвертора
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.napriazhenie_pv_pv_voltage
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    above: 350
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.tok_pv_pv_current
+    above: 1
+  actions: []
+  mode: single

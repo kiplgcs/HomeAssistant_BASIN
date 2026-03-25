@@ -36,7 +36,8 @@ panel_custom:
 # Основные настройки Home Assistant
 homeassistant:
   external_url: "https://raspberry.kiplgcs.keenetic.pro"
-  internal_url: "https://192.168.0.100:8123"
+  internal_url: "https://raspberry.kiplgcs.keenetic.pro"
+# internal_url: "https://192.168.0.100:8123"
   packages: !include_dir_named packages
   
 # Настройки HTTP и SSL
@@ -69,7 +70,7 @@ shell_command:
   poliv_restart: 'curl http://192.168.0.70/restart'
 #   poliv_restart: 'mosquitto_pub -h localhost -t "jee/set/RestartESP32" -m "true"'
 
-# mqtt: !include mqtt_irrigation.yaml
+mqtt: !include mqtt_irrigation.yaml
 
 # rest_command:
 #   poliv_restart:

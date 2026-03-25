@@ -13,7 +13,6 @@ sensor:
     value_template: "{{ value[:5] }}"  # Получаем только часы и минуты
     unit_of_measurement: "часы:минуты"
     qos: 1
-    device_class: timestamp
 
   - name: "Полив 1 - Длительность Таймера 1"
     unique_id: "poliv_1_dlitelnost_taimera_1"
@@ -28,7 +27,6 @@ sensor:
     value_template: "{{ value[:5] }}"  # Получаем только часы и минуты
     unit_of_measurement: "часы:минуты"
     qos: 1
-    device_class: timestamp
 
   - name: "Полив 1 - Длительность Таймера 2"
     unique_id: "poliv_1_dlitelnost_taimera_2"
@@ -45,7 +43,6 @@ sensor:
     value_template: "{{ value[:5] }}"  # Получаем только часы и минуты
     unit_of_measurement: "часы:минуты"
     qos: 1
-    device_class: timestamp
 
   - name: "Полив 2 - Длительность Таймера 1"
     unique_id: "poliv_2_dlitelnost_taimera_1"
@@ -60,7 +57,6 @@ sensor:
     value_template: "{{ value[:5] }}"  # Получаем только часы и минуты
     unit_of_measurement: "часы:минуты"
     qos: 1
-    device_class: timestamp
 
   - name: "Полив 2 - Длительность Таймера 2"
     unique_id: "poliv_2_dlitelnost_taimera_2"
@@ -76,7 +72,6 @@ sensor:
     value_template: "{{ value[:5] }}"
     unit_of_measurement: "часы:минуты"
     qos: 1
-    device_class: timestamp
     
   - name: "Полив 3 - Длительность Таймера 1"
     unique_id: "poliv_3_dlitelnost_taimera_1"
@@ -91,7 +86,6 @@ sensor:
     value_template: "{{ value[:5] }}"
     unit_of_measurement: "часы:минуты"
     qos: 1
-    device_class: timestamp
     
   - name: "Полив 3 - Длительность Таймера 2"
     unique_id: "poliv_3_dlitelnost_taimera_2"
@@ -103,11 +97,10 @@ sensor:
   # Полив 4 - Таймеры
   - name: "Полив 4 - Время начала Таймера 1"
     unique_id: "poliv_4_vremia_nachala_taimera_1"
-    state_topic: "jee/set/Relay4_timeON1"
+    state_topic: "70B8F6451B59/jee/set/Relay4_timeON1"
     value_template: "{{ value[:5] }}"
     unit_of_measurement: "часы:минуты"
     qos: 1
-    device_class: timestamp
     
   - name: "Полив 4 - Длительность Таймера 1"
     unique_id: "poliv_4_dlitelnost_taimera_1"
@@ -122,7 +115,6 @@ sensor:
     value_template: "{{ value[:5] }}"
     unit_of_measurement: "часы:минуты"
     qos: 1
-    device_class: timestamp
     
   - name: "Полив 4 - Длительность Таймера 2"
     unique_id: "poliv_4_dlitelnost_taimera_2"
@@ -433,3 +425,126 @@ switch:
     command_topic: "70B8F6451B59/jee/set/r4_chk7"
     payload_on: "true"
     payload_off: "false"
+
+
+text:
+  - name: "Полив 1 - Время начала Таймера 1"
+    unique_id: "poliv_1_vremia_nachala_taimera_1_text"
+    state_topic: "70B8F6451B59/jee/set/Relay1_timeON1"
+    command_topic: "70B8F6451B59/jee/set/Relay1_timeON1"
+    pattern: "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+
+  - name: "Полив 1 - Время начала Таймера 2"
+    unique_id: "poliv_1_vremia_nachala_taimera_2_text"
+    state_topic: "70B8F6451B59/jee/set/Relay1_timeON2"
+    command_topic: "70B8F6451B59/jee/set/Relay1_timeON2"
+    pattern: "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+
+  - name: "Полив 2 - Время начала Таймера 1"
+    unique_id: "poliv_2_vremia_nachala_taimera_1_text"
+    state_topic: "70B8F6451B59/jee/set/Relay2_timeON1"
+    command_topic: "70B8F6451B59/jee/set/Relay2_timeON1"
+    pattern: "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+
+  - name: "Полив 2 - Время начала Таймера 2"
+    unique_id: "poliv_2_vremia_nachala_taimera_2_text"
+    state_topic: "70B8F6451B59/jee/set/Relay2_timeON2"
+    command_topic: "70B8F6451B59/jee/set/Relay2_timeON2"
+    pattern: "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+
+  - name: "Полив 3 - Время начала Таймера 1"
+    unique_id: "poliv_3_vremia_nachala_taimera_1_text"
+    state_topic: "70B8F6451B59/jee/set/Relay3_timeON1"
+    command_topic: "70B8F6451B59/jee/set/Relay3_timeON1"
+    pattern: "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+
+  - name: "Полив 3 - Время начала Таймера 2"
+    unique_id: "poliv_3_vremia_nachala_taimera_2_text"
+    state_topic: "70B8F6451B59/jee/set/Relay3_timeON2"
+    command_topic: "70B8F6451B59/jee/set/Relay3_timeON2"
+    pattern: "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+
+  - name: "Полив 4 - Время начала Таймера 1"
+    unique_id: "poliv_4_vremia_nachala_taimera_1_text"
+    state_topic: "70B8F6451B59/jee/set/Relay4_timeON1"
+    command_topic: "70B8F6451B59/jee/set/Relay4_timeON1"
+    pattern: "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+
+  - name: "Полив 4 - Время начала Таймера 2"
+    unique_id: "poliv_4_vremia_nachala_taimera_2_text"
+    state_topic: "70B8F6451B59/jee/set/Relay4_timeON2"
+    command_topic: "70B8F6451B59/jee/set/Relay4_timeON2"
+    pattern: "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+
+number:
+  - name: "Полив 1 - Длительность Таймера 1"
+    unique_id: "poliv_1_dlitelnost_taimera_1_number"
+    state_topic: "70B8F6451B59/jee/set/Relay1_timeOFF1"
+    command_topic: "70B8F6451B59/jee/set/Relay1_timeOFF1"
+    min: 1
+    max: 600
+    step: 1
+    unit_of_measurement: "мин"
+
+  - name: "Полив 1 - Длительность Таймера 2"
+    unique_id: "poliv_1_dlitelnost_taimera_2_number"
+    state_topic: "70B8F6451B59/jee/set/Relay1_timeOFF2"
+    command_topic: "70B8F6451B59/jee/set/Relay1_timeOFF2"
+    min: 1
+    max: 600
+    step: 1
+    unit_of_measurement: "мин"
+
+  - name: "Полив 2 - Длительность Таймера 1"
+    unique_id: "poliv_2_dlitelnost_taimera_1_number"
+    state_topic: "70B8F6451B59/jee/set/Relay2_timeOFF1"
+    command_topic: "70B8F6451B59/jee/set/Relay2_timeOFF1"
+    min: 1
+    max: 600
+    step: 1
+    unit_of_measurement: "мин"
+
+  - name: "Полив 2 - Длительность Таймера 2"
+    unique_id: "poliv_2_dlitelnost_taimera_2_number"
+    state_topic: "70B8F6451B59/jee/set/Relay2_timeOFF2"
+    command_topic: "70B8F6451B59/jee/set/Relay2_timeOFF2"
+    min: 1
+    max: 600
+    step: 1
+    unit_of_measurement: "мин"
+
+  - name: "Полив 3 - Длительность Таймера 1"
+    unique_id: "poliv_3_dlitelnost_taimera_1_number"
+    state_topic: "70B8F6451B59/jee/set/Relay3_timeOFF1"
+    command_topic: "70B8F6451B59/jee/set/Relay3_timeOFF1"
+    min: 1
+    max: 600
+    step: 1
+    unit_of_measurement: "мин"
+
+  - name: "Полив 3 - Длительность Таймера 2"
+    unique_id: "poliv_3_dlitelnost_taimera_2_number"
+    state_topic: "70B8F6451B59/jee/set/Relay3_timeOFF2"
+    command_topic: "70B8F6451B59/jee/set/Relay3_timeOFF2"
+    min: 1
+    max: 600
+    step: 1
+    unit_of_measurement: "мин"
+
+  - name: "Полив 4 - Длительность Таймера 1"
+    unique_id: "poliv_4_dlitelnost_taimera_1_number"
+    state_topic: "70B8F6451B59/jee/set/Relay4_timeOFF1"
+    command_topic: "70B8F6451B59/jee/set/Relay4_timeOFF1"
+    min: 1
+    max: 600
+    step: 1
+    unit_of_measurement: "мин"
+
+  - name: "Полив 4 - Длительность Таймера 2"
+    unique_id: "poliv_4_dlitelnost_taimera_2_number"
+    state_topic: "70B8F6451B59/jee/set/Relay4_timeOFF2"
+    command_topic: "70B8F6451B59/jee/set/Relay4_timeOFF2"
+    min: 1
+    max: 600
+    step: 1
+    unit_of_measurement: "мин"

@@ -25,13 +25,13 @@ views:
                 name: Таймер 1
               - entity: switch.poliv_1_taimer_2
                 name: Таймер 2
-              - entity: sensor.poliv_1_vremia_nachala_taimera_1
+              - entity: text.poliv_1_vremia_nachala_taimera_1
                 name: Время старта таймера 1
-              - entity: sensor.poliv_1_dlitelnost_taimera_1
+              - entity: number.poliv_1_dlitelnost_taimera_1
                 name: Длительность таймера 1
-              - entity: sensor.poliv_1_vremia_nachala_taimera_2
+              - entity: text.poliv_1_vremia_nachala_taimera_2
                 name: Время старта таймера 2
-              - entity: sensor.poliv_1_dlitelnost_taimera_2
+              - entity: number.poliv_1_dlitelnost_taimera_2
                 name: Длительность таймера 2
               - type: section
                 label: Дни недели
@@ -52,13 +52,13 @@ views:
                 name: Таймер 1
               - entity: switch.poliv_2_taimer_2
                 name: Таймер 2
-              - entity: sensor.poliv_2_vremia_nachala_taimera_1
+              - entity: text.poliv_2_vremia_nachala_taimera_1
                 name: Время старта таймера 1
-              - entity: sensor.poliv_2_dlitelnost_taimera_1
+              - entity: number.poliv_2_dlitelnost_taimera_1
                 name: Длительность таймера 1
-              - entity: sensor.poliv_2_vremia_nachala_taimera_2
+              - entity: text.poliv_2_vremia_nachala_taimera_2
                 name: Время старта таймера 2
-              - entity: sensor.poliv_2_dlitelnost_taimera_2
+              - entity: number.poliv_2_dlitelnost_taimera_2
                 name: Длительность таймера 2
               - type: section
                 label: Дни недели
@@ -81,13 +81,13 @@ views:
                 name: Таймер 1
               - entity: switch.poliv_3_taimer_2
                 name: Таймер 2
-              - entity: sensor.poliv_3_vremia_nachala_taimera_1
+              - entity: text.poliv_3_vremia_nachala_taimera_1
                 name: Время старта таймера 1
-              - entity: sensor.poliv_3_dlitelnost_taimera_1
+              - entity: number.poliv_3_dlitelnost_taimera_1
                 name: Длительность таймера 1
-              - entity: sensor.poliv_3_vremia_nachala_taimera_2
+              - entity: text.poliv_3_vremia_nachala_taimera_2
                 name: Время старта таймера 2
-              - entity: sensor.poliv_3_dlitelnost_taimera_2
+              - entity: number.poliv_3_dlitelnost_taimera_2
                 name: Длительность таймера 2
               - type: section
                 label: Дни недели
@@ -108,13 +108,13 @@ views:
                 name: Таймер 1
               - entity: switch.poliv_4_taimer_2
                 name: Таймер 2
-              - entity: sensor.poliv_4_vremia_nachala_taimera_1
+              - entity: text.poliv_4_vremia_nachala_taimera_1
                 name: Время старта таймера 1
-              - entity: sensor.poliv_4_dlitelnost_taimera_1
+              - entity: number.poliv_4_dlitelnost_taimera_1
                 name: Длительность таймера 1
-              - entity: sensor.poliv_4_vremia_nachala_taimera_2
+              - entity: text.poliv_4_vremia_nachala_taimera_2
                 name: Время старта таймера 2
-              - entity: sensor.poliv_4_dlitelnost_taimera_2
+              - entity: number.poliv_4_dlitelnost_taimera_2
                 name: Длительность таймера 2
               - type: section
                 label: Дни недели

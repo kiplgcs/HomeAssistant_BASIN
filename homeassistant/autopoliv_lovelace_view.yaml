@@ -15,6 +15,26 @@ views:
             entities:
               - entity: sensor.rssi_wifi
                 name: RSSI WiFi ESP32
+              - entity: sensor.ssid_wifi_esp32
+                name: SSID WiFi
+              - entity: sensor.poliv_wifi_mode
+                name: Режим WiFi
+              - entity: sensor.poliv_humidity_sensor
+                name: Влажность датчика
+              - entity: sensor.poliv_timer_status
+                name: Статус таймера полива
+              - entity: sensor.poliv_volts_sensor
+                name: Volts_sensor
+              - entity: sensor.poliv_volts_ustavka
+                name: Volts_Ustavka
+              - entity: sensor.poliv_controller_time
+                name: Время ESP32
+          - type: button
+            name: Перезагрузить ESP32 полива
+            icon: mdi:restart
+            tap_action:
+              action: call-service
+              service: shell_command.poliv_restart
           - type: entities
             title: Зона 1
             show_header_toggle: false

@@ -68,7 +68,7 @@ shell_command:
     
   #Строка перезагрузки ESP32 -перезагрузка полива   
   poliv_restart: 'curl http://192.168.0.70/restart'
-#   poliv_restart: 'mosquitto_pub -h localhost -t "jee/set/RestartESP32" -m "true"'
+# poliv_restart: 'mosquitto_pub -h localhost -t "jee/set/RestartESP32" -m "true"'
 
 mqtt: !include mqtt_irrigation.yaml
 

@@ -6,6 +6,43 @@ sensor:
     state_topic: "70B8F6451B59/jee/set/RSSI_WiFi"
     value_template: "{{ value }}"
 
+  # Служебные параметры контроллера автополива
+  - name: "Poliv Humidity Sensor"
+    unique_id: "poliv_humidity_sensor"
+    state_topic: "70B8F6451B59/jee/set/HumiditySensor"
+    value_template: "{{ value | int(0) }}"
+    unit_of_measurement: "%"
+
+  - name: "Poliv Timer Status"
+    unique_id: "poliv_timer_status"
+    state_topic: "70B8F6451B59/jee/set/Timer_Poliv"
+    value_template: "{{ value }}"
+
+  - name: "SSID WiFi ESP32"
+    unique_id: "poliv_wifi_ssid"
+    state_topic: "70B8F6451B59/jee/set/ssid1"
+    value_template: "{{ value }}"
+
+  - name: "Poliv WiFi Mode"
+    unique_id: "poliv_wifi_mode"
+    state_topic: "70B8F6451B59/jee/set/wifi"
+    value_template: "{{ value }}"
+
+  - name: "Poliv Volts Sensor"
+    unique_id: "poliv_volts_sensor"
+    state_topic: "70B8F6451B59/jee/set/Volts_sensor"
+    value_template: "{{ value | int(0) }}"
+
+  - name: "Poliv Volts Ustavka"
+    unique_id: "poliv_volts_ustavka"
+    state_topic: "70B8F6451B59/jee/set/Volts_Ustavka"
+    value_template: "{{ value | int(0) }}"
+
+  - name: "Poliv Controller Time"
+    unique_id: "poliv_controller_time"
+    state_topic: "70B8F6451B59/jee/set/Time"
+    value_template: "{{ value }}"
+
  # Полив 1 - Таймеры
   - name: "Полив 1 - Время начала Таймера 1"
     unique_id: "poliv_1_vremia_nachala_taimera_1"

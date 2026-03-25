@@ -1,0 +1,127 @@
+views:
+  - title: Автополив
+    path: autopoliv
+    icon: mdi:sprinkler-variant
+    type: sections
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Новый раздел
+            icon: mdi:sprinkler
+          - type: entities
+            title: Статус контроллера
+            show_header_toggle: false
+            entities:
+              - entity: sensor.rssi_wifi
+                name: RSSI WiFi ESP32
+          - type: entities
+            title: Зона 1
+            show_header_toggle: false
+            entities:
+              - entity: switch.poliv_zona_1
+                name: Полив Зона 1
+              - entity: switch.poliv_1_taimer_1
+                name: Таймер 1
+              - entity: switch.poliv_1_taimer_2
+                name: Таймер 2
+              - entity: sensor.poliv_1_vremia_nachala_taimera_1
+                name: Время старта таймера 1
+              - entity: sensor.poliv_1_dlitelnost_taimera_1
+                name: Длительность таймера 1
+              - entity: sensor.poliv_1_vremia_nachala_taimera_2
+                name: Время старта таймера 2
+              - entity: sensor.poliv_1_dlitelnost_taimera_2
+                name: Длительность таймера 2
+              - type: section
+                label: Дни недели
+              - entity: switch.poliv_1_pn
+              - entity: switch.poliv_1_vt
+              - entity: switch.poliv_1_sr
+              - entity: switch.poliv_1_cht
+              - entity: switch.poliv_1_pt
+              - entity: switch.poliv_1_sb
+              - entity: switch.poliv_1_vs
+          - type: entities
+            title: Зона 2
+            show_header_toggle: false
+            entities:
+              - entity: switch.poliv_zona_2
+                name: Полив Зона 2
+              - entity: switch.poliv_2_taimer_1
+                name: Таймер 1
+              - entity: switch.poliv_2_taimer_2
+                name: Таймер 2
+              - entity: sensor.poliv_2_vremia_nachala_taimera_1
+                name: Время старта таймера 1
+              - entity: sensor.poliv_2_dlitelnost_taimera_1
+                name: Длительность таймера 1
+              - entity: sensor.poliv_2_vremia_nachala_taimera_2
+                name: Время старта таймера 2
+              - entity: sensor.poliv_2_dlitelnost_taimera_2
+                name: Длительность таймера 2
+              - type: section
+                label: Дни недели
+              - entity: switch.poliv_2_pn
+              - entity: switch.poliv_2_vt
+              - entity: switch.poliv_2_sr
+              - entity: switch.poliv_2_cht
+              - entity: switch.poliv_2_pt
+              - entity: switch.poliv_2_sb
+              - entity: switch.poliv_2_vs
+      - type: grid
+        cards:
+          - type: entities
+            title: Зона 3
+            show_header_toggle: false
+            entities:
+              - entity: switch.poliv_zona_3
+                name: Полив Зона 3
+              - entity: switch.poliv_3_taimer_1
+                name: Таймер 1
+              - entity: switch.poliv_3_taimer_2
+                name: Таймер 2
+              - entity: sensor.poliv_3_vremia_nachala_taimera_1
+                name: Время старта таймера 1
+              - entity: sensor.poliv_3_dlitelnost_taimera_1
+                name: Длительность таймера 1
+              - entity: sensor.poliv_3_vremia_nachala_taimera_2
+                name: Время старта таймера 2
+              - entity: sensor.poliv_3_dlitelnost_taimera_2
+                name: Длительность таймера 2
+              - type: section
+                label: Дни недели
+              - entity: switch.poliv_3_pn
+              - entity: switch.poliv_3_vt
+              - entity: switch.poliv_3_sr
+              - entity: switch.poliv_3_cht
+              - entity: switch.poliv_3_pt
+              - entity: switch.poliv_3_sb
+              - entity: switch.poliv_3_vs
+          - type: entities
+            title: Зона 4
+            show_header_toggle: false
+            entities:
+              - entity: switch.poliv_zona_4
+                name: Полив Зона 4
+              - entity: switch.poliv_4_taimer_1
+                name: Таймер 1
+              - entity: switch.poliv_4_taimer_2
+                name: Таймер 2
+              - entity: sensor.poliv_4_vremia_nachala_taimera_1
+                name: Время старта таймера 1
+              - entity: sensor.poliv_4_dlitelnost_taimera_1
+                name: Длительность таймера 1
+              - entity: sensor.poliv_4_vremia_nachala_taimera_2
+                name: Время старта таймера 2
+              - entity: sensor.poliv_4_dlitelnost_taimera_2
+                name: Длительность таймера 2
+              - type: section
+                label: Дни недели
+              - entity: switch.poliv_4_pn
+              - entity: switch.poliv_4_vt
+              - entity: switch.poliv_4_sr
+              - entity: switch.poliv_4_cht
+              - entity: switch.poliv_4_pt
+              - entity: switch.poliv_4_sb
+              - entity: switch.poliv_4_vs

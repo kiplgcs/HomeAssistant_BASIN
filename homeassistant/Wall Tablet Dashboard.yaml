@@ -1,0 +1,387 @@
+title: Wall Tablet Dashboard
+views:
+  - title: Главная
+    path: wall-home
+    icon: mdi:home
+    type: sections
+    max_columns: 1
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Главный экран
+            heading_style: title
+            icon: mdi:tablet-dashboard
+      - type: grid
+        column_span: 1
+        columns: 2
+        square: false
+        cards:
+          - type: tile
+            entity: sensor.date_time
+            name: Текущее время
+            icon: mdi:clock-outline
+            vertical: true
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            features_position: bottom
+          - type: tile
+            grid_options:
+              columns: full
+            entity: weather.openweathermap
+            name: Погода сейчас
+            show_entity_picture: false
+            hide_state: false
+            vertical: true
+            features_position: bottom
+          - type: tile
+            entity: sensor.openweathermap_temperature
+            name: На улице
+            icon: mdi:thermometer
+            vertical: false
+            features_position: bottom
+          - type: tile
+            entity: sensor.openweathermap_humidity
+            name: Влажность
+            icon: mdi:water-percent
+            vertical: false
+            features_position: bottom
+          - type: tile
+            entity: sensor.openweathermap_wind_speed
+            name: Ветер
+            icon: mdi:weather-windy
+            vertical: false
+            features_position: bottom
+          - type: tile
+            entity: sensor.openweathermap_uv_index
+            name: UV
+            icon: mdi:weather-sunny-alert
+            vertical: false
+            features_position: bottom
+      - type: grid
+        column_span: 1
+        columns: 2
+        square: false
+        cards:
+          - type: heading
+            heading: Калитка и быстрые действия
+            icon: mdi:gate
+          - type: heading
+            heading: Свет
+            icon: mdi:lightbulb-group
+          - type: button
+            entity: button.gate_open
+            name: Открыть калитку
+            icon: mdi:gate-open
+            show_state: true
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+          - type: tile
+            entity: lock.gate_lock
+            name: Замок калитки
+            features_position: bottom
+            vertical: false
+          - type: tile
+            entity: light.house_main
+            name: Свет дома
+            features_position: bottom
+          - type: tile
+            entity: light.yard_main
+            name: Свет двора
+            features_position: bottom
+          - type: tile
+            entity: light.group_main_floor
+            name: Основная группа 1
+            features_position: bottom
+          - type: tile
+            entity: light.group_outdoor
+            name: Основная группа 2
+            features_position: bottom
+          - type: button
+            name: Сценарий "Вечер"
+            icon: mdi:weather-night
+            entity: script.evening_mode
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.evening_mode
+          - type: button
+            name: Сценарий "Всё выкл"
+            icon: mdi:power
+            entity: script.all_off
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.all_off
+      - type: grid
+        column_span: 1
+        columns: 3
+        square: false
+        cards:
+          - type: heading
+            heading: Камеры
+            icon: mdi:cctv
+          - type: camera
+            entity: camera.front_gate
+            name: Калитка
+            camera_view: live
+          - type: camera
+            entity: camera.yard
+            name: Двор
+            camera_view: live
+          - type: camera
+            entity: camera.entrance
+            name: Вход
+            camera_view: live
+      - type: grid
+        column_span: 1
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: Главная
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-home
+          - type: button
+            name: Камеры
+            icon: mdi:cctv
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-cameras
+          - show_name: true
+            show_icon: true
+            type: button
+            name: Свет
+            icon: mdi:lightbulb-group
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-lights
+            entity: switch.0xa4c138c12b08a062_left
+            show_state: true
+          - type: button
+            name: Система
+            icon: mdi:cog
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-system
+  - title: Камеры
+    path: wall-cameras
+    icon: mdi:cctv
+    type: sections
+    max_columns: 1
+    sections:
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: heading
+            heading: Камеры (расширенный просмотр)
+            heading_style: title
+            icon: mdi:cctv
+            grid_options:
+              rows: 1
+              columns: 3
+          - camera_view: live
+            fit_mode: contain
+            type: picture-glance
+            title: Калитка
+            camera_image: camera.dvor_kamera2_mainstream
+            entities: []
+            image_entity: person.oab
+            grid_options:
+              columns: full
+              rows: auto
+          - camera_view: live
+            fit_mode: fill
+            type: picture-glance
+            title: Двор
+            camera_image: camera.ipc_nt98566_n8f_mainstream
+            entities: []
+          - camera_view: auto
+            fit_mode: fill
+            type: picture-glance
+            title: Вход
+            camera_image: camera.ipcam_2k_mainstreamprofile
+            entities: []
+          - type: picture-glance
+            title: Доп. камера
+            camera_image: camera.garage
+            camera_view: live
+            entities: []
+        column_span: 1
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: Главная
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-home
+          - type: button
+            name: Камеры
+            icon: mdi:cctv
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-cameras
+          - type: button
+            name: Свет
+            icon: mdi:lightbulb-group
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-lights
+          - type: button
+            name: Система
+            icon: mdi:cog
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-system
+  - title: Свет
+    path: wall-lights
+    icon: mdi:lightbulb-group
+    type: sections
+    max_columns: 1
+    sections:
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: heading
+            heading: Свет (детально)
+            heading_style: title
+            icon: mdi:lightbulb-group-outline
+          - type: tile
+            entity: light.house_main
+            name: Дом
+            features_position: bottom
+          - type: tile
+            entity: light.yard_main
+            name: Двор
+            features_position: bottom
+          - type: tile
+            entity: light.group_main_floor
+            name: Основная группа 1
+            features_position: bottom
+          - type: tile
+            entity: light.group_outdoor
+            name: Основная группа 2
+            features_position: bottom
+          - type: tile
+            entity: light.bedroom
+            name: Спальня
+            features_position: bottom
+          - type: tile
+            entity: light.kitchen
+            name: Кухня
+            features_position: bottom
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: Главная
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-home
+          - type: button
+            name: Камеры
+            icon: mdi:cctv
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-cameras
+          - type: button
+            name: Свет
+            icon: mdi:lightbulb-group
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-lights
+          - type: button
+            name: Система
+            icon: mdi:cog
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-system
+  - title: Система
+    path: wall-system
+    icon: mdi:cog
+    type: sections
+    max_columns: 1
+    sections:
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: heading
+            heading: Система и второстепенное
+            heading_style: title
+            icon: mdi:cog-outline
+          - type: entities
+            title: Система
+            show_header_toggle: false
+            entities:
+              - entity: sensor.internet_status
+                name: Интернет
+              - entity: sensor.router_uptime
+                name: Uptime роутера
+              - entity: sensor.tablet_battery
+                name: Батарея планшета
+              - entity: binary_sensor.tablet_charging
+                name: Планшет заряжается
+          - type: entities
+            title: Безопасность
+            show_header_toggle: false
+            entities:
+              - entity: alarm_control_panel.home_alarm
+                name: Охрана
+              - entity: binary_sensor.front_door
+                name: Входная дверь
+              - entity: binary_sensor.motion_yard
+                name: Движение во дворе
+          - type: entities
+            title: Управление
+            show_header_toggle: false
+            entities:
+              - entity: switch.reboot_router
+                name: Перезагрузка роутера
+              - entity: input_boolean.guest_mode
+                name: Режим гостей
+              - entity: input_boolean.night_mode
+                name: Ночной режим
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: button
+            name: Главная
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-home
+          - type: button
+            name: Камеры
+            icon: mdi:cctv
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-cameras
+          - type: button
+            name: Свет
+            icon: mdi:lightbulb-group
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-lights
+          - type: button
+            name: Система
+            icon: mdi:cog
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-wall/wall-system

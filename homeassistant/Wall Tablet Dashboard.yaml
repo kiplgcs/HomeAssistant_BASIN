@@ -12,76 +12,120 @@ views:
         square: false
         cards:
           - type: heading
-            heading: Верхняя панель
-            icon: mdi:weather-partly-cloudy
+            heading: Wall Tablet · Premium
+            icon: mdi:tablet-dashboard
             heading_style: title
-          - type: tile
+          - type: custom:mushroom-template-card
             entity: sensor.date_time
-            name: Время
+            primary: '{{ now().strftime(''%H:%M'') }}'
+            secondary: '{{ now().strftime(''%d.%m.%Y'') }}'
             icon: mdi:clock-outline
-            vertical: true
-            features_position: bottom
-          - type: tile
+            icon_color: blue
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 18px;
+                  padding: 8px;
+                  border: 1px solid rgba(255,255,255,0.08);
+                  background: linear-gradient(145deg, rgba(26,30,44,0.96), rgba(14,16,24,0.96));
+                }
+          - type: custom:mushroom-template-card
             entity: weather.openweathermap
-            name: Погода
-            vertical: true
-            features_position: bottom
-          - type: tile
-            entity: sensor.openweathermap_temperature
-            name: Температура
-            vertical: false
-            features_position: bottom
-          - type: tile
-            entity: sensor.openweathermap_humidity
-            name: Влажность
-            vertical: false
-            features_position: bottom
-          - type: tile
-            entity: sensor.openweathermap_wind_speed
-            name: Ветер
-            vertical: false
-            features_position: bottom
-          - type: tile
-            entity: sensor.openweathermap_uv_index
-            name: UV
-            vertical: false
-            features_position: bottom
-      - type: grid
-        column_span: 2
-        columns: 2
-        square: false
-        cards:
-          - type: heading
-            heading: Центр · Калитка и быстрые действия
-            icon: mdi:gate
-          - type: button
+            primary: >-
+              {{ state_attr('weather.openweathermap', 'temperature') |
+              default('—') }}°C
+            secondary: '{{ states(''weather.openweathermap'') | title }}'
+            icon: mdi:weather-partly-cloudy
+            icon_color: teal
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 18px;
+                  padding: 8px;
+                  border: 1px solid rgba(255,255,255,0.08);
+                  background: linear-gradient(145deg, rgba(26,30,44,0.96), rgba(14,16,24,0.96));
+                }
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: entity
+                entity: sensor.openweathermap_temperature
+                icon: mdi:thermometer
+              - type: entity
+                entity: sensor.openweathermap_humidity
+                icon: mdi:water-percent
+              - type: entity
+                entity: sensor.openweathermap_wind_speed
+                icon: mdi:weather-windy
+              - type: entity
+                entity: sensor.openweathermap_uv_index
+                icon: mdi:sun-wireless
+            alignment: center
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 18px;
+                  border: 1px solid rgba(255,255,255,0.08);
+                  background: rgba(16,18,27,0.92);
+                }
+          - type: custom:button-card
+            entity: button.gate_open
             name: Калитка
             icon: mdi:gate-open
-            entity: button.gate_open
+            show_state: true
             tap_action:
-              action: perform-action
-              perform_action: button.press
+              action: call-service
+              service: button.press
               target:
                 entity_id: button.gate_open
-            show_state: true
-          - type: button
-            name: Вечер
-            icon: mdi:weather-night
-            entity: script.evening_mode
-            tap_action:
-              action: perform-action
-              perform_action: script.turn_on
-              target:
-                entity_id: script.evening_mode
-          - type: button
-            name: Всё выключить
-            icon: mdi:power
-            entity: script.all_off
-            tap_action:
-              action: perform-action
-              perform_action: script.turn_on
-              target:
-                entity_id: script.all_off
+            hold_action:
+              action: more-info
+            styles:
+              card:
+                - min-height: 96px
+                - border-radius: 20px
+                - padding: 12px
+                - background: >-
+                    linear-gradient(135deg, rgba(255,128,34,0.34),
+                    rgba(58,22,8,0.96))
+                - border: 1px solid rgba(255,171,92,0.62)
+                - box-shadow: 0 10px 28px rgba(255,104,0,0.22)
+              name:
+                - justify-self: start
+                - font-size: 22px
+                - font-weight: 700
+              state:
+                - justify-self: start
+                - font-size: 13px
+                - opacity: 0.9
+              icon:
+                - color: '#ffbe74'
+                - width: 38px
+          - type: horizontal-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                entity: script.evening_mode
+                name: Вечер
+                icon: mdi:weather-night
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  target:
+                    entity_id: script.evening_mode
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                entity: script.all_off
+                name: Выключить всё
+                icon: mdi:power
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  target:
+                    entity_id: script.all_off
       - type: grid
         column_span: 1
         columns: 1
@@ -90,30 +134,91 @@ views:
           - type: heading
             heading: Свет
             icon: mdi:lightbulb-group
-          - type: tile
+            heading_style: title
+          - type: custom:mushroom-entity-card
             entity: switch.0xa4c138c12b08a062_left
             name: Дом
-            vertical: false
-            features_position: bottom
-          - type: tile
+            icon: mdi:ceiling-light
+            tap_action:
+              action: toggle
+          - type: custom:mushroom-entity-card
             entity: switch.0xa4c138c12b08a062_right
             name: Двор
-            vertical: false
-            features_position: bottom
-          - type: tile
+            icon: mdi:wall-sconce-flat-variant
+            tap_action:
+              action: toggle
+          - type: custom:mushroom-entity-card
             entity: switch.0x54ef441001393219_right
-            name: Зал -малый свет
+            name: Зал · малый
             icon: mdi:chandelier
-            show_entity_picture: false
-            hide_state: false
-            vertical: false
-            features_position: bottom
+            tap_action:
+              action: toggle
+          - type: custom:mushroom-entity-card
+            entity: switch.0x54ef441001393219_left
+            name: Зал · большой
+            icon: mdi:light-recessed
+            tap_action:
+              action: toggle
           - type: tile
             entity: select.esp32_ac_a7_04_ee_11_70_lamp_mode
-            name:
-              type: area
-            vertical: false
-            features_position: bottom
+            name: Режим лампы
+            icon: mdi:led-strip-variant
+      - type: grid
+        column_span: 2
+        columns: 2
+        square: false
+        cards:
+          - type: heading
+            heading: Быстрые действия
+            icon: mdi:flash
+            heading_style: title
+          - type: custom:mushroom-template-card
+            entity: weather.openweathermap
+            primary: Дом
+            secondary: >-
+              Темп: {{ states('sensor.openweathermap_temperature') }} ·
+              Влажность: {{ states('sensor.openweathermap_humidity') }}
+            icon: mdi:home-thermometer
+            icon_color: cyan
+            fill_container: true
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: entity
+                entity: sensor.openweathermap_temperature
+                icon: mdi:thermometer
+              - type: entity
+                entity: sensor.openweathermap_humidity
+                icon: mdi:water-percent
+              - type: entity
+                entity: sensor.openweathermap_wind_speed
+                icon: mdi:weather-windy
+              - type: entity
+                entity: sensor.openweathermap_uv_index
+                icon: mdi:sun-wireless
+            alignment: center
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 18px;
+                  border: 1px solid rgba(255,255,255,0.08);
+                  background: rgba(16,18,27,0.92);
+                }
+          - type: custom:bubble-card
+            card_type: button
+            button_type: name
+            entity: switch.outdoor_light_manual_2
+            name: Уличный свет
+            icon: mdi:outdoor-lamp
+            tap_action:
+              action: toggle
+          - type: custom:bubble-card
+            card_type: button
+            button_type: name
+            entity: switch.rgb_strip_power_2
+            name: RGB бассейн
+            icon: mdi:led-strip-variant
+            tap_action:
+              action: toggle
       - type: grid
         column_span: 3
         columns: 3
@@ -122,142 +227,124 @@ views:
           - type: heading
             heading: Камеры
             icon: mdi:cctv
-          - show_state: true
-            show_name: true
-            camera_view: live
-            fit_mode: contain
-            type: picture-entity
+            heading_style: title
+          - type: picture-entity
             entity: camera.dvor_kamera2_mainstream
-            name: Калитка
             camera_image: camera.dvor_kamera2_mainstream
-          - show_state: true
-            show_name: true
             camera_view: live
-            fit_mode: cover
-            type: picture-entity
+            name: Калитка
+            show_state: false
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 18px;
+                  overflow: hidden;
+                  border: 1px solid rgba(255,255,255,0.08);
+                }
+          - type: picture-entity
             entity: camera.ipc_nt98566_n8f_mainstream
-            name: Двор
             camera_image: camera.ipc_nt98566_n8f_mainstream
-          - show_state: true
-            show_name: true
             camera_view: live
-            fit_mode: cover
-            type: picture-entity
+            name: Двор
+            show_state: false
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 18px;
+                  overflow: hidden;
+                  border: 1px solid rgba(255,255,255,0.08);
+                }
+          - type: picture-entity
             entity: camera.ipcam_2k_mainstreamprofile
-            name: Вход
             camera_image: camera.ipcam_2k_mainstreamprofile
+            camera_view: live
+            name: Вход
+            show_state: false
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 18px;
+                  overflow: hidden;
+                  border: 1px solid rgba(255,255,255,0.08);
+                }
+    card_mod:
+      style: |
+        :host {
+          --ha-card-background: rgba(16, 18, 27, 0.92);
+          --primary-text-color: #f3f5fb;
+          --secondary-text-color: #bac4d6;
+          --accent-color: #72b4ff;
+        }
+        .container {
+          background: radial-gradient(circle at 20% -10%, rgba(56,82,140,0.26), transparent 35%), #07090f;
+        }
   - title: Камеры
     path: wall-cameras
     icon: mdi:cctv
-    type: sections
-    max_columns: 3
-    sections:
-      - type: grid
-        column_span: 3
-        columns: 3
-        square: false
+    cards:
+      - type: custom:layout-card
+        layout_type: masonry
+        layout:
+          grid-template-columns: repeat(3, minmax(280px, 1fr))
+          grid-gap: 14px
         cards:
-          - show_state: true
-            show_name: true
-            camera_view: live
-            fit_mode: cover
-            type: picture-entity
+          - type: picture-entity
             entity: camera.dvor_kamera2_mainstream
-            name: Калитка
             camera_image: camera.dvor_kamera2_mainstream
-          - show_state: true
-            show_name: true
             camera_view: live
-            fit_mode: cover
-            type: picture-entity
+            name: Калитка
+          - type: picture-entity
             entity: camera.ipc_nt98566_n8f_mainstream
-            name: Двор
             camera_image: camera.ipc_nt98566_n8f_mainstream
-          - show_state: true
-            show_name: true
             camera_view: live
-            fit_mode: cover
-            type: picture-entity
+            name: Двор
+          - type: picture-entity
             entity: camera.ipcam_2k_mainstreamprofile
-            name: Вход
             camera_image: camera.ipcam_2k_mainstreamprofile
+            camera_view: live
+            name: Вход
   - title: Свет
     path: wall-lights
     icon: mdi:lightbulb-group
-    type: sections
-    max_columns: 2
-    sections:
-      - type: grid
-        column_span: 2
-        columns: 2
-        square: false
+    cards:
+      - type: custom:layout-card
+        layout_type: masonry
+        layout:
+          grid-template-columns: repeat(4, minmax(220px, 1fr))
+          grid-gap: 12px
         cards:
-          - type: tile
+          - type: custom:mushroom-entity-card
             entity: switch.0xa4c138c12b08a062_left
             name: Дом
-            vertical: false
-            features_position: bottom
-          - type: tile
+            tap_action:
+              action: toggle
+          - type: custom:mushroom-entity-card
             entity: switch.0xa4c138c12b08a062_right
             name: Двор над дверью
-            vertical: false
-            features_position: bottom
-          - type: tile
+            tap_action:
+              action: toggle
+          - type: custom:mushroom-entity-card
             entity: switch.0x54ef441001393219_right
             name: Зал-мало
-            vertical: false
-            features_position: bottom
-          - type: tile
+            tap_action:
+              action: toggle
+          - type: custom:mushroom-entity-card
             entity: switch.0x54ef441001393219_left
             name: Зал-больше
-            vertical: false
-            features_position: bottom
-          - type: tile
+            tap_action:
+              action: toggle
+          - type: custom:mushroom-entity-card
             entity: switch.outdoor_light_manual_2
-            name:
-              type: entity
-            vertical: false
-            features_position: bottom
-          - type: tile
-            entity: select.esp32_ac_a7_04_ee_11_70_lamp_mode
-            name:
-              type: area
-            vertical: false
-            features_position: bottom
-          - type: tile
+            name: Уличный свет
+            tap_action:
+              action: toggle
+          - type: custom:mushroom-entity-card
             entity: switch.rgb_strip_power_2
             name: RGB бассейн
-            vertical: false
-            features_position: bottom
-          - type: tile
-            entity: switch.0xa4c13810d1762ba3
-            name:
-              type: entity
-            vertical: false
-            features_position: bottom
-          - type: tile
+            tap_action:
+              action: toggle
+          - type: custom:mushroom-entity-card
             entity: switch.zigebee_smart_meter_pro_switch
             name: LED забор
-            vertical: false
-            features_position: bottom
-  - title: Система
-    path: wall-system
-    icon: mdi:cog
-    type: sections
-    max_columns: 2
-    sections:
-      - type: grid
-        column_span: 2
-        columns: 2
-        square: false
-        cards:
-          - type: entities
-            title: Система
-            show_header_toggle: false
-            entities:
-              - sensor.time
-              - weather.home
-          - type: markdown
-            content: |
-              Эта версия сделана на стандартных карточках Lovelace,
-              чтобы карточки открывались и редактировались через Web UI.
+            tap_action:
+              action: toggle

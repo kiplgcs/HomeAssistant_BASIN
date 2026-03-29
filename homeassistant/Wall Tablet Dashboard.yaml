@@ -216,75 +216,202 @@ views:
   - title: Камеры
     path: wall-cameras
     icon: mdi:cctv
-    cards:
-      - type: custom:layout-card
-        layout_type: masonry
-        layout:
-          grid-template-columns: repeat(3, minmax(280px, 1fr))
-          grid-gap: 14px
+    type: sections
+    max_columns: 3
+    sections:
+      - type: grid
+        column_span: 3
+        columns: 3
+        square: false
         cards:
+          - type: heading
+            heading: Камеры участка
+            icon: mdi:cctv
+            heading_style: title
           - type: picture-entity
             entity: camera.dvor_kamera2_mainstream
             camera_image: camera.dvor_kamera2_mainstream
             camera_view: live
             name: Калитка
+            show_state: false
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 18px;
+                  overflow: hidden;
+                  border: 1px solid rgba(255,255,255,0.08);
+                }
           - type: picture-entity
             entity: camera.ipc_nt98566_n8f_mainstream
             camera_image: camera.ipc_nt98566_n8f_mainstream
             camera_view: live
             name: Двор
+            show_state: false
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 18px;
+                  overflow: hidden;
+                  border: 1px solid rgba(255,255,255,0.08);
+                }
           - type: picture-entity
             entity: camera.ipcam_2k_mainstreamprofile
             camera_image: camera.ipcam_2k_mainstreamprofile
             camera_view: live
             name: Вход
+            show_state: false
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 18px;
+                  overflow: hidden;
+                  border: 1px solid rgba(255,255,255,0.08);
+                }
+      - type: grid
+        column_span: 3
+        columns: 3
+        square: false
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Температура на улице
+            secondary: '{{ states(''sensor.openweathermap_temperature'') }} °C'
+            icon: mdi:thermometer
+            icon_color: orange
+          - type: custom:mushroom-template-card
+            primary: Влажность
+            secondary: '{{ states(''sensor.openweathermap_humidity'') }} %'
+            icon: mdi:water-percent
+            icon_color: blue
+          - type: custom:mushroom-template-card
+            primary: Ветер
+            secondary: '{{ states(''sensor.openweathermap_wind_speed'') }} км/ч'
+            icon: mdi:weather-windy
+            icon_color: cyan
+    card_mod:
+      style: |
+        :host {
+          --ha-card-background: rgba(16, 18, 27, 0.92);
+          --primary-text-color: #f3f5fb;
+          --secondary-text-color: #bac4d6;
+          --accent-color: #72b4ff;
+        }
+        .container {
+          background: radial-gradient(circle at 80% -10%, rgba(56,82,140,0.20), transparent 35%), #07090f;
+        }
   - title: Свет
     path: wall-lights
     icon: mdi:lightbulb-group
-    cards:
-      - type: custom:layout-card
-        layout_type: masonry
-        layout:
-          grid-template-columns: repeat(4, minmax(220px, 1fr))
-          grid-gap: 12px
+    type: sections
+    max_columns: 3
+    sections:
+      - type: grid
+        column_span: 2
+        columns: 2
+        square: false
         cards:
+          - type: heading
+            heading: Сценарии
+            icon: mdi:creation
+            heading_style: title
+          - type: custom:bubble-card
+            card_type: button
+            button_type: name
+            entity: script.evening_mode
+            name: Вечерний режим
+            icon: mdi:weather-night
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.evening_mode
+          - type: custom:bubble-card
+            card_type: button
+            button_type: name
+            entity: script.all_off
+            name: Всё выключить
+            icon: mdi:power
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.all_off
+      - type: grid
+        column_span: 1
+        columns: 1
+        square: false
+        cards:
+          - type: heading
+            heading: Режим ленты
+            icon: mdi:led-strip-variant
+            heading_style: title
+          - type: tile
+            entity: select.esp32_ac_a7_04_ee_11_70_lamp_mode
+            name: Режим лампы
+      - type: grid
+        column_span: 3
+        columns: 3
+        square: false
+        cards:
+          - type: heading
+            heading: Освещение зон
+            icon: mdi:lightbulb-multiple
+            heading_style: title
           - type: custom:mushroom-entity-card
             entity: switch.0xa4c138c12b08a062_left
             name: Дом
+            icon: mdi:ceiling-light
             tap_action:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.0xa4c138c12b08a062_right
             name: Двор над дверью
+            icon: mdi:wall-sconce-flat-variant
             tap_action:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.0x54ef441001393219_right
-            name: Зал-мало
+            name: Зал · малый
+            icon: mdi:chandelier
             tap_action:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.0x54ef441001393219_left
-            name: Зал-больше
+            name: Зал · большой
+            icon: mdi:light-recessed
             tap_action:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.outdoor_light_manual_2
             name: Уличный свет
+            icon: mdi:outdoor-lamp
             tap_action:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.rgb_strip_power_2
             name: RGB бассейн
+            icon: mdi:led-strip-variant
             tap_action:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.zigebee_smart_meter_pro_switch
             name: LED забор
+            icon: mdi:string-lights
             tap_action:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.0xa4c13810d1762ba3
             name: LED гирлянда на доме
+            icon: mdi:party-popper
             tap_action:
               action: toggle
+    card_mod:
+      style: |
+        :host {
+          --ha-card-background: rgba(16, 18, 27, 0.92);
+          --primary-text-color: #f3f5fb;
+          --secondary-text-color: #bac4d6;
+          --accent-color: #72b4ff;
+        }
+        .container {
+          background: radial-gradient(circle at 50% -10%, rgba(56,82,140,0.20), transparent 35%), #07090f;
+        }

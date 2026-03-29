@@ -20,366 +20,6 @@
   - service: shell_command.letsencrypt_restart
   mode: single
   id: a2a6306b357a4104bee301504916f164
-- alias: Обновление времени начала Таймера 1
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay1_timeON1
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.poliv_1_vremia_nachala_taimera_1
-    data:
-      time: '{{ trigger.payload[:5] }}'
-  id: 6c120e111e934490847a6da9dac67092
-- alias: Обновление длительности Таймера 1
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay1_timeOFF1
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.poliv_1_dlitelnost_taimera_1
-    data:
-      value: '{{ trigger.payload | int }}'
-  id: b4a8e3042a3f4eb3817433931521c7fd
-- alias: Обновление времени начала Таймера 2
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay1_timeON2
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.poliv_1_vremia_nachala_taimera_2
-    data:
-      time: '{{ trigger.payload[:5] }}'
-  id: e914d8327605476eba459d361a2e8ae5
-- alias: Обновление длительности Таймера 2
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay1_timeOFF2
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.poliv_1_dlitelnost_taimera_2
-    data:
-      value: '{{ trigger.payload | int }}'
-  id: cb899597c8ca463ab08c99825bdf1ae0
-- alias: Отправка времени начала Таймера 1 в MQTT
-  trigger:
-  - platform: state
-    entity_id: input_datetime.poliv_1_vremia_nachala_taimera_1
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay1_timeON1
-      payload: '{{ states(''input_datetime.poliv_1_vremia_nachala_taimera_1'')[:5]
-        }}'
-      retain: true
-  id: 9446609203274fae88585eb4febb4cfc
-- alias: Отправка времени начала Таймера 2 в MQTT
-  trigger:
-  - platform: state
-    entity_id: input_datetime.poliv_1_vremia_nachala_taimera_2
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay1_timeON2
-      payload: '{{ states(''input_datetime.poliv_1_vremia_nachala_taimera_2'')[:5]
-        }}'
-      retain: true
-  id: 54119d418a3c43f090d5b39089d7fdf3
-- alias: Отправка длительности Таймера 1 в MQTT
-  trigger:
-  - platform: state
-    entity_id: input_number.poliv_1_dlitelnost_taimera_1
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay1_timeOFF1
-      payload: '{{ states(''input_number.poliv_1_dlitelnost_taimera_1'') | int }}'
-      retain: true
-  id: de48df8fff7a451085db97a320be6133
-- alias: Отправка длительности Таймера 2 в MQTT
-  trigger:
-  - platform: state
-    entity_id: input_number.poliv_1_dlitelnost_taimera_2
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay1_timeOFF2
-      payload: '{{ states(''input_number.poliv_1_dlitelnost_taimera_2'') | int }}'
-      retain: true
-  id: 5e18057f3708486a9e9ac9bd3c9cf567
-- alias: Обновление времени начала Таймера 1 - Зона 2
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay2_timeON1
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.poliv_2_vremia_nachala_taimera_1
-    data:
-      time: '{{ trigger.payload[:5] }}'
-  id: 8f37f2031b1d430f9d40c33ac9832a78
-- alias: Обновление длительности Таймера 1 - Зона 2
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay2_timeOFF1
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.poliv_2_dlitelnost_taimera_1
-    data:
-      value: '{{ trigger.payload | int }}'
-  id: 378b273e64cf4cec844f06ae1a3b1c11
-- alias: Обновление времени начала Таймера 2 - Зона 2
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay2_timeON2
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.poliv_2_vremia_nachala_taimera_2
-    data:
-      time: '{{ trigger.payload[:5] }}'
-  id: 7a192433ee344884816080491b580a02
-- alias: Обновление длительности Таймера 2 - Зона 2
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay2_timeOFF2
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.poliv_2_dlitelnost_taimera_2
-    data:
-      value: '{{ trigger.payload | int }}'
-  id: 88599ea1c6e248afbaa02e7b8474bf1d
-- alias: Отправка времени начала Таймера 1 в MQTT - Зона 2
-  trigger:
-  - platform: state
-    entity_id: input_datetime.poliv_2_vremia_nachala_taimera_1
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay2_timeON1
-      payload: '{{ states(''input_datetime.poliv_2_vremia_nachala_taimera_1'')[:5]
-        }}'
-      retain: true
-  id: eb693b210c7e49fb892f7d3f5940b83b
-- alias: Отправка времени начала Таймера 2 в MQTT - Зона 2
-  trigger:
-  - platform: state
-    entity_id: input_datetime.poliv_2_vremia_nachala_taimera_2
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay2_timeON2
-      payload: '{{ states(''input_datetime.poliv_2_vremia_nachala_taimera_2'')[:5]
-        }}'
-      retain: true
-  id: e75605f45f6a4bf4afd792d457034480
-- alias: Отправка длительности Таймера 1 в MQTT - Зона 2
-  trigger:
-  - platform: state
-    entity_id: input_number.poliv_2_dlitelnost_taimera_1
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay2_timeOFF1
-      payload: '{{ states(''input_number.poliv_2_dlitelnost_taimera_1'') | int }}'
-      retain: true
-  id: 5764c371bc56466d8a28413a5decddd7
-- alias: Отправка длительности Таймера 2 в MQTT - Зона 2
-  trigger:
-  - platform: state
-    entity_id: input_number.poliv_2_dlitelnost_taimera_2
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay2_timeOFF2
-      payload: '{{ states(''input_number.poliv_2_dlitelnost_taimera_2'') | int }}'
-      retain: true
-  id: 0b1d14daf1134ab5899706ace04af961
-- alias: Обновление времени начала Таймера 1 - Зона 3
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay3_timeON1
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.poliv_3_vremia_nachala_taimera_1
-    data:
-      time: '{{ trigger.payload[:5] }}'
-  id: f282a3803319475da276956985097331
-- alias: Обновление длительности Таймера 1 - Зона 3
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay3_timeOFF1
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.poliv_3_dlitelnost_taimera_1
-    data:
-      value: '{{ trigger.payload | int }}'
-  id: 727ae9e4cede44b1848ea994e3481ae1
-- alias: Обновление времени начала Таймера 2 - Зона 3
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay3_timeON2
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.poliv_3_vremia_nachala_taimera_2
-    data:
-      time: '{{ trigger.payload[:5] }}'
-  id: 652fb00fdc50485ba2f15e5a2a894960
-- alias: Обновление длительности Таймера 2 - Зона 3
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay3_timeOFF2
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.poliv_3_dlitelnost_taimera_2
-    data:
-      value: '{{ trigger.payload | int }}'
-  id: b53ad4aa8db54dd2a065089d014151a2
-- alias: Отправка времени начала Таймера 1 в MQTT - Зона 3
-  trigger:
-  - platform: state
-    entity_id: input_datetime.poliv_3_vremia_nachala_taimera_1
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay3_timeON1
-      payload: '{{ states(''input_datetime.poliv_3_vremia_nachala_taimera_1'')[:5]
-        }}'
-      retain: true
-  id: bb501777b9a54b2ab0167fe1b11236ce
-- alias: Отправка времени начала Таймера 2 в MQTT - Зона 3
-  trigger:
-  - platform: state
-    entity_id: input_datetime.poliv_3_vremia_nachala_taimera_2
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay3_timeON2
-      payload: '{{ states(''input_datetime.poliv_3_vremia_nachala_taimera_2'')[:5]
-        }}'
-      retain: true
-  id: 10cffca054e040a8853e23e7b899e6dc
-- alias: Отправка длительности Таймера 1 в MQTT - Зона 3
-  trigger:
-  - platform: state
-    entity_id: input_number.poliv_3_dlitelnost_taimera_1
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay3_timeOFF1
-      payload: '{{ states(''input_number.poliv_3_dlitelnost_taimera_1'') | int }}'
-      retain: true
-  id: 410be444a93247f087e015b131432b7e
-- alias: Отправка длительности Таймера 2 в MQTT - Зона 3
-  trigger:
-  - platform: state
-    entity_id: input_number.poliv_3_dlitelnost_taimera_2
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay3_timeOFF2
-      payload: '{{ states(''input_number.poliv_3_dlitelnost_taimera_2'') | int }}'
-      retain: true
-  id: 430db5be8ecd4c4f9478c2c84a5e3bb7
-- alias: Обновление времени начала Таймера 1 - Зона 4
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay4_timeON1
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.poliv_4_vremia_nachala_taimera_1
-    data:
-      time: '{{ trigger.payload[:5] }}'
-  id: 71bc03662d1948c59e9827b73995c0e6
-- alias: Обновление длительности Таймера 1 - Зона 4
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay4_timeOFF1
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.poliv_4_dlitelnost_taimera_1
-    data:
-      value: '{{ trigger.payload | int }}'
-  id: bd1ea54830f549368ce43dd1227d7148
-- alias: Обновление времени начала Таймера 2 - Зона 4
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay4_timeON2
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.poliv_4_vremia_nachala_taimera_2
-    data:
-      time: '{{ trigger.payload[:5] }}'
-  id: 3ddfd1d3a2e44f15b2fb5c5b88c57de0
-- alias: Обновление длительности Таймера 2 - Зона 4
-  trigger:
-  - platform: mqtt
-    topic: 70B8F6451B59/jee/set/Relay4_timeOFF2
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.poliv_4_dlitelnost_taimera_2
-    data:
-      value: '{{ trigger.payload | int }}'
-  id: e1ea3f98db6444e7b74008544bb653db
-- alias: Отправка времени начала Таймера 1 в MQTT - Зона 4
-  trigger:
-  - platform: state
-    entity_id: input_datetime.poliv_4_vremia_nachala_taimera_1
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay4_timeON1
-      payload: '{{ states(''input_datetime.poliv_4_vremia_nachala_taimera_1'')[:5]
-        }}'
-      retain: true
-  id: f52055cb192b4ec5972cbdc0e4a00830
-- alias: Отправка времени начала Таймера 2 в MQTT - Зона 4
-  trigger:
-  - platform: state
-    entity_id: input_datetime.poliv_4_vremia_nachala_taimera_2
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay4_timeON2
-      payload: '{{ states(''input_datetime.poliv_4_vremia_nachala_taimera_2'')[:5]
-        }}'
-      retain: true
-  id: c65f0e5cf1cc49b7a4bbf3e1d2ccdc87
-- alias: Отправка длительности Таймера 1 в MQTT - Зона 4
-  trigger:
-  - platform: state
-    entity_id: input_number.poliv_4_dlitelnost_taimera_1
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay4_timeOFF1
-      payload: '{{ states(''input_number.poliv_4_dlitelnost_taimera_1'') | int }}'
-      retain: true
-  id: d825811e6fb9427c8b500fb432c7bca2
-- alias: Отправка длительности Таймера 2 в MQTT - Зона 4
-  trigger:
-  - platform: state
-    entity_id: input_number.poliv_4_dlitelnost_taimera_2
-  action:
-  - service: mqtt.publish
-    data:
-      topic: 70B8F6451B59/jee/set/Relay4_timeOFF2
-      payload: '{{ states(''input_number.poliv_4_dlitelnost_taimera_2'') | int }}'
-      retain: true
-  id: 2340280b4e5a4067aac8268871711633
 - id: '1744877016258'
   alias: LED гирлянда - включить на 4 часа по заходу солнца
   description: ''
@@ -409,6 +49,34 @@
     device_id: dbb3648a098cec2bf769e4c9aeb0f7f3
     entity_id: 223b9186ac87cd8b658c018088a4f23c
     domain: switch
+  - repeat:
+      while:
+      - condition: or
+        conditions:
+        - condition: device
+          type: is_on
+          device_id: a66bb8c86d983a5e6cc45254213ff7f5
+          entity_id: a3296c879ecaf469e56e95cd4019312e
+          domain: switch
+        - condition: device
+          type: is_on
+          device_id: dbb3648a098cec2bf769e4c9aeb0f7f3
+          entity_id: 223b9186ac87cd8b658c018088a4f23c
+          domain: switch
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
+      - type: turn_off
+        device_id: a66bb8c86d983a5e6cc45254213ff7f5
+        entity_id: a3296c879ecaf469e56e95cd4019312e
+        domain: switch
+      - type: turn_off
+        device_id: dbb3648a098cec2bf769e4c9aeb0f7f3
+        entity_id: 223b9186ac87cd8b658c018088a4f23c
+        domain: switch
   mode: single
 - id: '1749288198031'
   alias: 1 - Определение присутствия дома
@@ -526,20 +194,6 @@
       entity_id: 01a6025bddb6d1348734f86e83a73085
       domain: switch
   mode: single
-- id: '1762889631902'
-  alias: 'LED  гирлянда - выключить на рассвете '
-  description: ''
-  triggers:
-  - trigger: sun
-    event: sunrise
-    offset: 0
-  conditions: []
-  actions:
-  - type: turn_off
-    device_id: a66bb8c86d983a5e6cc45254213ff7f5
-    entity_id: a3296c879ecaf469e56e95cd4019312e
-    domain: switch
-  mode: single
 - id: '1770485914812'
   alias: '!!! Сообщение  - датчик Коридор'
   description: ''
@@ -557,20 +211,119 @@
       message: Датчик -Коридор
   mode: single
 - id: '1774333666055'
-  alias: Переключение режима ANJ солнечного инвертора
-  description: ''
+  alias: Переключение режима ANJ солнечного инвертора (SOL/SUB с гистерезисом)
+  description: '1) Цель: автоматически и бережно переключать Program 01 между SOL
+    и SUB, чтобы снизить потребление из сети и избежать частых «дёрганий» инвертора.
+    2) Переход в SOL: при СТАБИЛЬНО хорошем солнце. Учитываются 2 сценария: (а) реально
+    высокая генерация (PV ток/мощность), или (б) минимальная нагрузка дома (70-250
+    Вт), когда потенциал солнца высокий, но фактическая мощность PV может быть невысокой
+    из-за малого потребления. Выдержка 10 минут + доп.проверка ещё 2 минуты перед
+    записью режима. 3) Переход в SUB: при длительной нехватке солнца (низкие PV-параметры),
+    при стабильном высоком импорте из сети, а также принудительно за 30 минут до заката
+    для мягкого вечернего перехода. 4) Гистерезис: пороги и длительности для входа
+    в SOL и возврата в SUB различаются, поэтому режим не «пилит» на облаках/рассвете/закате.
+    5) Антидребезг: между любыми переключениями выдерживается минимум 15 минут, и
+    переключение выполняется только если текущий режим отличается от целевого. 6)
+    Как применяется: automation меняет input_select.anenji_cfg_program_01_output_source_priority
+    (SOL или SUB) и сразу вызывает script.anenji_inverter_write_single_config_to_modbus
+    для фактической записи в инвертор. 7) Что можно настраивать: пороги (V/A/W), временные
+    выдержки и интервал periodic_recheck (/15) редактируются в YAML/GUI под вашу станцию
+    и климат.'
   triggers:
+  - trigger: template
+    value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
+      %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p = states(''sensor.moshchnost_pv_pv_power'')|float(0)
+      %} {% set load = states(''sensor.moshchnost_nagruzki_load_power'')|float(0)
+      %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0) %} {%
+      set high_generation = v > 335 and (i > 3 or p > 900) %} {% set low_load_high_potential
+      = v > 355 and load >= 70 and load <= 250 and grid < 250 %} {{ is_state(''sun.sun'',
+      ''above_horizon'') and (high_generation or low_load_high_potential) }}'
+    for: 00:10:00
+    id: to_sol_stable
+  - trigger: template
+    value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
+      %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p = states(''sensor.moshchnost_pv_pv_power'')|float(0)
+      %} {{ is_state(''sun.sun'', ''below_horizon'') or ((v < 300 or p < 550) and
+      i < 1.8) }}'
+    for: 00:15:00
+    id: to_sub_low_sun
   - trigger: numeric_state
-    entity_id:
-    - sensor.napriazhenie_pv_pv_voltage
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-    above: 350
-  conditions:
-  - condition: numeric_state
-    entity_id: sensor.tok_pv_pv_current
-    above: 1
-  actions: []
+    entity_id: sensor.moshchnost_seti_grid_power
+    above: 700
+    for: 00:08:00
+    id: to_sub_grid_import_high
+  - trigger: sun
+    event: sunset
+    offset: -00:30:00
+    id: sub_before_sunset
+  - trigger: time_pattern
+    minutes: /15
+    id: periodic_recheck
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id in [''to_sol_stable'', ''periodic_recheck'']
+          }}'
+      - condition: sun
+        after: sunrise
+        before: sunset
+      - condition: template
+        value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
+          %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p
+          = states(''sensor.moshchnost_pv_pv_power'')|float(0) %} {% set load = states(''sensor.moshchnost_nagruzki_load_power'')|float(0)
+          %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0)
+          %} {% set high_generation = v > 335 and (i > 3 or p > 900) %} {% set low_load_high_potential
+          = v > 355 and load >= 70 and load <= 250 and grid < 250 %} {{ high_generation
+          or low_load_high_potential }}'
+      - condition: template
+        value_template: '{{ states(''input_select.anenji_cfg_program_01_output_source_priority'')
+          != ''SOL'' }}'
+      - condition: template
+        value_template: '{{ (as_timestamp(now()) - as_timestamp(states.input_select.anenji_cfg_program_01_output_source_priority.last_changed))
+          > 900 }}'
+      sequence:
+      - delay: 00:02:00
+      - condition: template
+        value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
+          %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p
+          = states(''sensor.moshchnost_pv_pv_power'')|float(0) %} {% set load = states(''sensor.moshchnost_nagruzki_load_power'')|float(0)
+          %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0)
+          %} {% set high_generation = v > 330 and (i > 2.5 or p > 800) %} {% set low_load_high_potential
+          = v > 350 and load >= 70 and load <= 250 and grid < 300 %} {{ high_generation
+          or low_load_high_potential }}'
+      - action: input_select.select_option
+        target:
+          entity_id: input_select.anenji_cfg_program_01_output_source_priority
+        data:
+          option: SOL
+      - action: script.anenji_inverter_write_single_config_to_modbus
+        data:
+          target_entity_id: input_select.anenji_cfg_program_01_output_source_priority
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id in [''to_sub_low_sun'', ''to_sub_grid_import_high'',
+          ''sub_before_sunset'', ''periodic_recheck''] }}'
+      - condition: template
+        value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
+          %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p
+          = states(''sensor.moshchnost_pv_pv_power'')|float(0) %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0)
+          %} {{ is_state(''sun.sun'', ''below_horizon'') or ((v < 300 or p < 550)
+          and i < 1.8) or grid > 700 }}'
+      - condition: template
+        value_template: '{{ states(''input_select.anenji_cfg_program_01_output_source_priority'')
+          != ''SUB'' }}'
+      - condition: template
+        value_template: '{{ (as_timestamp(now()) - as_timestamp(states.input_select.anenji_cfg_program_01_output_source_priority.last_changed))
+          > 900 }}'
+      sequence:
+      - action: input_select.select_option
+        target:
+          entity_id: input_select.anenji_cfg_program_01_output_source_priority
+        data:
+          option: SUB
+      - action: script.anenji_inverter_write_single_config_to_modbus
+        data:
+          target_entity_id: input_select.anenji_cfg_program_01_output_source_priority
   mode: single

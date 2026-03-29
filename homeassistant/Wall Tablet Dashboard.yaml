@@ -136,9 +136,12 @@ views:
                 icon: mdi:weather-night
                 tap_action:
                   action: call-service
-                  service: script.turn_on
+                  service: homeassistant.toggle
                   target:
-                    entity_id: script.evening_mode
+                    entity_id:
+                      - switch.zigebee_smart_meter_pro_switch
+                      - switch.0xa4c13810d1762ba3
+                      - light.dream_color_rgb
               - type: custom:bubble-card
                 card_type: button
                 button_type: name
@@ -147,9 +150,9 @@ views:
                 icon: mdi:power
                 tap_action:
                   action: call-service
-                  service: script.turn_on
+                  service: homeassistant.turn_off
                   target:
-                    entity_id: script.all_off
+                    entity_id: all
       - type: grid
         column_span: 2
         columns: 2
@@ -212,7 +215,7 @@ views:
             type: picture-entity
             entity: camera.ipcam_2k_mainstreamprofile
             camera_image: camera.ipcam_2k_mainstreamprofile
-            name: Вотота
+            name: Ворота
             card_mod:
               style: |
                 ha-card {
@@ -339,9 +342,12 @@ views:
             icon: mdi:weather-night
             tap_action:
               action: call-service
-              service: script.turn_on
+              service: homeassistant.toggle
               target:
-                entity_id: script.evening_mode
+                entity_id:
+                  - switch.zigebee_smart_meter_pro_switch
+                  - switch.0xa4c13810d1762ba3
+                  - light.dream_color_rgb
           - type: custom:bubble-card
             card_type: button
             button_type: name
@@ -350,9 +356,9 @@ views:
             icon: mdi:power
             tap_action:
               action: call-service
-              service: script.turn_on
+              service: homeassistant.turn_off
               target:
-                entity_id: script.all_off
+                entity_id: all
       - type: grid
         column_span: 1
         columns: 1

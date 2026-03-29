@@ -173,28 +173,25 @@ views:
             icon: mdi:flash
             heading_style: title
           - type: custom:mushroom-template-card
-            entity: weather.openweathermap
+            entity: sensor.0x00158d00035364db_temperature
             primary: Дом
             secondary: >-
-              Темп: {{ states('sensor.openweathermap_temperature') }} ·
-              Влажность: {{ states('sensor.openweathermap_humidity') }}
+              Темп: {{ states('sensor.0x00158d00033b3da6_temperature') }}°C ·
+              Влажность: {{ states('sensor.0x00158d00033b3da6_humidity') }}%
             icon: mdi:home-thermometer
-            icon_color: cyan
-            fill_container: true
+            color: cyan
+            features_position: bottom
+            grid_options:
+              columns: 9
+              rows: 1
           - type: custom:mushroom-chips-card
             chips:
               - type: entity
-                entity: sensor.openweathermap_temperature
+                entity: sensor.0x00158d00033b3da6_temperature
                 icon: mdi:thermometer
               - type: entity
-                entity: sensor.openweathermap_humidity
+                entity: sensor.0x00158d00033b3da6_humidity
                 icon: mdi:water-percent
-              - type: entity
-                entity: sensor.openweathermap_wind_speed
-                icon: mdi:weather-windy
-              - type: entity
-                entity: sensor.openweathermap_uv_index
-                icon: mdi:sun-wireless
             alignment: center
             card_mod:
               style: |
@@ -346,5 +343,10 @@ views:
           - type: custom:mushroom-entity-card
             entity: switch.zigebee_smart_meter_pro_switch
             name: LED забор
+            tap_action:
+              action: toggle
+          - type: custom:mushroom-entity-card
+            entity: switch.0xa4c13810d1762ba3
+            name: LED гирлянда на доме
             tap_action:
               action: toggle

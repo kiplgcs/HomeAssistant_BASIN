@@ -177,12 +177,14 @@ views:
             heading: Камеры
             icon: mdi:cctv
             heading_style: title
-          - type: picture-entity
+          - show_state: false
+            show_name: true
+            camera_view: live
+            fit_mode: cover
+            type: picture-entity
             entity: camera.dvor_kamera2_mainstream
             camera_image: camera.dvor_kamera2_mainstream
-            camera_view: live
             name: Калитка
-            show_state: false
             card_mod:
               style: |
                 ha-card {
@@ -203,12 +205,14 @@ views:
                   overflow: hidden;
                   border: 1px solid rgba(255,255,255,0.08);
                 }
-          - type: picture-entity
+          - show_state: false
+            show_name: true
+            camera_view: live
+            fit_mode: cover
+            type: picture-entity
             entity: camera.ipcam_2k_mainstreamprofile
             camera_image: camera.ipcam_2k_mainstreamprofile
-            camera_view: live
-            name: Вход
-            show_state: false
+            name: Вотота
             card_mod:
               style: |
                 ha-card {
@@ -418,6 +422,14 @@ views:
             icon: mdi:party-popper
             tap_action:
               action: toggle
+          - type: custom:mushroom-light-card
+            entity: light.dream_color_rgb
+            name: Гостиная · RGB лента
+            icon: mdi:led-strip-variant
+            use_light_color: true
+            show_brightness_control: true
+            show_color_control: true
+            collapsible_controls: false
     card_mod:
       style: |
         :host {

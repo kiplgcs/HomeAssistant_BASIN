@@ -16,70 +16,60 @@ views:
             primary: '{{ now().strftime(''%H:%M'') }}'
             secondary: '{{ now().strftime(''%d.%m.%Y'') }}'
             icon: mdi:clock-outline
-            icon_color: blue
-            fill_container: true
+            grid_options:
+              columns: 12
+              rows: 2
+            color: blue
+            features_position: inline
             card_mod:
               style: |
                 ha-card {
-                  border-radius: 18px;
-                  padding: 8px;
-                  border: 1px solid rgba(255,255,255,0.08);
+                  border-radius: 38px;
+                  padding: 2px;
+                  border: 2px solid rgba(255,255,255,0.08);
                   background: linear-gradient(145deg, rgba(26,30,44,0.96), rgba(14,16,24,0.96));
-                }
-            grid_options:
-              columns: 18
-              rows: 1
-          - type: custom:mushroom-chips-card
-            chips:
-              - type: entity
-                entity: sensor.openweathermap_temperature
-                icon: mdi:thermometer
-              - type: entity
-                entity: sensor.openweathermap_humidity
-                icon: mdi:water-percent
-              - type: entity
-                entity: sensor.openweathermap_wind_speed
-                icon: mdi:weather-windy
-              - type: entity
-                entity: sensor.openweathermap_uv_index
-                icon: mdi:sun-wireless
-              - type: weather
-                entity: weather.openweathermap
-            alignment: center
-            grid_options:
-              columns: 18
-              rows: 1
-            card_mod:
-              style: |
-                ha-card {
-                  border-radius: 18px;
-                  border: 1px solid rgba(255,255,255,0.08);
-                  background: rgba(16,18,27,0.92);
                 }
           - type: horizontal-stack
             cards:
-              - type: custom:bubble-card
-                card_type: button
-                button_type: name
-                entity: script.evening_mode
-                name: Вечер
-                icon: mdi:weather-night
+              - type: tile
+                entity: weather.openweathermap
+                name:
+                  type: entity
+                show_entity_picture: false
+                state_content:
+                  - state
+                  - temperature
+                vertical: false
                 tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  target:
-                    entity_id: script.evening_mode
-              - type: custom:bubble-card
-                card_type: button
-                button_type: name
-                entity: script.all_off
-                name: Выключить всё
-                icon: mdi:power
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  target:
-                    entity_id: script.all_off
+                  action: more-info
+                features_position: bottom
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 18px;
+                      border: 1px solid rgba(255,255,255,0.08);
+                      background: rgba(16,18,27,0.92);
+                    }
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    entity: sensor.0x00158d00033b3da6_temperature
+                    primary: Температура дома
+                    secondary: '{{ states(''sensor.0x00158d00033b3da6_temperature'') }} °C'
+                    icon: mdi:home-percent
+                    color: blue
+                    features_position: bottom
+                  - type: custom:mushroom-template-card
+                    entity: sensor.0x00158d00033b3da6_humidity
+                    primary: Влажность дома
+                    secondary: '{{ states(''sensor.0x00158d00033b3da6_humidity'') }} %'
+                    icon: mdi:home-percent
+                    icon_color: blue
+                    layout: horizontal
+                    fill_container: true
+            grid_options:
+              columns: 24
+              rows: 2
       - type: grid
         column_span: 1
         columns: 1
@@ -117,6 +107,49 @@ views:
             entity: select.esp32_ac_a7_04_ee_11_70_lamp_mode
             name: Режим лампы
             icon: mdi:led-strip-variant
+          - type: custom:bubble-card
+            card_type: button
+            button_type: name
+            entity: switch.rgb_strip_power_2
+            name: RGB бассейн
+            icon: mdi:led-strip-variant
+            tap_action:
+              action: toggle
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:bubble-card
+            card_type: button
+            button_type: name
+            entity: switch.outdoor_light_manual_2
+            name: Уличный свет
+            icon: mdi:outdoor-lamp
+            tap_action:
+              action: toggle
+          - type: horizontal-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                entity: script.evening_mode
+                name: Вечер
+                icon: mdi:weather-night
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  target:
+                    entity_id: script.evening_mode
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                entity: script.all_off
+                name: Выключить всё
+                icon: mdi:power
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  target:
+                    entity_id: script.all_off
       - type: grid
         column_span: 2
         columns: 2
@@ -135,34 +168,6 @@ views:
             hold_action:
               action: more-info
             secondary_info: state
-          - type: custom:mushroom-template-card
-            entity: sensor.0x00158d00035364db_temperature
-            primary: Дом
-            secondary: >-
-              Темп: {{ states('sensor.0x00158d00033b3da6_temperature') }}°C ·
-              Влажность: {{ states('sensor.0x00158d00033b3da6_humidity') }}%
-            icon: mdi:home-thermometer
-            color: cyan
-            features_position: bottom
-            grid_options:
-              columns: 15
-              rows: 1
-          - type: custom:bubble-card
-            card_type: button
-            button_type: name
-            entity: switch.outdoor_light_manual_2
-            name: Уличный свет
-            icon: mdi:outdoor-lamp
-            tap_action:
-              action: toggle
-          - type: custom:bubble-card
-            card_type: button
-            button_type: name
-            entity: switch.rgb_strip_power_2
-            name: RGB бассейн
-            icon: mdi:led-strip-variant
-            tap_action:
-              action: toggle
       - type: grid
         column_span: 3
         columns: 3

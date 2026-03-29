@@ -11,10 +11,6 @@ views:
         columns: 6
         square: false
         cards:
-          - type: heading
-            heading: Wall Tablet · Premium
-            icon: mdi:tablet-dashboard
-            heading_style: title
           - type: custom:mushroom-template-card
             entity: sensor.date_time
             primary: '{{ now().strftime(''%H:%M'') }}'
@@ -30,23 +26,9 @@ views:
                   border: 1px solid rgba(255,255,255,0.08);
                   background: linear-gradient(145deg, rgba(26,30,44,0.96), rgba(14,16,24,0.96));
                 }
-          - type: custom:mushroom-template-card
-            entity: weather.openweathermap
-            primary: >-
-              {{ state_attr('weather.openweathermap', 'temperature') |
-              default('—') }}°C
-            secondary: '{{ states(''weather.openweathermap'') | title }}'
-            icon: mdi:weather-partly-cloudy
-            icon_color: teal
-            fill_container: true
-            card_mod:
-              style: |
-                ha-card {
-                  border-radius: 18px;
-                  padding: 8px;
-                  border: 1px solid rgba(255,255,255,0.08);
-                  background: linear-gradient(145deg, rgba(26,30,44,0.96), rgba(14,16,24,0.96));
-                }
+            grid_options:
+              columns: 18
+              rows: 1
           - type: custom:mushroom-chips-card
             chips:
               - type: entity
@@ -61,7 +43,12 @@ views:
               - type: entity
                 entity: sensor.openweathermap_uv_index
                 icon: mdi:sun-wireless
+              - type: weather
+                entity: weather.openweathermap
             alignment: center
+            grid_options:
+              columns: 18
+              rows: 1
             card_mod:
               style: |
                 ha-card {
@@ -69,39 +56,6 @@ views:
                   border: 1px solid rgba(255,255,255,0.08);
                   background: rgba(16,18,27,0.92);
                 }
-          - type: custom:button-card
-            entity: button.gate_open
-            name: Калитка
-            icon: mdi:gate-open
-            show_state: true
-            tap_action:
-              action: call-service
-              service: button.press
-              target:
-                entity_id: button.gate_open
-            hold_action:
-              action: more-info
-            styles:
-              card:
-                - min-height: 96px
-                - border-radius: 20px
-                - padding: 12px
-                - background: >-
-                    linear-gradient(135deg, rgba(255,128,34,0.34),
-                    rgba(58,22,8,0.96))
-                - border: 1px solid rgba(255,171,92,0.62)
-                - box-shadow: 0 10px 28px rgba(255,104,0,0.22)
-              name:
-                - justify-self: start
-                - font-size: 22px
-                - font-weight: 700
-              state:
-                - justify-self: start
-                - font-size: 13px
-                - opacity: 0.9
-              icon:
-                - color: '#ffbe74'
-                - width: 38px
           - type: horizontal-stack
             cards:
               - type: custom:bubble-card
@@ -182,24 +136,8 @@ views:
             color: cyan
             features_position: bottom
             grid_options:
-              columns: 9
+              columns: 15
               rows: 1
-          - type: custom:mushroom-chips-card
-            chips:
-              - type: entity
-                entity: sensor.0x00158d00033b3da6_temperature
-                icon: mdi:thermometer
-              - type: entity
-                entity: sensor.0x00158d00033b3da6_humidity
-                icon: mdi:water-percent
-            alignment: center
-            card_mod:
-              style: |
-                ha-card {
-                  border-radius: 18px;
-                  border: 1px solid rgba(255,255,255,0.08);
-                  background: rgba(16,18,27,0.92);
-                }
           - type: custom:bubble-card
             card_type: button
             button_type: name

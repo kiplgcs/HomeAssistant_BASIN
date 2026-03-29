@@ -1,0 +1,1018 @@
+recorder:
+  # Быстрые мощности обновляются часто для UI, но в историю пишем отдельные 15-сек. датчики.
+  exclude:
+    entities:
+      - sensor.moshchnost_pv_pv_power
+      - sensor.moshchnost_nagruzki_load_power
+      - sensor.moshchnost_seti_grid_power
+      - sensor.anenji_flow_battery_power_signed
+
+
+input_number:
+  anenji_surplus_power_reserve:
+    name: "ANENJI · Резерв избыточной мощности"
+    min: 0
+    max: 1000
+    step: 10
+    mode: box
+    initial: 200
+    unit_of_measurement: "Вт"
+
+modbus:
+  - name: "ANENJI_6200W"
+    type: rtuovertcp
+    host: 192.168.0.74
+    port: 8899
+
+    # Оставляю как у тебя работало стабильно
+    timeout: 5
+    retries: 5
+    delay: 2
+    message_wait_milliseconds: 5
+
+    sensors:
+
+      # =========================
+      # АВАРИИ / ПРЕДУПРЕЖДЕНИЯ
+      # =========================
+
+      - name: "Код аварий битами (Fault Bitmask)"
+        slave: 1
+        address: 100
+        input_type: holding
+        data_type: uint32
+        swap: word
+        scan_interval: 15
+
+      - name: "Код предупреждений битами (Warning Bitmask, masked)"
+        slave: 1
+        address: 108
+        input_type: holding
+        data_type: uint32
+        swap: word
+        scan_interval: 15
+
+      - name: "Маска предупреждений (Warning Mask [I])"
+        slave: 1
+        address: 314
+        input_type: holding
+        data_type: uint32
+        swap: word
+        scan_interval: 60
+
+
+      # =========================
+      # УСТРОЙСТВО / РЕЖИМЫ
+      # =========================
+
+      - name: "Тип устройства (Device type)"
+        slave: 1
+        address: 171
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Режим работы (Working Mode)"
+        slave: 1
+        address: 201
+        input_type: holding
+        data_type: uint16
+        scan_interval: 15
+
+      - name: "Заряд АКБ % (Battery SOC)"
+        slave: 1
+        address: 229
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "%"
+        scan_interval: 15
+
+      - name: "Потоки энергии (Power Flow Status)"
+        slave: 1
+        address: 231
+        input_type: holding
+        data_type: uint16
+        scan_interval: 15
+
+
+      # =========================
+      # СЕТЬ (GRID / MAINS)
+      # =========================
+
+      - name: "Напряжение сети (Grid Voltage)"
+        slave: 1
+        address: 202
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 15
+
+      - name: "Частота сети (Grid Frequency)"
+        slave: 1
+        address: 203
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "Hz"
+        scale: 0.01
+        precision: 2
+        scan_interval: 15
+
+      # Ключевые мощности для дашборда опрашиваем каждые 2 секунды.
+      - name: "Мощность сети (Grid Power)"
+        slave: 1
+        address: 204
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "W"
+        scan_interval: 2
+
+
+      # =========================
+      # ИНВЕРТОР / ВЫХОД
+      # =========================
+
+      - name: "Напряжение инвертора (Inverter Voltage)"
+        slave: 1
+        address: 205
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 15
+
+      - name: "Ток инвертора (Inverter Current)"
+        slave: 1
+        address: 206
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "A"
+        scale: 0.1
+        precision: 1
+        scan_interval: 15
+
+      - name: "Частота инвертора (Inverter Frequency)"
+        slave: 1
+        address: 207
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "Hz"
+        scale: 0.01
+        precision: 2
+        scan_interval: 15
+
+      - name: "Мощность инвертора (Inverter Power)"
+        slave: 1
+        address: 208
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "W"
+        scan_interval: 15
+
+      - name: "Мощность зарядки от инвертора (Inverter Charging Power)"
+        slave: 1
+        address: 209
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "W"
+        scan_interval: 15
+
+      - name: "Выходное напряжение (Output Voltage)"
+        slave: 1
+        address: 210
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 15
+
+      - name: "Выходной ток (Output Current)"
+        slave: 1
+        address: 211
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "A"
+        scale: 0.1
+        precision: 1
+        scan_interval: 15
+
+      - name: "Выходная частота (Output Frequency)"
+        slave: 1
+        address: 212
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "Hz"
+        scale: 0.01
+        precision: 2
+        scan_interval: 15
+
+      - name: "Мощность нагрузки (Load Power)"
+        slave: 1
+        address: 213
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "W"
+        scan_interval: 2
+
+      - name: "Полная мощность нагрузки (Load Apparent Power)"
+        slave: 1
+        address: 214
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "VA"
+        scan_interval: 15
+
+
+      # =========================
+      # АКБ (BATTERY)
+      # =========================
+
+      - name: "Напряжение АКБ (Battery Voltage)"
+        slave: 1
+        address: 215
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 2
+
+      - name: "Ток АКБ (Battery Current)"
+        slave: 1
+        address: 216
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "A"
+        scale: 0.1
+        precision: 1
+        scan_interval: 15
+
+      - name: "Мощность АКБ (Battery Power)"
+        slave: 1
+        address: 217
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "W"
+        scan_interval: 15
+
+      - name: "Ток АКБ знак ± (Battery Current Signed, filtered)"
+        slave: 1
+        address: 232
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "A"
+        scale: 0.1
+        precision: 1
+        scan_interval: 2
+
+      - name: "Ток зарядки от инвертора (Inverter Charging Current)"
+        slave: 1
+        address: 233
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "A"
+        scale: 0.1
+        precision: 1
+        scan_interval: 30
+
+
+      # =========================
+      # PV (СОЛНЕЧНЫЕ ПАНЕЛИ)
+      # =========================
+
+      - name: "Напряжение PV (PV Voltage)"
+        slave: 1
+        address: 219
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 15
+
+      - name: "Ток PV (PV Current)"
+        slave: 1
+        address: 220
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "A"
+        scale: 0.1
+        precision: 1
+        scan_interval: 15
+
+      - name: "Мощность PV (PV Power)"
+        slave: 1
+        address: 223
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "W"
+        scan_interval: 2
+
+      - name: "Мощность зарядки от PV (PV Charging Power)"
+        slave: 1
+        address: 224
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "W"
+        scan_interval: 15
+
+      - name: "Ток зарядки от PV (PV Charging Current)"
+        slave: 1
+        address: 234
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "A"
+        scale: 0.1
+        precision: 1
+        scan_interval: 30
+
+
+      # =========================
+      # НАГРУЗКА / ТЕМПЕРАТУРЫ
+      # =========================
+
+      - name: "Нагрузка % (Load Percentage)"
+        slave: 1
+        address: 225
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "%"
+        precision: 0
+        scan_interval: 15
+
+      - name: "Температура DC-DC (DCDC Temperature)"
+        slave: 1
+        address: 226
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "°C"
+        scan_interval: 60
+
+      - name: "Температура инвертора (Inverter Temperature)"
+        slave: 1
+        address: 227
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "°C"
+        scan_interval: 60
+
+
+      # =========================
+      # ЭНЕРГИЯ (как было у тебя)
+      # =========================
+      # Примечание: Energy Today обычно сбрасывается -> НЕ подходит для Energy Dashboard как "total_increasing".
+      # Energy Total можно использовать после конвертации Wh->kWh (см. template ниже).
+
+      - name: "Энергия сегодня (Energy Today)"
+        slave: 1
+        address: 4007
+        input_type: holding
+        data_type: int32
+        swap: word
+        unit_of_measurement: "Wh"
+        scan_interval: 30
+
+      - name: "Энергия всего (Energy Total)"
+        slave: 1
+        address: 4008
+        input_type: holding
+        data_type: int32
+        swap: word
+        unit_of_measurement: "Wh"
+        scan_interval: 60
+
+
+      # =========================
+      # НАСТРОЙКИ (R/W) — ЧТЕНИЕ
+      # =========================
+
+      - name: "Режим выхода (Output Mode)"
+        slave: 1
+        address: 300
+        input_type: holding
+        data_type: uint16
+        scan_interval: 60
+
+      - name: "Приоритет выхода (Output Priority)"
+        slave: 1
+        address: 301
+        input_type: holding
+        data_type: uint16
+        scan_interval: 60
+
+      - name: "Диапазон входного напряжения (Input Voltage Range)"
+        slave: 1
+        address: 302
+        input_type: holding
+        data_type: uint16
+        scan_interval: 60
+
+      - name: "Зуммер (Buzzer Mode)"
+        slave: 1
+        address: 303
+        input_type: holding
+        data_type: uint16
+        scan_interval: 60
+
+      - name: "Подсветка LCD (LCD Backlight)"
+        slave: 1
+        address: 305
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Автовозврат LCD на главную (LCD Auto Home)"
+        slave: 1
+        address: 306
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Энергосбережение (Energy Saving)"
+        slave: 1
+        address: 307
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Автоперезапуск при перегрузке (Overload Auto Restart)"
+        slave: 1
+        address: 308
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Автоперезапуск при перегреве (Overtemp Auto Restart)"
+        slave: 1
+        address: 309
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Bypass при перегрузке (Overload Bypass Enable)"
+        slave: 1
+        address: 310
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Выравнивание АКБ (Battery Eq Enable)"
+        slave: 1
+        address: 313
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Сухой контакт (Dry Contact)"
+        slave: 1
+        address: 316
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Уставка выходного напряжения (Output Voltage Set)"
+        slave: 1
+        address: 320
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 60
+
+      - name: "Уставка выходной частоты (Output Frequency Set)"
+        slave: 1
+        address: 321
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "Hz"
+        scale: 0.01
+        precision: 2
+        scan_interval: 60
+
+      - name: "Тип АКБ (Battery Type)"
+        slave: 1
+        address: 322
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Защита: перенапряжение АКБ (Battery Overvoltage Protection [A])"
+        slave: 1
+        address: 323
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 300
+
+      - name: "Макс. напряжение зарядки (Maximum Charge Voltage [B])"
+        slave: 1
+        address: 324
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 300
+
+      - name: "Напряжение float (Floating Charge Voltage [C])"
+        slave: 1
+        address: 325
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 300
+
+      - name: "Восстановление разряда в сети (Mains Discharge Recovery [D])"
+        slave: 1
+        address: 326
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 300
+
+      - name: "Защита низкого напряжения в сети (Mains Low Voltage Protect [E])"
+        slave: 1
+        address: 327
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 300
+
+      - name: "Защита низкого напряжения off-grid (Off-grid Low Voltage Protect [F])"
+        slave: 1
+        address: 329
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 300
+
+      - name: "Переход CV→Float (CV to Float time)"
+        slave: 1
+        address: 330
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "min"
+        scan_interval: 300
+
+      - name: "Приоритет зарядки (Battery Charging Priority)"
+        slave: 1
+        address: 331
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Макс. ток зарядки (Maximum Charge Current [G])"
+        slave: 1
+        address: 332
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "A"
+        scale: 0.1
+        precision: 1
+        scan_interval: 300
+
+      - name: "Макс. ток зарядки от сети (Maximum Mains Charge Current [H])"
+        slave: 1
+        address: 333
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "A"
+        scale: 0.1
+        precision: 1
+        scan_interval: 300
+
+      - name: "Напряжение EQ (Eq charge voltage)"
+        slave: 1
+        address: 334
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "V"
+        scale: 0.1
+        precision: 1
+        scan_interval: 300
+
+      - name: "Время EQ (bat_eq_time)"
+        slave: 1
+        address: 335
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "min"
+        scan_interval: 300
+
+      - name: "Таймаут EQ (Eq timed out)"
+        slave: 1
+        address: 336
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "min"
+        scan_interval: 300
+
+      - name: "Интервал EQ (Two-time Eq interval)"
+        slave: 1
+        address: 337
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "day"
+        scan_interval: 300
+
+      - name: "Автовключение выхода от сети (Automatic Mains Output Enable)"
+        slave: 1
+        address: 338
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "SOC защита в сети (Mains Discharge SOC Protect [K])"
+        slave: 1
+        address: 341
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "%"
+        scan_interval: 300
+
+      - name: "SOC восстановление в сети (Mains Discharge SOC Recovery)"
+        slave: 1
+        address: 342
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "%"
+        scan_interval: 300
+
+      - name: "SOC защита off-grid (Off-grid Discharge SOC Protect)"
+        slave: 1
+        address: 343
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "%"
+        scan_interval: 300
+
+      - name: "Защита макс. тока разряда (Maximum Discharge Current Protect)"
+        slave: 1
+        address: 351
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "A"
+        scan_interval: 300
+
+      - name: "Режим запуска (Boot Mode)"
+        slave: 1
+        address: 406
+        input_type: holding
+        data_type: uint16
+        scan_interval: 300
+
+      - name: "Удаленный выключатель (Remote Switch)"
+        slave: 1
+        address: 420
+        input_type: holding
+        data_type: uint16
+        scan_interval: 60
+
+
+      # =========================
+      # ПАСПОРТНЫЕ ДАННЫЕ
+      # =========================
+
+      - name: "Номинальная мощность (Rated Power)"
+        slave: 1
+        address: 643
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "W"
+        scan_interval: 3600
+
+      - name: "Количество ячеек (Rated cells [J])"
+        slave: 1
+        address: 644
+        input_type: holding
+        data_type: uint16
+        scan_interval: 3600
+
+
+      # =========================
+      # ЖУРНАЛ ОШИБОК (служебное)
+      # =========================
+
+      - name: "Инфо хранилища ошибок (Fault Record Storage Info)"
+        slave: 1
+        address: 700
+        input_type: holding
+        data_type: uint32
+        swap: word
+        scan_interval: 3600
+
+      - name: "Индекс запроса ошибки (Fault Info Query Index)"
+        slave: 1
+        address: 702
+        input_type: holding
+        data_type: uint16
+        scan_interval: 3600
+
+
+# =========================
+# TEMPLATE — потоки + нормализация Power + подготовка для Energy Dashboard
+# =========================
+template:
+  - sensor:
+      # --- Signed battery power = V * I_signed ---
+      - name: "ANENJI Flow Battery Power Signed"
+        unique_id: anenji_flow_batt_power_signed
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set v = states('sensor.napriazhenie_akb_battery_voltage')|float(0) %}
+          {% set i = states('sensor.tok_akb_znak_battery_current_signed_filtered')|float(0) %}
+          {{ (v * i)|round(0) }}
+
+      # PV -> Load
+      - name: "ANENJI Flow PV to Load"
+        unique_id: anenji_flow_pv_to_load
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set pv = states('sensor.moshchnost_pv_pv_power')|float(0) %}
+          {% set load = states('sensor.moshchnost_nagruzki_load_power')|float(0) %}
+          {{ [pv, load] | min | round(0) }}
+
+      # PV -> Battery (из регистра PV Charging Power)
+      - name: "ANENJI Flow PV to Battery"
+        unique_id: anenji_flow_pv_to_batt
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {{ states('sensor.moshchnost_zariadki_ot_pv_pv_charging_power')|float(0) | round(0) }}
+
+      # Remaining load after PV
+      - name: "ANENJI Flow Load Remaining"
+        unique_id: anenji_flow_load_remaining
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set pv = states('sensor.moshchnost_pv_pv_power')|float(0) %}
+          {% set load = states('sensor.moshchnost_nagruzki_load_power')|float(0) %}
+          {{ [load - pv, 0] | max | round(0) }}
+
+      # Battery -> Load (если battery signed power < 0, значит разряд)
+      - name: "ANENJI Flow Battery to Load"
+        unique_id: anenji_flow_batt_to_load
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set rem = states('sensor.anenji_flow_load_remaining')|float(0) %}
+          {% set batt_p = states('sensor.anenji_flow_battery_power_signed')|float(0) %}
+          {% set batt_dis = (0 - batt_p) if batt_p < 0 else 0 %}
+          {{ [batt_dis, rem] | min | round(0) }}
+
+      # Grid -> Load
+      - name: "ANENJI Flow Grid to Load"
+        unique_id: anenji_flow_grid_to_load
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set rem = states('sensor.anenji_flow_load_remaining')|float(0) %}
+          {% set b2l = states('sensor.anenji_flow_battery_to_load')|float(0) %}
+          {{ [rem - b2l, 0] | max | round(0) }}
+
+      # Grid -> Battery (из регистра Inverter Charging Power)
+      - name: "ANENJI Flow Grid to Battery"
+        unique_id: anenji_flow_grid_to_batt
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {{ states('sensor.moshchnost_zariadki_ot_invertora_inverter_charging_power')|float(0) | round(0) }}
+
+      # Working mode text
+      - name: "ANENJI Working Mode Text"
+        unique_id: anenji_working_mode_text
+        state: >
+          {% set m = states('sensor.rezhim_raboty_working_mode')|int(-1) %}
+          {% set map = {
+            0:'Включение (Power on)',
+            1:'Ожидание (Standby)',
+            2:'Сеть (Mains)',
+            3:'Off-grid',
+            4:'Bypass',
+            5:'Зарядка (Charging)',
+            6:'Авария (Failure)'
+          } %}
+          {{ map.get(m, 'Неизвестно') }}
+
+      # =========================
+      # НОРМАЛИЗОВАННЫЕ POWER сенсоры (для Energy Dashboard)
+      # =========================
+      - name: "ANENJI PV Power"
+        unique_id: anenji_pv_power_norm
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.moshchnost_pv_pv_power')|float(0) | round(0) }}"
+
+      - name: "ANENJI Load Power"
+        unique_id: anenji_load_power_norm
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.moshchnost_nagruzki_load_power')|float(0) | round(0) }}"
+
+      - name: "ANENJI Grid Power"
+        unique_id: anenji_grid_power_norm
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.moshchnost_seti_grid_power')|float(0) | round(0) }}"
+
+      - name: "ANENJI Battery Power Signed"
+        unique_id: anenji_batt_power_signed_norm
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.anenji_flow_battery_power_signed')|float(0) | round(0) }}"
+
+      # Grid split: Import/Export (если у вас знак наоборот — поменяйте местами формулы)
+      - name: "ANENJI Grid Import Power"
+        unique_id: anenji_grid_import_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set p = states('sensor.anenji_grid_power_norm')|float(0) %}
+          {{ [p, 0] | max | round(0) }}
+
+      - name: "ANENJI Grid Export Power"
+        unique_id: anenji_grid_export_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set p = states('sensor.anenji_grid_power_norm')|float(0) %}
+          {{ [0 - p, 0] | max | round(0) }}
+
+      - name: "ANENJI Surplus Power"
+        unique_id: anenji_surplus_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        icon: mdi:water-boiler
+        availability: >
+          {{ states('sensor.moshchnost_seti_grid_power') not in ['unknown', 'unavailable', 'none', ''] }}
+        state: >
+          {% set grid = states('sensor.moshchnost_seti_grid_power')|float(0) %}
+          {% set reserve = states('input_number.anenji_surplus_power_reserve')|float(200) %}
+          {% if grid < (0 - reserve) %}
+            {{ ((0 - grid) - reserve) | round(0) }}
+          {% else %}
+            0
+          {% endif %}
+
+      # Battery split: charge/discharge (по знаку Battery Power Signed)
+      - name: "ANENJI Battery Charge Power"
+        unique_id: anenji_batt_discharge_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set p = states('sensor.anenji_batt_power_signed_norm')|float(0) %}
+          {{ [0 - p, 0] | max | round(0) }}
+
+      # Опционально: Modbus Energy Total (Wh) -> kWh с правильными классами
+      - name: "ANENJI Energy Total (kWh Modbus)"
+        unique_id: anenji_energy_total_kwh_modbus
+        unit_of_measurement: "kWh"
+        device_class: energy
+        state_class: total_increasing
+        state: "{{ (states('sensor.energiia_vsego_energy_total')|float(0) / 1000) | round(3) }}"
+
+  - trigger:
+      - platform: time_pattern
+        seconds: "/15"
+    sensor:
+      - name: "ANENJI PV Power History"
+        unique_id: anenji_pv_power_history
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.moshchnost_pv_pv_power')|float(0) | round(0) }}"
+      - name: "ANENJI Load Power History"
+        unique_id: anenji_load_power_history
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.moshchnost_nagruzki_load_power')|float(0) | round(0) }}"
+      - name: "ANENJI Grid Power History"
+        unique_id: anenji_grid_power_history
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.moshchnost_seti_grid_power')|float(0) | round(0) }}"
+      - name: "ANENJI Battery Power History"
+        unique_id: anenji_battery_power_history
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ states('sensor.anenji_flow_battery_power_signed')|float(0) | round(0) }}"
+
+
+# =========================
+# Integration — энергия из мощности (kWh total)
+# =========================
+sensor:
+  - platform: integration
+    source: sensor.anenji_pv_power
+    name: ANENJI PV Energy Total
+    unique_id: anenji_pv_energy_total
+    unit_prefix: k
+    round: 3
+    method: trapezoidal
+
+  - platform: integration
+    source: sensor.anenji_grid_import_power
+    name: ANENJI Grid Import Energy Total
+    unique_id: anenji_grid_import_energy_total
+    unit_prefix: k
+    round: 3
+    method: trapezoidal
+
+  - platform: integration
+    source: sensor.anenji_grid_export_power
+    name: ANENJI Grid Export Energy Total
+    unique_id: anenji_grid_export_energy_total
+    unit_prefix: k
+    round: 3
+    method: trapezoidal
+
+  - platform: integration
+    source: sensor.anenji_battery_charge_power
+    name: ANENJI Battery Charge Energy Total
+    unique_id: anenji_batt_charge_energy_total
+    unit_prefix: k
+    round: 3
+    method: trapezoidal
+
+  - platform: integration
+    source: sensor.anenji_battery_discharge_power
+    name: ANENJI Battery Discharge Energy Total
+    unique_id: anenji_batt_discharge_energy_total
+    unit_prefix: k
+    round: 3
+    method: trapezoidal
+
+
+# =========================
+# Utility meter — сутки/месяц (по желанию можно добавить год)
+# =========================
+utility_meter:
+  anenji_pv_energy_daily:
+    source: sensor.anenji_pv_energy_total
+    cycle: daily
+  anenji_pv_energy_monthly:
+    source: sensor.anenji_pv_energy_total
+    cycle: monthly
+
+  anenji_grid_import_energy_daily:
+    source: sensor.anenji_grid_import_energy_total
+    cycle: daily
+  anenji_grid_import_energy_monthly:
+    source: sensor.anenji_grid_import_energy_total
+    cycle: monthly
+
+  anenji_grid_export_energy_daily:
+    source: sensor.anenji_grid_export_energy_total
+    cycle: daily
+  anenji_grid_export_energy_monthly:
+    source: sensor.anenji_grid_export_energy_total
+    cycle: monthly
+
+  anenji_batt_charge_energy_daily:
+    source: sensor.anenji_battery_charge_energy_total
+    cycle: daily
+  anenji_batt_charge_energy_monthly:
+    source: sensor.anenji_battery_charge_energy_total
+    cycle: monthly
+
+  anenji_batt_discharge_energy_daily:
+    source: sensor.anenji_battery_discharge_energy_total
+    cycle: daily
+  anenji_batt_discharge_energy_monthly:
+    source: sensor.anenji_battery_discharge_energy_total
+    cycle: monthly

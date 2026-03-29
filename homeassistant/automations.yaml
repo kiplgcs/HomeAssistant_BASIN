@@ -327,3 +327,56 @@
         data:
           target_entity_id: input_select.anenji_cfg_program_01_output_source_priority
   mode: single
+- id: anenji_program_01_set_from_mqtt
+  alias: ANENJI Program 01 из MQTT в инвертор
+  mode: queued
+  trigger:
+  - platform: mqtt
+    topic: homeassistant/anenji/program_01/set
+  variables:
+    requested_mode: "{{ trigger.payload | upper | trim }}"
+  condition:
+  - condition: template
+    value_template: "{{ requested_mode in ['UTI', 'SOL', 'SBU', 'SUB', 'SUF'] }}"
+  action:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.anenji_cfg_program_01_output_source_priority
+    data:
+      option: "{{ requested_mode }}"
+  - service: script.anenji_inverter_write_single_config_to_modbus
+    data:
+      target_entity_id: input_select.anenji_cfg_program_01_output_source_priority
+
+- id: anenji_program_01_publish_to_mqtt
+  alias: ANENJI Program 01 публикация в MQTT
+  mode: queued
+  trigger:
+  - platform: state
+    entity_id: input_select.anenji_cfg_program_01_output_source_priority
+  - platform: homeassistant
+    event: start
+  action:
+  - service: mqtt.publish
+    data:
+      topic: homeassistant/anenji/program_01/state
+      payload: "{{ states('input_select.anenji_cfg_program_01_output_source_priority') }}"
+      retain: true
+
+- id: anenji_surplus_power_publish_to_mqtt
+  alias: ANENJI Surplus Power публикация в MQTT
+  mode: queued
+  trigger:
+  - platform: state
+    entity_id: sensor.anenji_surplus_power
+  - platform: homeassistant
+    event: start
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.anenji_surplus_power') not in ['unknown', 'unavailable', 'none', ''] }}"
+  action:
+  - service: mqtt.publish
+    data:
+      topic: homeassistant/anenji/surplus_power/state
+      payload: "{{ states('sensor.anenji_surplus_power') }}"
+      retain: true

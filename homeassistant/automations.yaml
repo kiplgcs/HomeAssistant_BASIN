@@ -78,41 +78,93 @@
         entity_id: 223b9186ac87cd8b658c018088a4f23c
         domain: switch
   mode: single
-- id: '1749288198031'
-  alias: 1 - Определение присутствия дома
-  description: ''
+- id: '1770485914812'
+  alias: '!!! Охрана - датчики Душевая/Коридор + присутствие дома'
+  description: >-
+    Объединённая автоматизация вместо "1 - Определение присутствия дома" и
+    "!!! Сообщение - датчик Коридор": постановка/снятие охраны с Wall Tablet,
+    обновление статуса присутствия и повторные уведомления по датчикам
+    Душевой/Коридора, пока охрана не деактивирована.
   triggers:
-  - type: not_connected
-    device_id: 49f67d2313ba5d3ffb8d6a613e0f8b47
-    entity_id: 715aa4c2483b3af35c6050795e6470cd
-    domain: binary_sensor
-    trigger: device
-  conditions:
-  - condition: or
-    conditions:
-    - type: is_not_connected
-      condition: device
-      device_id: 49f67d2313ba5d3ffb8d6a613e0f8b47
-      entity_id: 715aa4c2483b3af35c6050795e6470cd
-      domain: binary_sensor
-    - type: is_not_connected
-      condition: device
-      device_id: c24b2438d3ed89697480500a41d2778e
-      entity_id: 9e5a58408d9044ec53701f272e98357d
-      domain: binary_sensor
+  - trigger: state
+    entity_id: input_boolean.wall_tablet_guard_mode
+    to: 'on'
+    id: guard_on
+  - trigger: state
+    entity_id: input_boolean.wall_tablet_guard_mode
+    to: 'off'
+    id: guard_off
+  - trigger: state
+    entity_id: binary_sensor.0xa4c138f7e37d6f18_presence
+    to: 'on'
+    id: shower_motion
+  - trigger: state
+    entity_id: binary_sensor.0xa4c138a30a8c8616_presence
+    to: 'on'
+    id: corridor_motion
+  conditions: []
   actions:
-  - delay:
-      hours: 0
-      minutes: 59
-      seconds: 0
-      milliseconds: 0
-  - action: input_text.set_value
-    metadata: {}
-    data:
-      value: Нет дома
-    target:
-      entity_id: input_text.prisutstvie_doma
-  mode: single
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: guard_on
+      sequence:
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.prisutstvie_doma
+        data:
+          value: Нет дома
+      - action: notify.mobile_app_ne2213
+        data:
+          message: '🛡️ Охрана включена на Wall Tablet.'
+    - conditions:
+      - condition: trigger
+        id: guard_off
+      sequence:
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.prisutstvie_doma
+        data:
+          value: Дома
+      - action: notify.mobile_app_ne2213
+        data:
+          message: '✅ Охрана выключена на Wall Tablet.'
+    - conditions:
+      - condition: template
+        value_template: "{{ trigger.id in ['shower_motion', 'corridor_motion'] }}"
+      - condition: state
+        entity_id: input_boolean.wall_tablet_guard_mode
+        state: 'on'
+      sequence:
+      - variables:
+          sensor_name: >-
+            {% if trigger.id == 'shower_motion' %}
+              Душевая
+            {% else %}
+              Коридор
+            {% endif %}
+      - action: notify.mobile_app_ne2213
+        data:
+          message: "🚨 Охрана: сработал датчик {{ sensor_name }}."
+      - repeat:
+          while:
+          - condition: state
+            entity_id: input_boolean.wall_tablet_guard_mode
+            state: 'on'
+          - condition: template
+            value_template: "{{ is_state(trigger.entity_id, 'on') }}"
+          sequence:
+          - delay: '00:02:00'
+          - condition: state
+            entity_id: input_boolean.wall_tablet_guard_mode
+            state: 'on'
+          - condition: template
+            value_template: "{{ is_state(trigger.entity_id, 'on') }}"
+          - action: notify.mobile_app_ne2213
+            data:
+              message: "🚨 Охрана активна: датчик {{ sensor_name }} всё ещё в тревоге."
+  mode: parallel
+  max: 10
 - id: '1762115307663'
   alias: Подсветка зеркала в душевой по датчику присутствия
   description: ''
@@ -149,66 +201,6 @@
     device_id: c403a10a291b06108c5600ae70914c06
     entity_id: 108b362f1309451386a3c5b4c71e968f
     domain: switch
-  mode: single
-- id: '1762446690839'
-  alias: Включение света перед входной дверью во дворе
-  description: ''
-  triggers:
-  - type: occupied
-    device_id: 97d1764ec5d0d4226d8e4167a9773308
-    entity_id: 46f74f5f8a5de0950812f5345413aa90
-    domain: binary_sensor
-    trigger: device
-  conditions:
-  - condition: sun
-    before: sunrise
-    after: sunset
-  actions:
-  - type: turn_on
-    device_id: d08ebc0562ec7372ff25c23285369bb4
-    entity_id: 01a6025bddb6d1348734f86e83a73085
-    domain: switch
-  - if:
-    - type: is_not_occupied
-      condition: device
-      device_id: 97d1764ec5d0d4226d8e4167a9773308
-      entity_id: 46f74f5f8a5de0950812f5345413aa90
-      domain: binary_sensor
-      for:
-        hours: 0
-        minutes: 5
-        seconds: 0
-    then:
-    - type: turn_off
-      device_id: d08ebc0562ec7372ff25c23285369bb4
-      entity_id: 01a6025bddb6d1348734f86e83a73085
-      domain: switch
-    else:
-    - delay:
-        hours: 0
-        minutes: 10
-        seconds: 0
-        milliseconds: 0
-    - type: turn_off
-      device_id: d08ebc0562ec7372ff25c23285369bb4
-      entity_id: 01a6025bddb6d1348734f86e83a73085
-      domain: switch
-  mode: single
-- id: '1770485914812'
-  alias: '!!! Сообщение  - датчик Коридор'
-  description: ''
-  triggers:
-  - type: changed_states
-    device_id: 8f9a39fe069ddd0038817bd64816ef70
-    entity_id: b68417b0e0ffd3b99f786e8546cd2954
-    domain: switch
-    trigger: device
-  conditions: []
-  actions:
-  - action: notify.mobile_app_ne2213
-    metadata: {}
-    data:
-      message: Датчик -Коридор
   mode: single
 - id: '1774333666055'
   alias: Переключение режима ANJ солнечного инвертора (SOL/SUB с гистерезисом)
@@ -334,20 +326,20 @@
   - platform: mqtt
     topic: homeassistant/anenji/program_01/set
   variables:
-    requested_mode: "{{ trigger.payload | upper | trim }}"
+    requested_mode: '{{ trigger.payload | upper | trim }}'
   condition:
   - condition: template
-    value_template: "{{ requested_mode in ['UTI', 'SOL', 'SBU', 'SUB', 'SUF'] }}"
+    value_template: '{{ requested_mode in [''UTI'', ''SOL'', ''SBU'', ''SUB'', ''SUF'']
+      }}'
   action:
   - service: input_select.select_option
     target:
       entity_id: input_select.anenji_cfg_program_01_output_source_priority
     data:
-      option: "{{ requested_mode }}"
+      option: '{{ requested_mode }}'
   - service: script.anenji_inverter_write_single_config_to_modbus
     data:
       target_entity_id: input_select.anenji_cfg_program_01_output_source_priority
-
 - id: anenji_program_01_publish_to_mqtt
   alias: ANENJI Program 01 публикация в MQTT
   mode: queued
@@ -360,9 +352,9 @@
   - service: mqtt.publish
     data:
       topic: homeassistant/anenji/program_01/state
-      payload: "{{ states('input_select.anenji_cfg_program_01_output_source_priority') }}"
+      payload: '{{ states(''input_select.anenji_cfg_program_01_output_source_priority'')
+        }}'
       retain: true
-
 - id: anenji_surplus_power_publish_to_mqtt
   alias: ANENJI Surplus Power публикация в MQTT
   mode: queued
@@ -373,10 +365,11 @@
     event: start
   condition:
   - condition: template
-    value_template: "{{ states('sensor.anenji_surplus_power') not in ['unknown', 'unavailable', 'none', ''] }}"
+    value_template: '{{ states(''sensor.anenji_surplus_power'') not in [''unknown'',
+      ''unavailable'', ''none'', ''''] }}'
   action:
   - service: mqtt.publish
     data:
       topic: homeassistant/anenji/surplus_power/state
-      payload: "{{ states('sensor.anenji_surplus_power') }}"
+      payload: '{{ states(''sensor.anenji_surplus_power'') }}'
       retain: true

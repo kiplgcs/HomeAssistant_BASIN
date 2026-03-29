@@ -126,6 +126,15 @@ views:
             heading: Быстрые действия
             icon: mdi:flash
             heading_style: title
+          - type: custom:mushroom-entity-card
+            entity: input_boolean.wall_tablet_guard_mode
+            name: Охрана дома
+            icon: mdi:shield-home
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            secondary_info: state
           - type: custom:mushroom-template-card
             entity: sensor.0x00158d00035364db_temperature
             primary: Дом

@@ -1,179 +1,375 @@
-# https://www.home-assistant.io/integrations/http/
-# Загружает стандартные интеграции
-default_config:
-
-# Загрузка пользовательских тем интерфейса из папки themes
-frontend:
-  themes: !include_dir_merge_named themes
-
-# Включение отдельных файлов конфигурации для автоматизаций, скриптов и сценариев
-automation: !include automations.yaml  # Автоматизации
-script: !include scripts.yaml          # Скрипты
-scene: !include scenes.yaml            # Сценарии
-
-# Кастомная панель в боковом меню
-panel_custom:
-  - name: server_state
-    sidebar_title: "Система"
-    sidebar_icon: mdi:server
-    js_url: "/api/hassio/app/entrypoint.js"
-    url_path: "hassio/system"
-    embed_iframe: true
-    require_admin: true
-    config:
-      mode: yaml  # Минимальный рабочий параметр (можно заменить)
-
-# Основные настройки Home Assistant
-homeassistant:
-  external_url: "https://raspberry.kiplgcs.keenetic.pro"
-  internal_url: "https://raspberry.kiplgcs.keenetic.pro"
-# internal_url: "https://192.168.0.100:8123"
-
-# Основные настройки для солнечного инвертора ANENJI
-  packages:
-    anenji_configuration: !include packages/anenji_configuration.yaml
-    anenji_manual_mqtt: !include packages/anenji_manual_mqtt.yaml
-
-  
-# Настройки HTTP и SSL
-http:
-  ssl_certificate: /ssl/fullchain.pem
-  ssl_key: /ssl/privkey.pem
-
-  cors_allowed_origins:  # Разрешённые источники CORS (убраны дубликаты)
-    - https://google.com
-    - https://www.home-assistant.io
-    - https://dialogs.yandex.ru/
-    - https://yandex.ru
-    #- https://alexstar.ru/
-    
-  use_x_forwarded_for: true
-
-  trusted_proxies:  # IP-адреса доверенных прокси-серверов
-    - 127.0.0.1       # Локальный хост
-    - 192.168.0.1     # Локальный шлюз (роутер)
-    - 192.168.1.1   # Можно добавить другие, если нужно
-
-#   ip_ban_enabled: true          # Блокировка IP при многократном вводе неверного пароля
-#   login_attempts_threshold: 50  # Максимальное количество попыток входа
-
-# Автоматическое обновление SSL-сертификатов через Let's Encrypt
-shell_command:
-  letsencrypt_restart: 'curl -X POST -sSL -H "Authorization: Bearer $SUPERVISOR_TOKEN" http://supervisor/addons/core_letsencrypt/start'
-    
-  #Строка перезагрузки ESP32 -перезагрузка полива   
-  poliv_restart: 'curl http://192.168.0.70/restart'
-# poliv_restart: 'mosquitto_pub -h localhost -t "jee/set/RestartESP32" -m "true"'
-
-mqtt: !include mqtt_irrigation.yaml
-
-# rest_command:
-#   poliv_restart:
-#     url: "http://poliv/restart"
-#     method: GET
-
-    
-# binary_sensor:
-#   - platform: ping
-#     host: 192.168.0.75  # IP-адрес телефона
-#     name: phone_online
-#     count: 2             # сколько пакетов отправить
-#     scan_interval: 15    # как часто проверять (в секундах)
-
-# input_datetime:
-#   poliv_1_vremia_nachala_taimera_1:
-#     name: "Полив 1 - Время начала Таймера 1"
-#     has_time: true
-#     has_date: false
-
-#   poliv_1_vremia_nachala_taimera_2:
-#     name: "Полив 1 - Время начала Таймера 2"
-#     has_time: true
-#     has_date: false
-
-#   poliv_2_vremia_nachala_taimera_1:
-#     name: "Полив 2 - Время начала Таймера 1"
-#     has_time: true
-#     has_date: false
-
-#   poliv_2_vremia_nachala_taimera_2:
-#     name: "Полив 2 - Время начала Таймера 2"
-#     has_time: true
-#     has_date: false
-
-#   poliv_3_vremia_nachala_taimera_1:
-#     name: "Полив 3 - Время начала Таймера 1"
-#     has_time: true
-#     has_date: false
-
-#   poliv_3_vremia_nachala_taimera_2:
-#     name: "Полив 3 - Время начала Таймера 2"
-#     has_time: true
-#     has_date: false
-
-#   poliv_4_vremia_nachala_taimera_1:
-#     name: "Полив 4 - Время начала Таймера 1"
-#     has_time: true
-#     has_date: false
-
-#   poliv_4_vremia_nachala_taimera_2:
-#     name: "Полив 4 - Время начала Таймера 2"
-#     has_time: true
-#     has_date: false
-
-# input_number:
-#   poliv_1_dlitelnost_taimera_1:
-#     name: "Полив 1 - Длительность Таймера 1"
-#     min: 1
-#     max: 30
-#     step: 1
-#     unit_of_measurement: "мин"
-
-#   poliv_1_dlitelnost_taimera_2:
-#     name: "Полив 1 - Длительность Таймера 2"
-#     min: 1
-#     max: 30
-#     step: 1
-#     unit_of_measurement: "мин"
-
-#   poliv_2_dlitelnost_taimera_1:
-#     name: "Полив 2 - Длительность Таймера 1"
-#     min: 1
-#     max: 30
-#     step: 1
-#     unit_of_measurement: "мин"
-
-#   poliv_2_dlitelnost_taimera_2:
-#     name: "Полив 2 - Длительность Таймера 2"
-#     min: 1
-#     max: 30
-#     step: 1
-#     unit_of_measurement: "мин"
-
-#   poliv_3_dlitelnost_taimera_1:
-#     name: "Полив 3 - Длительность Таймера 1"
-#     min: 1
-#     max: 30
-#     step: 1
-#     unit_of_measurement: "мин"
-
-#   poliv_3_dlitelnost_taimera_2:
-#     name: "Полив 3 - Длительность Таймера 2"
-#     min: 1
-#     max: 30
-#     step: 1
-#     unit_of_measurement: "мин"
-
-#   poliv_4_dlitelnost_taimera_1:
-#     name: "Полив 4 - Длительность Таймера 1"
-#     min: 1
-#     max: 30
-#     step: 1
-#     unit_of_measurement: "мин"
-
-#   poliv_4_dlitelnost_taimera_2:
-#     name: "Полив 4 - Длительность Таймера 2"
-#     min: 1
-#     max: 30
-#     step: 1
-#     unit_of_measurement: "мин"
+- id: '1702808251521'
+  alias: Обновление сертификата Let's Encrypt
+  description: https://www.youtube.com/watch?v=-Tp1l4-N14A&ab_channel=BootUseDinamontuz
+  trigger:
+  - platform: state
+    entity_id: sensor.raspberry_kiplgcs_keenetic_pro_cert_expiry
+    attribute: is_valid
+    from: 'true'
+    to: 'false'
+  condition: []
+  action:
+  - service: shell_command.letsencrypt_restart
+    data: {}
+  mode: single
+- alias: Автообновление SSL-сертификатов
+  trigger:
+  - platform: template
+    value_template: '{{ now().day == 1 }}'
+  action:
+  - service: shell_command.letsencrypt_restart
+  mode: single
+  id: a2a6306b357a4104bee301504916f164
+- id: '1744877016258'
+  alias: LED гирлянда - включить на 4 часа по заходу солнца
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: a66bb8c86d983a5e6cc45254213ff7f5
+    entity_id: a3296c879ecaf469e56e95cd4019312e
+    domain: switch
+  - type: turn_on
+    device_id: dbb3648a098cec2bf769e4c9aeb0f7f3
+    entity_id: 223b9186ac87cd8b658c018088a4f23c
+    domain: switch
+  - delay:
+      hours: 7
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: a66bb8c86d983a5e6cc45254213ff7f5
+    entity_id: a3296c879ecaf469e56e95cd4019312e
+    domain: switch
+  - type: turn_off
+    device_id: dbb3648a098cec2bf769e4c9aeb0f7f3
+    entity_id: 223b9186ac87cd8b658c018088a4f23c
+    domain: switch
+  - repeat:
+      while:
+      - condition: or
+        conditions:
+        - condition: device
+          type: is_on
+          device_id: a66bb8c86d983a5e6cc45254213ff7f5
+          entity_id: a3296c879ecaf469e56e95cd4019312e
+          domain: switch
+        - condition: device
+          type: is_on
+          device_id: dbb3648a098cec2bf769e4c9aeb0f7f3
+          entity_id: 223b9186ac87cd8b658c018088a4f23c
+          domain: switch
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
+      - type: turn_off
+        device_id: a66bb8c86d983a5e6cc45254213ff7f5
+        entity_id: a3296c879ecaf469e56e95cd4019312e
+        domain: switch
+      - type: turn_off
+        device_id: dbb3648a098cec2bf769e4c9aeb0f7f3
+        entity_id: 223b9186ac87cd8b658c018088a4f23c
+        domain: switch
+  mode: single
+- id: '1770485914812'
+  alias: '!!! Охрана - датчики Душевая/Коридор + присутствие дома'
+  description: >-
+    Объединённая автоматизация вместо "1 - Определение присутствия дома" и
+    "!!! Сообщение - датчик Коридор": постановка/снятие охраны с Wall Tablet,
+    обновление статуса присутствия и повторные уведомления по датчикам
+    Душевой/Коридора, пока охрана не деактивирована.
+  triggers:
+  - trigger: state
+    entity_id: input_boolean.wall_tablet_guard_mode
+    to: 'on'
+    id: guard_on
+  - trigger: state
+    entity_id: input_boolean.wall_tablet_guard_mode
+    to: 'off'
+    id: guard_off
+  - trigger: state
+    entity_id: binary_sensor.0xa4c138f7e37d6f18_presence
+    to: 'on'
+    id: shower_motion
+  - trigger: state
+    entity_id: binary_sensor.0xa4c138a30a8c8616_presence
+    to: 'on'
+    id: corridor_motion
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: guard_on
+      sequence:
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.prisutstvie_doma
+        data:
+          value: Нет дома
+      - action: notify.mobile_app_ne2213
+        data:
+          message: '🛡️ Охрана включена на Wall Tablet.'
+    - conditions:
+      - condition: trigger
+        id: guard_off
+      sequence:
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.prisutstvie_doma
+        data:
+          value: Дома
+      - action: notify.mobile_app_ne2213
+        data:
+          message: '✅ Охрана выключена на Wall Tablet.'
+    - conditions:
+      - condition: template
+        value_template: "{{ trigger.id in ['shower_motion', 'corridor_motion'] }}"
+      - condition: state
+        entity_id: input_boolean.wall_tablet_guard_mode
+        state: 'on'
+      sequence:
+      - variables:
+          sensor_name: >-
+            {% if trigger.id == 'shower_motion' %}
+              Душевая
+            {% else %}
+              Коридор
+            {% endif %}
+      - action: notify.mobile_app_ne2213
+        data:
+          message: "🚨 Охрана: сработал датчик {{ sensor_name }}."
+      - repeat:
+          while:
+          - condition: state
+            entity_id: input_boolean.wall_tablet_guard_mode
+            state: 'on'
+          - condition: template
+            value_template: "{{ is_state(trigger.entity_id, 'on') }}"
+          sequence:
+          - delay: '00:02:00'
+          - condition: state
+            entity_id: input_boolean.wall_tablet_guard_mode
+            state: 'on'
+          - condition: template
+            value_template: "{{ is_state(trigger.entity_id, 'on') }}"
+          - action: notify.mobile_app_ne2213
+            data:
+              message: "🚨 Охрана активна: датчик {{ sensor_name }} всё ещё в тревоге."
+  mode: parallel
+  max: 10
+- id: '1762115307663'
+  alias: Подсветка зеркала в душевой по датчику присутствия
+  description: ''
+  triggers:
+  - type: occupied
+    device_id: fbc0d0ce625b60fc9059a293766db99d
+    entity_id: 19ae68147d17a3978927eaf9b38c37c4
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+  conditions:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  actions:
+  - type: turn_on
+    device_id: c403a10a291b06108c5600ae70914c06
+    entity_id: 108b362f1309451386a3c5b4c71e968f
+    domain: switch
+  - wait_for_trigger:
+    - type: not_occupied
+      device_id: fbc0d0ce625b60fc9059a293766db99d
+      entity_id: 19ae68147d17a3978927eaf9b38c37c4
+      domain: binary_sensor
+      trigger: device
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 20
+  - type: turn_off
+    device_id: c403a10a291b06108c5600ae70914c06
+    entity_id: 108b362f1309451386a3c5b4c71e968f
+    domain: switch
+  mode: single
+- id: '1774333666055'
+  alias: Переключение режима ANJ солнечного инвертора (SOL/SUB с гистерезисом)
+  description: '1) Цель: автоматически и бережно переключать Program 01 между SOL
+    и SUB, чтобы снизить потребление из сети и избежать частых «дёрганий» инвертора.
+    2) Переход в SOL: при СТАБИЛЬНО хорошем солнце. Учитываются 2 сценария: (а) реально
+    высокая генерация (PV ток/мощность), или (б) минимальная нагрузка дома (70-250
+    Вт), когда потенциал солнца высокий, но фактическая мощность PV может быть невысокой
+    из-за малого потребления. Выдержка 10 минут + доп.проверка ещё 2 минуты перед
+    записью режима. 3) Переход в SUB: при длительной нехватке солнца (низкие PV-параметры),
+    при стабильном высоком импорте из сети, а также принудительно за 30 минут до заката
+    для мягкого вечернего перехода. 4) Гистерезис: пороги и длительности для входа
+    в SOL и возврата в SUB различаются, поэтому режим не «пилит» на облаках/рассвете/закате.
+    5) Антидребезг: между любыми переключениями выдерживается минимум 15 минут, и
+    переключение выполняется только если текущий режим отличается от целевого. 6)
+    Как применяется: automation меняет input_select.anenji_cfg_program_01_output_source_priority
+    (SOL или SUB) и сразу вызывает script.anenji_inverter_write_single_config_to_modbus
+    для фактической записи в инвертор. 7) Что можно настраивать: пороги (V/A/W), временные
+    выдержки и интервал periodic_recheck (/15) редактируются в YAML/GUI под вашу станцию
+    и климат.'
+  triggers:
+  - trigger: template
+    value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
+      %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p = states(''sensor.moshchnost_pv_pv_power'')|float(0)
+      %} {% set load = states(''sensor.moshchnost_nagruzki_load_power'')|float(0)
+      %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0) %} {%
+      set high_generation = v > 335 and (i > 3 or p > 900) %} {% set low_load_high_potential
+      = v > 355 and load >= 70 and load <= 250 and grid < 250 %} {{ is_state(''sun.sun'',
+      ''above_horizon'') and (high_generation or low_load_high_potential) }}'
+    for: 00:10:00
+    id: to_sol_stable
+  - trigger: template
+    value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
+      %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p = states(''sensor.moshchnost_pv_pv_power'')|float(0)
+      %} {{ is_state(''sun.sun'', ''below_horizon'') or ((v < 300 or p < 550) and
+      i < 1.8) }}'
+    for: 00:15:00
+    id: to_sub_low_sun
+  - trigger: numeric_state
+    entity_id: sensor.moshchnost_seti_grid_power
+    above: 700
+    for: 00:08:00
+    id: to_sub_grid_import_high
+  - trigger: sun
+    event: sunset
+    offset: -00:30:00
+    id: sub_before_sunset
+  - trigger: time_pattern
+    minutes: /15
+    id: periodic_recheck
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id in [''to_sol_stable'', ''periodic_recheck'']
+          }}'
+      - condition: sun
+        after: sunrise
+        before: sunset
+      - condition: template
+        value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
+          %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p
+          = states(''sensor.moshchnost_pv_pv_power'')|float(0) %} {% set load = states(''sensor.moshchnost_nagruzki_load_power'')|float(0)
+          %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0)
+          %} {% set high_generation = v > 335 and (i > 3 or p > 900) %} {% set low_load_high_potential
+          = v > 355 and load >= 70 and load <= 250 and grid < 250 %} {{ high_generation
+          or low_load_high_potential }}'
+      - condition: template
+        value_template: '{{ states(''input_select.anenji_cfg_program_01_output_source_priority'')
+          != ''SOL'' }}'
+      - condition: template
+        value_template: '{{ (as_timestamp(now()) - as_timestamp(states.input_select.anenji_cfg_program_01_output_source_priority.last_changed))
+          > 900 }}'
+      sequence:
+      - delay: 00:02:00
+      - condition: template
+        value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
+          %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p
+          = states(''sensor.moshchnost_pv_pv_power'')|float(0) %} {% set load = states(''sensor.moshchnost_nagruzki_load_power'')|float(0)
+          %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0)
+          %} {% set high_generation = v > 330 and (i > 2.5 or p > 800) %} {% set low_load_high_potential
+          = v > 350 and load >= 70 and load <= 250 and grid < 300 %} {{ high_generation
+          or low_load_high_potential }}'
+      - action: input_select.select_option
+        target:
+          entity_id: input_select.anenji_cfg_program_01_output_source_priority
+        data:
+          option: SOL
+      - action: script.anenji_inverter_write_single_config_to_modbus
+        data:
+          target_entity_id: input_select.anenji_cfg_program_01_output_source_priority
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id in [''to_sub_low_sun'', ''to_sub_grid_import_high'',
+          ''sub_before_sunset'', ''periodic_recheck''] }}'
+      - condition: template
+        value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
+          %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p
+          = states(''sensor.moshchnost_pv_pv_power'')|float(0) %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0)
+          %} {{ is_state(''sun.sun'', ''below_horizon'') or ((v < 300 or p < 550)
+          and i < 1.8) or grid > 700 }}'
+      - condition: template
+        value_template: '{{ states(''input_select.anenji_cfg_program_01_output_source_priority'')
+          != ''SUB'' }}'
+      - condition: template
+        value_template: '{{ (as_timestamp(now()) - as_timestamp(states.input_select.anenji_cfg_program_01_output_source_priority.last_changed))
+          > 900 }}'
+      sequence:
+      - action: input_select.select_option
+        target:
+          entity_id: input_select.anenji_cfg_program_01_output_source_priority
+        data:
+          option: SUB
+      - action: script.anenji_inverter_write_single_config_to_modbus
+        data:
+          target_entity_id: input_select.anenji_cfg_program_01_output_source_priority
+  mode: single
+- id: anenji_program_01_set_from_mqtt
+  alias: ANENJI Program 01 из MQTT в инвертор
+  mode: queued
+  trigger:
+  - platform: mqtt
+    topic: homeassistant/anenji/program_01/set
+  variables:
+    requested_mode: '{{ trigger.payload | upper | trim }}'
+  condition:
+  - condition: template
+    value_template: '{{ requested_mode in [''UTI'', ''SOL'', ''SBU'', ''SUB'', ''SUF'']
+      }}'
+  action:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.anenji_cfg_program_01_output_source_priority
+    data:
+      option: '{{ requested_mode }}'
+  - service: script.anenji_inverter_write_single_config_to_modbus
+    data:
+      target_entity_id: input_select.anenji_cfg_program_01_output_source_priority
+- id: anenji_program_01_publish_to_mqtt
+  alias: ANENJI Program 01 публикация в MQTT
+  mode: queued
+  trigger:
+  - platform: state
+    entity_id: input_select.anenji_cfg_program_01_output_source_priority
+  - platform: homeassistant
+    event: start
+  action:
+  - service: mqtt.publish
+    data:
+      topic: homeassistant/anenji/program_01/state
+      payload: '{{ states(''input_select.anenji_cfg_program_01_output_source_priority'')
+        }}'
+      retain: true
+- id: anenji_surplus_power_publish_to_mqtt
+  alias: ANENJI Surplus Power публикация в MQTT
+  mode: queued
+  trigger:
+  - platform: state
+    entity_id: sensor.anenji_surplus_power
+  - platform: homeassistant
+    event: start
+  condition:
+  - condition: template
+    value_template: '{{ states(''sensor.anenji_surplus_power'') not in [''unknown'',
+      ''unavailable'', ''none'', ''''] }}'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: homeassistant/anenji/surplus_power/state
+      payload: '{{ states(''sensor.anenji_surplus_power'') }}'
+      retain: true

@@ -204,39 +204,42 @@
   mode: single
 - id: '1774333666055'
   alias: Переключение режима ANJ солнечного инвертора (SOL/SUB с гистерезисом)
-  description: '1) Цель: автоматически и бережно переключать Program 01 между SOL
-    и SUB, чтобы снизить потребление из сети и избежать частых «дёрганий» инвертора.
-    2) Переход в SOL: при СТАБИЛЬНО хорошем солнце. Учитываются 2 сценария: (а) реально
-    высокая генерация (PV ток/мощность), или (б) минимальная нагрузка дома (70-250
-    Вт), когда потенциал солнца высокий, но фактическая мощность PV может быть невысокой
-    из-за малого потребления. Выдержка 10 минут + доп.проверка ещё 2 минуты перед
-    записью режима. 3) Переход в SUB: при длительной нехватке солнца (низкие PV-параметры),
-    при стабильном высоком импорте из сети, а также принудительно за 30 минут до заката
-    для мягкого вечернего перехода. 4) Гистерезис: пороги и длительности для входа
-    в SOL и возврата в SUB различаются, поэтому режим не «пилит» на облаках/рассвете/закате.
-    5) Антидребезг: между любыми переключениями выдерживается минимум 15 минут, и
-    переключение выполняется только если текущий режим отличается от целевого. 6)
-    Как применяется: automation меняет input_select.anenji_cfg_program_01_output_source_priority
-    (SOL или SUB) и сразу вызывает script.anenji_inverter_write_single_config_to_modbus
-    для фактической записи в инвертор. 7) Что можно настраивать: пороги (V/A/W), временные
-    выдержки и интервал periodic_recheck (/15) редактируются в YAML/GUI под вашу станцию
-    и климат.'
+  description: 'Автоматизация держит инвертор в SOL при хорошем солнце (в т.ч. по
+    weather.openweathermap), учитывает гистерезис и не даёт лишних переходов в SUB.
+    Ключевые идеи: 1) SOL включается при стабильной генерации ИЛИ при солнечном прогнозе,
+    если PV-напряжение/АКБ позволяют. 2) SUB включается только при устойчиво плохом
+    солнце (или большом импорте из сети / перед закатом). 3) Защита от «дребезга»:
+    обязательная пауза между переключениями 15 минут + дополнительная проверка перед
+    записью. Все подписи и логика специально оставлены на русском для удобства панели.'
+  # ------------------------------
+  # Настраиваемые условия "солнечной погоды" из OpenWeatherMap:
+  # sunny/partlycloudy = разрешаем дольше удерживать SOL.
+  # ------------------------------
   triggers:
   - trigger: template
     value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
       %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p = states(''sensor.moshchnost_pv_pv_power'')|float(0)
       %} {% set load = states(''sensor.moshchnost_nagruzki_load_power'')|float(0)
-      %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0) %} {%
-      set high_generation = v > 335 and (i > 3 or p > 900) %} {% set low_load_high_potential
-      = v > 355 and load >= 70 and load <= 250 and grid < 250 %} {{ is_state(''sun.sun'',
-      ''above_horizon'') and (high_generation or low_load_high_potential) }}'
+      %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0) %}
+      {% set batt_v = states(''sensor.napriazhenie_akb_battery_voltage'')|float(0) %}
+      {% set weather_state = states(''weather.openweathermap'') %}
+      {% set weather_sunny = weather_state in [''sunny'', ''partlycloudy''] %}
+      {% set high_generation = v > 335 and (i > 3 or p > 900) %}
+      {% set low_load_high_potential = v > 355 and load >= 70 and load <= 250 and grid < 250 %}
+      {% set weather_keep_sol = weather_sunny and v > 325 and batt_v > 50.8 and grid < 450 %}
+      {{ is_state(''sun.sun'', ''above_horizon'') and (high_generation or low_load_high_potential or weather_keep_sol) }}'
     for: 00:10:00
     id: to_sol_stable
   - trigger: template
     value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
       %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p = states(''sensor.moshchnost_pv_pv_power'')|float(0)
-      %} {{ is_state(''sun.sun'', ''below_horizon'') or ((v < 300 or p < 550) and
-      i < 1.8) }}'
+      %} {% set batt_v = states(''sensor.napriazhenie_akb_battery_voltage'')|float(0) %}
+      {% set weather_state = states(''weather.openweathermap'') %}
+      {% set weather_sunny = weather_state in [''sunny'', ''partlycloudy''] %}
+      {# В SUB уходим по "слабому солнцу" только если погода НЕ солнечная.
+         Исключение: при сильном проседании АКБ (<49В) разрешаем уход в SUB даже в солнечную погоду. #}
+      {{ is_state(''sun.sun'', ''below_horizon'')
+         or ((((v < 300 or p < 550) and i < 1.8) and (not weather_sunny)) or batt_v < 49.0) }}'
     for: 00:15:00
     id: to_sub_low_sun
   - trigger: numeric_state
@@ -266,9 +269,13 @@
           %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p
           = states(''sensor.moshchnost_pv_pv_power'')|float(0) %} {% set load = states(''sensor.moshchnost_nagruzki_load_power'')|float(0)
           %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0)
-          %} {% set high_generation = v > 335 and (i > 3 or p > 900) %} {% set low_load_high_potential
-          = v > 355 and load >= 70 and load <= 250 and grid < 250 %} {{ high_generation
-          or low_load_high_potential }}'
+          %} {% set batt_v = states(''sensor.napriazhenie_akb_battery_voltage'')|float(0)
+          %} {% set weather_state = states(''weather.openweathermap'') %} {% set weather_sunny
+          = weather_state in [''sunny'', ''partlycloudy''] %} {% set high_generation
+          = v > 335 and (i > 3 or p > 900) %} {% set low_load_high_potential = v
+          > 355 and load >= 70 and load <= 250 and grid < 250 %} {% set weather_keep_sol
+          = weather_sunny and v > 325 and batt_v > 50.8 and grid < 450 %} {{ high_generation
+          or low_load_high_potential or weather_keep_sol }}'
       - condition: template
         value_template: '{{ states(''input_select.anenji_cfg_program_01_output_source_priority'')
           != ''SOL'' }}'
@@ -282,9 +289,13 @@
           %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p
           = states(''sensor.moshchnost_pv_pv_power'')|float(0) %} {% set load = states(''sensor.moshchnost_nagruzki_load_power'')|float(0)
           %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0)
-          %} {% set high_generation = v > 330 and (i > 2.5 or p > 800) %} {% set low_load_high_potential
-          = v > 350 and load >= 70 and load <= 250 and grid < 300 %} {{ high_generation
-          or low_load_high_potential }}'
+          %} {% set batt_v = states(''sensor.napriazhenie_akb_battery_voltage'')|float(0)
+          %} {% set weather_state = states(''weather.openweathermap'') %} {% set weather_sunny
+          = weather_state in [''sunny'', ''partlycloudy''] %} {% set high_generation
+          = v > 330 and (i > 2.5 or p > 800) %} {% set low_load_high_potential =
+          v > 350 and load >= 70 and load <= 250 and grid < 300 %} {% set weather_keep_sol
+          = weather_sunny and v > 320 and batt_v > 50.5 and grid < 500 %} {{ high_generation
+          or low_load_high_potential or weather_keep_sol }}'
       - action: input_select.select_option
         target:
           entity_id: input_select.anenji_cfg_program_01_output_source_priority
@@ -301,8 +312,11 @@
         value_template: '{% set v = states(''sensor.napriazhenie_pv_pv_voltage'')|float(0)
           %} {% set i = states(''sensor.tok_pv_pv_current'')|float(0) %} {% set p
           = states(''sensor.moshchnost_pv_pv_power'')|float(0) %} {% set grid = states(''sensor.moshchnost_seti_grid_power'')|float(0)
-          %} {{ is_state(''sun.sun'', ''below_horizon'') or ((v < 300 or p < 550)
-          and i < 1.8) or grid > 700 }}'
+          %} {% set batt_v = states(''sensor.napriazhenie_akb_battery_voltage'')|float(0)
+          %} {% set weather_state = states(''weather.openweathermap'') %} {% set weather_sunny
+          = weather_state in [''sunny'', ''partlycloudy''] %} {{ is_state(''sun.sun'',
+          ''below_horizon'') or ((((v < 300 or p < 550) and i < 1.8) and (not weather_sunny))
+          or batt_v < 49.0) or grid > 700 }}'
       - condition: template
         value_template: '{{ states(''input_select.anenji_cfg_program_01_output_source_priority'')
           != ''SUB'' }}'

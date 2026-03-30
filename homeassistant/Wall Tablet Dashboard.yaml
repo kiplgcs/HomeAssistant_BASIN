@@ -81,13 +81,13 @@ views:
             heading_style: title
           - type: custom:mushroom-entity-card
             entity: switch.0xa4c138c12b08a062_left
-            name: Дом
+            name: Свет в коридоре
             icon: mdi:ceiling-light
             tap_action:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.0xa4c138c12b08a062_right
-            name: Двор
+            name: Свет над входной дверью
             icon: mdi:wall-sconce-flat-variant
             tap_action:
               action: toggle
@@ -105,13 +105,13 @@ views:
               action: toggle
           - type: tile
             entity: select.esp32_ac_a7_04_ee_11_70_lamp_mode
-            name: Режим лампы
+            name: Свет в бассейне
             icon: mdi:led-strip-variant
           - type: custom:bubble-card
             card_type: button
             button_type: name
             entity: switch.rgb_strip_power_2
-            name: RGB бассейн
+            name: RGB лента - бассейн
             icon: mdi:led-strip-variant
             tap_action:
               action: toggle
@@ -122,7 +122,7 @@ views:
             card_type: button
             button_type: name
             entity: switch.outdoor_light_manual_2
-            name: Уличный свет
+            name: Уличный свет на дорогу
             icon: mdi:outdoor-lamp
             tap_action:
               action: toggle
@@ -132,7 +132,7 @@ views:
                 card_type: button
                 button_type: name
                 entity: script.evening_mode
-                name: Вечер
+                name: Вечерний режим
                 icon: mdi:weather-night
                 tap_action:
                   action: call-service
@@ -152,7 +152,16 @@ views:
                   action: call-service
                   service: homeassistant.turn_off
                   target:
-                    entity_id: all
+                    entity_id:
+                      - switch.0xa4c138c12b08a062_left
+                      - switch.0xa4c138c12b08a062_right
+                      - switch.0x54ef441001393219_right
+                      - switch.0x54ef441001393219_left
+                      - switch.outdoor_light_manual_2
+                      - switch.rgb_strip_power_2
+                      - switch.zigebee_smart_meter_pro_switch
+                      - switch.0xa4c13810d1762ba3
+                      - light.dream_color_rgb
       - type: grid
         column_span: 2
         columns: 2
@@ -352,13 +361,22 @@ views:
             card_type: button
             button_type: name
             entity: script.all_off
-            name: Всё выключить
+            name: Выключить всё
             icon: mdi:power
             tap_action:
               action: call-service
               service: homeassistant.turn_off
               target:
-                entity_id: all
+                entity_id:
+                  - switch.0xa4c138c12b08a062_left
+                  - switch.0xa4c138c12b08a062_right
+                  - switch.0x54ef441001393219_right
+                  - switch.0x54ef441001393219_left
+                  - switch.outdoor_light_manual_2
+                  - switch.rgb_strip_power_2
+                  - switch.zigebee_smart_meter_pro_switch
+                  - switch.0xa4c13810d1762ba3
+                  - light.dream_color_rgb
       - type: grid
         column_span: 1
         columns: 1
@@ -368,9 +386,6 @@ views:
             heading: Режим ленты
             icon: mdi:led-strip-variant
             heading_style: title
-          - type: tile
-            entity: select.esp32_ac_a7_04_ee_11_70_lamp_mode
-            name: Режим лампы
       - type: grid
         column_span: 3
         columns: 3
@@ -382,13 +397,13 @@ views:
             heading_style: title
           - type: custom:mushroom-entity-card
             entity: switch.0xa4c138c12b08a062_left
-            name: Дом
+            name: Свет в коридоре
             icon: mdi:ceiling-light
             tap_action:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.0xa4c138c12b08a062_right
-            name: Двор над дверью
+            name: Свет над входной дверью
             icon: mdi:wall-sconce-flat-variant
             tap_action:
               action: toggle
@@ -406,36 +421,40 @@ views:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.outdoor_light_manual_2
-            name: Уличный свет
+            name: Уличный свет на дорогу
             icon: mdi:outdoor-lamp
             tap_action:
               action: toggle
+          - type: tile
+            entity: select.esp32_ac_a7_04_ee_11_70_lamp_mode
+            name: Свет в бассейне
           - type: custom:mushroom-entity-card
             entity: switch.rgb_strip_power_2
-            name: RGB бассейн
+            name: RGB лента - бассейн
             icon: mdi:led-strip-variant
             tap_action:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.zigebee_smart_meter_pro_switch
-            name: LED забор
+            name: LED гирлянда - забор
             icon: mdi:string-lights
             tap_action:
               action: toggle
           - type: custom:mushroom-entity-card
             entity: switch.0xa4c13810d1762ba3
-            name: LED гирлянда на доме
+            name: LED гирлянда  - дом
             icon: mdi:party-popper
             tap_action:
               action: toggle
           - type: custom:mushroom-light-card
             entity: light.dream_color_rgb
-            name: Гостиная · RGB лента
+            name: RGB лента - потолок в Зале
             icon: mdi:led-strip-variant
             use_light_color: true
             show_brightness_control: true
             show_color_control: true
-            collapsible_controls: false
+            collapsible_controls: true
+            show_color_temp_control: true
     card_mod:
       style: |
         :host {
